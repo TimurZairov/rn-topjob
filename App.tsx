@@ -1,13 +1,16 @@
 import {View} from 'react-native';
 import React from 'react';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 import MainScreen from './src/screens/MainScreen/MainScreen';
 
 const App = () => {
   return (
-    <View>
-      <MainScreen />
-    </View>
+    <SafeAreaProvider>
+      <View>
+        <MainScreen />
+      </View>
+    </SafeAreaProvider>
   );
 };
 
