@@ -1,16 +1,16 @@
-import {View} from 'react-native';
 import React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
-import MainScreen from './src/screens/MainScreen/MainScreen';
+import {NavigationContainer} from '@react-navigation/native';
+import TabNavigation from './src/navigation/TabNavigation';
 
 const App = () => {
   return (
-    <SafeAreaProvider>
-      <View>
-        <MainScreen />
-      </View>
-    </SafeAreaProvider>
+    <NavigationContainer>
+      <SafeAreaProvider>
+        <TabNavigation />
+      </SafeAreaProvider>
+    </NavigationContainer>
   );
 };
 
