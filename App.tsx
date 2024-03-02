@@ -1,12 +1,13 @@
-import {SafeAreaView, Text, View} from 'react-native';
+import {View} from 'react-native';
 import React from 'react';
-import {FONTS} from './src/theme/theme';
+
+import MainScreen from './src/screens/MainScreen/MainScreen';
 
 const App = () => {
   return (
-    <SafeAreaView>
-      <Text style={{fontFamily: FONTS.light}}>App</Text>
-    </SafeAreaView>
+    <View>
+      <MainScreen />
+    </View>
   );
 };
 
