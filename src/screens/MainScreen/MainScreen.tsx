@@ -38,7 +38,7 @@ const MainScreen = () => {
             style={{
               paddingBottom:
                 Platform.OS === 'android'
-                  ? 160
+                  ? 80
                   : Math.max(insets.bottom, 16) + 50,
             }}>
             <View style={styles.mainWork}>

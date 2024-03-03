@@ -1,14 +1,15 @@
-import {StyleSheet, TextInput, View} from 'react-native';
+import {StyleSheet, TextInput, View, ViewStyle} from 'react-native';
 import React from 'react';
 import {COLORS} from '../../theme/theme';
 
 interface ITextInput {
   placeholder?: string;
+  style?: ViewStyle;
 }
 
-const Input = ({placeholder = ''}: ITextInput) => {
+const Input = ({placeholder = '', style}: ITextInput) => {
   return (
-    <View style={styles.input}>
+    <View style={[styles.input, style]}>
       <TextInput
         style={styles.textInput}
         placeholder={placeholder}
@@ -30,6 +31,8 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.borderColor,
   },
   textInput: {
     width: '100%',

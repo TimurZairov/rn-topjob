@@ -12,6 +12,7 @@ import TaskTab from '../assets/icons/TaskTab';
 import ProfileTab from '../assets/icons/ProfileTab';
 import ServiceTab from '../assets/icons/ServiceTab';
 import VacancyTab from '../assets/icons/VacancyTab';
+import {Platform} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,7 +22,12 @@ const TabNavigation = () => {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: COLORS.mainOrange,
-        tabBarInactiveTintColor: '#888888',
+        tabBarInactiveTintColor: COLORS.darkGrey,
+        tabBarStyle: {
+          height: 70,
+          paddingBottom: Platform.OS === 'android' ? 12 : 20,
+        },
+        tabBarLabelStyle: {margin: 0, padding: 0},
       }}
       initialRouteName="Main">
       <Tab.Screen

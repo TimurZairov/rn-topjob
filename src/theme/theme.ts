@@ -9,6 +9,8 @@ export const COLORS = {
   black: '#000',
   darkBlue: '#007AC2',
   lightBlue: '#23C5FD',
+  borderColor: '#EDEDED',
+  textGrey: '#888888',
 };
 
 export const FONTS = {
