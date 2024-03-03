@@ -18,7 +18,6 @@ import Button from '../../components/Button/Button';
 import TopVacancies from '../../components/TopVacancies/TopVacancies';
 import Create from '../../components/Create/Create';
 import HowItWorks from '../../components/HowItWorks/HowItWorks';
-import CreateButton from '../../components/CreateButton/CreateButton';
 
 const MainScreen = () => {
   const insets = useSafeAreaInsets();
@@ -73,9 +72,6 @@ const MainScreen = () => {
           </View>
         </ScrollView>
       </SafeAreaView>
-      <View style={{position: 'absolute', bottom: 30, right: 30}}>
-        <CreateButton />
-      </View>
     </>
   );
 };

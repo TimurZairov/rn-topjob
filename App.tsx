@@ -1,14 +1,14 @@
 import React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-
+import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
-import TabNavigation from './src/navigation/TabNavigation';
+import StackNavigation from './src/navigation/StackNavigation';
 
 const App = () => {
   return (
     <NavigationContainer>
       <SafeAreaProvider>
-        <TabNavigation />
+        <StackNavigation />
       </SafeAreaProvider>
     </NavigationContainer>
   );

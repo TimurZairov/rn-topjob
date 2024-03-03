@@ -1,5 +1,6 @@
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
+//
 import LinearGradient from 'react-native-linear-gradient';
 import {COLORS, SIZES} from '../../theme/theme';
 
