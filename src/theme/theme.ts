@@ -11,6 +11,7 @@ export const COLORS = {
   lightBlue: '#23C5FD',
   borderColor: '#EDEDED',
   textGrey: '#888888',
+  green: '#1DBA6E',
 };
 
 export const FONTS = {
