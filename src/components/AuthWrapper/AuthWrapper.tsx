@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 //
-import {COLORS, FONTS, SIZES} from '../../theme/theme';
+import {FONTS, SIZES} from '../../theme/theme';
 import Input from '../Input/Input';
 
 interface IAuthWrapper {

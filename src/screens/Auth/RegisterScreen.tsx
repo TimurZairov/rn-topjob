@@ -12,14 +12,15 @@ import HeaderLogo from '../../components/HeaderLogo/HeaderLogo';
 import {COLORS, FONTS, SIZES} from '../../theme/theme';
 import AuthWrapper from '../../components/AuthWrapper/AuthWrapper';
 import Button from '../../components/Button/Button';
+import ScreenTitle from '../../components/ScreenTitle/ScreenTitle';
 
 const RegisterScreen = () => {
   return (
     <SafeAreaView style={styles.safe}>
-      <HeaderLogo />
+      <HeaderLogo isVisible />
 
       <ScrollView style={styles.scroll}>
-        <Text style={styles.text}>Регистрация</Text>
+        <ScreenTitle>Регистрация</ScreenTitle>
         <View style={styles.wrapper}>
           <AuthWrapper label="E-mail" placeholder='"example@outlook.com"' />
           <AuthWrapper
@@ -29,7 +30,7 @@ const RegisterScreen = () => {
           />
           <AuthWrapper
             label="Повторите пароль еще раз"
-            placeholder='"введите ваш пароль"'
+            placeholder='"еще раз пароль"'
             margin={20}
           />
         </View>
@@ -71,12 +72,6 @@ const styles = StyleSheet.create({
   },
   scroll: {
     paddingHorizontal: 12,
-  },
-  text: {
-    color: COLORS.black,
-    fontSize: SIZES.xlg,
-    fontFamily: FONTS.bold,
-    marginTop: 30,
   },
   wrapper: {
     backgroundColor: COLORS.grey,

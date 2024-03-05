@@ -12,11 +12,12 @@ interface IButton {
   children: ReactNode;
   style?: ViewStyle;
   textStyle?: TextStyle;
+  onPress?: () => void;
 }
 
-const Button = ({children, style, textStyle}: IButton) => {
+const Button = ({children, style, textStyle, onPress}: IButton) => {
   return (
-    <TouchableOpacity style={[styles.btn, style]}>
+    <TouchableOpacity style={[styles.btn, style]} onPress={onPress}>
       <Text style={[styles.btnText, textStyle]}>{children}</Text>
     </TouchableOpacity>
   );

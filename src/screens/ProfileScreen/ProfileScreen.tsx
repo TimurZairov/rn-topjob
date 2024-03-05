@@ -4,7 +4,12 @@ import React from 'react';
 import {COLORS, width} from '../../theme/theme';
 import Button from '../../components/Button/Button';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({navigation}: any) => {
+  //if user is not sign in or sign up
+  const handleAuthScreen = () => {
+    navigation.navigate('Login');
+  };
+
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.container}>
@@ -15,7 +20,9 @@ const ProfileScreen = () => {
         <Text style={styles.enter}>
           Войдите под своим логином и паролем или зарегистрируйтесь
         </Text>
-        <Button style={styles.btn}>Войти</Button>
+        <Button onPress={handleAuthScreen} style={styles.btn}>
+          Войти
+        </Button>
       </View>
     </SafeAreaView>
   );

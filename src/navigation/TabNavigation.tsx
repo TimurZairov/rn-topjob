@@ -13,8 +13,9 @@ import ProfileTab from '../assets/icons/ProfileTab';
 import ServiceTab from '../assets/icons/ServiceTab';
 import VacancyTab from '../assets/icons/VacancyTab';
 import {Platform} from 'react-native';
+import {TabNavigationParams} from './types/types';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<TabNavigationParams>();
 
 const TabNavigation = () => {
   return (

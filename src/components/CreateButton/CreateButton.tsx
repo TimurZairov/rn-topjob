@@ -1,17 +1,53 @@
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useState} from 'react';
 //
 import LinearGradient from 'react-native-linear-gradient';
 import {COLORS, SIZES} from '../../theme/theme';
+import CreateVacancy from '../../assets/icons/CreateVacancy';
+import GroupIcon from '../../assets/icons/GroupIcon';
+import CreateTask from '../../assets/icons/CreateTask';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationParamsProps} from '../../navigation/types/types';
 
 const CreateButton = () => {
+  const navigation = useNavigation<StackNavigationParamsProps>();
+  const [showCreateBtn, setShowCreateBtn] = useState(false);
+
+  const handlePress = () => {
+    setShowCreateBtn(prev => !prev);
+  };
+  //create new Vacancy change screen
+  const handleCreateVacancyScreen = () => {
+    navigation.navigate('CreateVacancy');
+    setShowCreateBtn(false);
+  };
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={handlePress} activeOpacity={0.7}>
       <LinearGradient
         style={styles.btn}
         colors={[COLORS.darkBlue, COLORS.lightBlue]}>
         <Text style={styles.plus}>+</Text>
       </LinearGradient>
+      {/* MODAL TO CREATE JOB */}
+      {showCreateBtn ? (
+        <View style={styles.btnWrapper}>
+          <TouchableOpacity
+            style={styles.btnPopup}
+            onPress={handleCreateVacancyScreen}>
+            <CreateVacancy />
+            <Text style={styles.text}>Создать вакансию</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btnPopup}>
+            <GroupIcon />
+            <Text style={styles.text}>Создать услугу</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btnPopup}>
+            <CreateTask />
+            <Text style={styles.text}>Создать задачу</Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
     </TouchableOpacity>
   );
 };
@@ -29,5 +65,24 @@ const styles = StyleSheet.create({
   plus: {
     color: COLORS.white,
     fontSize: SIZES.xxlg,
+  },
+  btnWrapper: {
+    position: 'absolute',
+    backgroundColor: COLORS.white,
+    padding: 10,
+    width: 200,
+    borderRadius: 5,
+    zIndex: -1,
+    top: -120,
+    right: 30,
+  },
+  btnPopup: {
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    marginVertical: 10,
+    alignItems: 'center',
+  },
+  text: {
+    marginLeft: 10,
   },
 });
