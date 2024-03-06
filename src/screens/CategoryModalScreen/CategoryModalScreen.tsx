@@ -5,17 +5,21 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
+//
 import HeaderLogo from '../../components/HeaderLogo/HeaderLogo';
 import {category} from '../../data/workCategory';
 import {COLORS, FONTS, SIZES} from '../../theme/theme';
 import Title from '../../components/Title/Title';
+import {AppContext} from '../../context/context';
 
 const CategoryModalScreen = ({navigation}: any) => {
+  const {setVacancyCategory} = useContext(AppContext);
   const [categoryIndex, setCategoryIndex] = useState<number | null>(null);
 
   const handleSaveCategory = (item: string, index: number) => {
     setCategoryIndex(index);
+    setVacancyCategory(item);
     setTimeout(() => {
       navigation.goBack();
     }, 500);

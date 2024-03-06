@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 //
 import HeaderLogo from '../../components/HeaderLogo/HeaderLogo';
 import {COLORS, FONTS, SIZES, width} from '../../theme/theme';
@@ -17,25 +17,28 @@ import {TextInput} from 'react-native-gesture-handler';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import CheckIcon from '../../assets/icons/CheckIcon';
-
-const condition = [
-  'Полная занятость',
-  'Частичная занятость',
-  'Волонтерство',
-  'Стажировка',
-  'Проектная работа',
-];
-
-const mode = [
-  'Работать только по сб и вс',
-  'Можно работать сменами по 4-6 часов в день',
-  'Можно работать после 16:00',
-  'Свободный',
-  'Гибкий',
-];
+import {AppContext} from '../../context/context';
+import {condition, mode} from '../../data/workCategory';
 
 const CreateVacancyScreen = ({navigation}: any) => {
-  const [vacancyName, setVacancyName] = useState('');
+  //vacancy info saved in context store to save in DB
+  const {
+    vacancyName,
+    vacancyCategory,
+    setVacancyName,
+    vacancyCity,
+    setVacancyCity,
+    vacancyAddress,
+    setVacancyAddress,
+    vacancySalaryFrom,
+    setVacancySalaryFrom,
+    vacancySalaryTo,
+    setVacancySalaryTo,
+  } = useContext(AppContext);
+
+  //Text input not component
+  const [vacancyDescription, setVacancyDescription] = useState('');
+  const [vacancySkills, setVacancySkills] = useState('');
 
   const [employmentType, setEmploymentType] = useState('');
   const [employmentTypeIndex, setEmploymentTypeIndex] = useState<number | null>(
@@ -61,6 +64,25 @@ const CreateVacancyScreen = ({navigation}: any) => {
   const handleVacancyCategory = () => {
     navigation.navigate('Category');
   };
+  //Publish Vacancy
+
+  const handleSaveVacancy = () => {
+    const newVacancy = {
+      vacancyName,
+      vacancyCategory,
+      vacancyAddress,
+      vacancyCity,
+      vacancySalaryFrom,
+      vacancySalaryTo,
+      vacancySkills,
+      vacancyDescription,
+      employmentType,
+      workMode,
+      userId: 0,
+    };
+
+    console.log(newVacancy);
+  };
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -72,7 +94,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
           <View style={styles.mainInfoContainer}>
             <Text style={styles.main}>Основная информация</Text>
             <GroupInput
-              label="Название услуги"
+              label="Название вакансии"
               placeholder="Введите название"
               setState={setVacancyName}
             />
@@ -81,6 +103,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
               placeholder="Выберите категорию"
               category
               handleVacancyCategory={handleVacancyCategory}
+              vacancyCategory={vacancyCategory}
             />
           </View>
           <View style={styles.mainInfoContainer}>
@@ -88,23 +111,38 @@ const CreateVacancyScreen = ({navigation}: any) => {
             <GroupInput
               label="Вакансия в городе"
               placeholder="Введите название"
+              setState={setVacancyCity}
             />
             <GroupInput
               label="Адрес офиса (не обязательно)"
               placeholder="Укажите адресс"
               mapBtn
               handleWorkLocation={handleWorkLocation}
+              setState={setVacancyAddress}
             />
           </View>
           <Text style={styles.desc}>Описание</Text>
           <View style={styles.textArea}>
-            <TextInput style={styles.input} maxLength={120} multiline={true} />
+            <TextInput
+              onChangeText={setVacancyDescription}
+              style={styles.input}
+              maxLength={120}
+              multiline={true}
+            />
           </View>
           {/*  */}
           <View style={styles.mainInfoContainer}>
             <Text style={styles.blockTitle}>Предлагаемая зарплата</Text>
-            <Input placeholder="от" style={{marginTop: 10}} />
-            <Input placeholder="до" style={{marginTop: 5}} />
+            <Input
+              setState={setVacancySalaryFrom}
+              placeholder="от"
+              style={{marginTop: 10}}
+            />
+            <Input
+              setState={setVacancySalaryTo}
+              placeholder="до"
+              style={{marginTop: 5}}
+            />
             <Text style={[styles.blockTitle, {marginTop: 10}]}>
               Ключевые навыки
             </Text>
@@ -118,6 +156,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
                 maxLength={120}
                 multiline={true}
                 placeholder={Platform.OS === 'ios' ? 'Введите навыки' : ''}
+                onChangeText={setVacancySkills}
               />
             </View>
             <Text style={styles.condition}>
@@ -185,6 +224,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
             })}
           </View>
           <Button
+            onPress={handleSaveVacancy}
             style={{width: width / 2, alignSelf: 'center', marginTop: 16}}>
             Создать вакансию
           </Button>

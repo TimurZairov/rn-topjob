@@ -6,16 +6,19 @@ interface ITextInput {
   placeholder?: string;
   style?: ViewStyle;
   setState?: (input: string) => void | undefined;
+  state?: string;
 }
 
-const Input = ({placeholder = '', style, setState}: ITextInput) => {
+const Input = ({placeholder = '', style, setState, state}: ITextInput) => {
   const [inputState, setInputState] = useState('');
 
   useEffect(() => {
     if (setState !== undefined) {
       setState(inputState);
+    } else if (state) {
+      setInputState(state);
     }
-  }, [inputState, setState]);
+  }, [inputState, setState, state]);
 
   return (
     <View style={[styles.input, style]}>
@@ -24,6 +27,7 @@ const Input = ({placeholder = '', style, setState}: ITextInput) => {
         placeholder={placeholder}
         placeholderTextColor={COLORS.darkGrey}
         onChangeText={setInputState}
+        value={inputState}
       />
     </View>
   );

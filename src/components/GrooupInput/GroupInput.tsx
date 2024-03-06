@@ -13,6 +13,7 @@ interface IGroupInput {
   setState?: Dispatch<SetStateAction<string>>;
   category?: boolean;
   handleVacancyCategory?: () => void;
+  vacancyCategory?: string;
 }
 
 const GroupInput = ({
@@ -23,6 +24,7 @@ const GroupInput = ({
   setState,
   category,
   handleVacancyCategory,
+  vacancyCategory,
 }: IGroupInput) => {
   return (
     <View style={styles.inputs}>
@@ -38,6 +40,7 @@ const GroupInput = ({
           style={{width: mapBtn ? '68%' : '100%'}}
           placeholder={placeholder}
           setState={setState}
+          state={vacancyCategory}
         />
         {mapBtn && (
           <Button onPress={handleWorkLocation} style={{width: 100}}>
