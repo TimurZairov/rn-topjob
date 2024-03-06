@@ -1,19 +1,29 @@
 import {StyleSheet, TextInput, View, ViewStyle} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {COLORS, SIZES} from '../../theme/theme';
 
 interface ITextInput {
   placeholder?: string;
   style?: ViewStyle;
+  setState?: (input: string) => void | undefined;
 }
 
-const Input = ({placeholder = '', style}: ITextInput) => {
+const Input = ({placeholder = '', style, setState}: ITextInput) => {
+  const [inputState, setInputState] = useState('');
+
+  useEffect(() => {
+    if (setState !== undefined) {
+      setState(inputState);
+    }
+  }, [inputState, setState]);
+
   return (
     <View style={[styles.input, style]}>
       <TextInput
         style={styles.textInput}
         placeholder={placeholder}
         placeholderTextColor={COLORS.darkGrey}
+        onChangeText={setInputState}
       />
     </View>
   );

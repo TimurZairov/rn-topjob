@@ -5,7 +5,8 @@ import LoginScreen from '../screens/Auth/LoginScreen';
 import TabNavigation from './TabNavigation';
 import {StackNavigationParams} from './types/types';
 import CreateVacancyScreen from '../screens/CreateVacancyScreen/CreateVacancyScreen';
-import MapScreen from '../screens/MapScreen/MapScreen';
+import MapScreen from '../screens/MapScreen/MapModalScreen';
+import CategoryModalScreen from '../screens/CategoryModalScreen/CategoryModalScreen';
 
 const Stack = createStackNavigator<StackNavigationParams>();
 
@@ -21,6 +22,14 @@ const StackNavigation = () => {
       <Stack.Screen
         name="Map"
         component={MapScreen}
+        options={{
+          presentation: 'modal',
+          animationEnabled: true,
+        }}
+      />
+      <Stack.Screen
+        name="Category"
+        component={CategoryModalScreen}
         options={{
           presentation: 'modal',
           animationEnabled: true,

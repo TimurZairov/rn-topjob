@@ -3,8 +3,8 @@ import React, {ReactNode} from 'react';
 
 interface ITitle {
   children: ReactNode;
-  style: ViewStyle;
-  textStyle: TextStyle;
+  style?: ViewStyle;
+  textStyle?: TextStyle;
 }
 
 const Title = ({children, style, textStyle}: ITitle) => {

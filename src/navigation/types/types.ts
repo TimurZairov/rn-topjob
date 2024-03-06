@@ -6,6 +6,7 @@ export type StackNavigationParams = {
   Register: undefined;
   CreateVacancy: undefined;
   Map: undefined;
+  Category: undefined;
   Tab: NavigatorScreenParams<TabNavigationParams>;
 };
 

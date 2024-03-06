@@ -1,14 +1,18 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {Dispatch, SetStateAction} from 'react';
 import {FONTS, SIZES} from '../../theme/theme';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
+import RightArrowIcon from '../../assets/icons/RightArrowIcon';
 
 interface IGroupInput {
   label: string;
   placeholder: string;
   mapBtn?: boolean;
   handleWorkLocation?: () => void;
+  setState?: Dispatch<SetStateAction<string>>;
+  category?: boolean;
+  handleVacancyCategory?: () => void;
 }
 
 const GroupInput = ({
@@ -16,6 +20,9 @@ const GroupInput = ({
   placeholder,
   mapBtn,
   handleWorkLocation,
+  setState,
+  category,
+  handleVacancyCategory,
 }: IGroupInput) => {
   return (
     <View style={styles.inputs}>
@@ -30,11 +37,20 @@ const GroupInput = ({
         <Input
           style={{width: mapBtn ? '68%' : '100%'}}
           placeholder={placeholder}
+          setState={setState}
         />
         {mapBtn && (
           <Button onPress={handleWorkLocation} style={{width: 100}}>
             Карта
           </Button>
+        )}
+        {category && (
+          <TouchableOpacity
+            style={styles.arrow}
+            activeOpacity={0.7}
+            onPress={handleVacancyCategory}>
+            <RightArrowIcon />
+          </TouchableOpacity>
         )}
       </View>
     </View>
@@ -51,5 +67,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     fontSize: SIZES.default,
     fontFamily: FONTS.medium,
+  },
+  arrow: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    alignItems: 'flex-end',
   },
 });

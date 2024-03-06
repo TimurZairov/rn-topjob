@@ -35,6 +35,8 @@ const mode = [
 ];
 
 const CreateVacancyScreen = ({navigation}: any) => {
+  const [vacancyName, setVacancyName] = useState('');
+
   const [employmentType, setEmploymentType] = useState('');
   const [employmentTypeIndex, setEmploymentTypeIndex] = useState<number | null>(
     null,
@@ -51,9 +53,13 @@ const CreateVacancyScreen = ({navigation}: any) => {
     setWorkMode(item);
     setWorkModeIndex(index);
   };
-
+  //get Location of vacancy place to render on map
   const handleWorkLocation = () => {
     navigation.navigate('Map');
+  };
+  //get and set to vacancy category
+  const handleVacancyCategory = () => {
+    navigation.navigate('Category');
   };
 
   return (
@@ -68,8 +74,14 @@ const CreateVacancyScreen = ({navigation}: any) => {
             <GroupInput
               label="Название услуги"
               placeholder="Введите название"
+              setState={setVacancyName}
             />
-            <GroupInput label="Категория" placeholder="Выберите категорию" />
+            <GroupInput
+              label="Категория"
+              placeholder="Выберите категорию"
+              category
+              handleVacancyCategory={handleVacancyCategory}
+            />
           </View>
           <View style={styles.mainInfoContainer}>
             <Text style={styles.main}>Место выполнения услуги</Text>
