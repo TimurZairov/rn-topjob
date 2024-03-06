@@ -1,5 +1,14 @@
-import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useState} from 'react';
+//
 import HeaderLogo from '../../components/HeaderLogo/HeaderLogo';
 import {COLORS, FONTS, SIZES, width} from '../../theme/theme';
 import ScreenTitle from '../../components/ScreenTitle/ScreenTitle';
@@ -9,28 +18,49 @@ import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import CheckIcon from '../../assets/icons/CheckIcon';
 
-const CreateVacancyScreen = () => {
-  const condition = [
-    'Полная занятость',
-    'Частичная занятость',
-    'Волонтерство',
-    'Стажировка',
-    'Проектная работа',
-  ];
+const condition = [
+  'Полная занятость',
+  'Частичная занятость',
+  'Волонтерство',
+  'Стажировка',
+  'Проектная работа',
+];
 
-  const mode = [
-    'Работать только по сб и вс',
-    'Можно работать сменами по 4-6 часов в день',
-    'Можно работать после 16:00',
-    'Свободный',
-    'Гибкий',
-  ];
+const mode = [
+  'Работать только по сб и вс',
+  'Можно работать сменами по 4-6 часов в день',
+  'Можно работать после 16:00',
+  'Свободный',
+  'Гибкий',
+];
+
+const CreateVacancyScreen = ({navigation}: any) => {
+  const [employmentType, setEmploymentType] = useState('');
+  const [employmentTypeIndex, setEmploymentTypeIndex] = useState<number | null>(
+    null,
+  );
+  const [workMode, setWorkMode] = useState('');
+  const [workModeIndex, setWorkModeIndex] = useState<number | null>(null);
+
+  const handleEmploymentType = (item: string, index: number) => {
+    setEmploymentType(item);
+    setEmploymentTypeIndex(index);
+  };
+
+  const handleWorkMode = (item: string, index: number) => {
+    setWorkMode(item);
+    setWorkModeIndex(index);
+  };
+
+  const handleWorkLocation = () => {
+    navigation.navigate('Map');
+  };
 
   return (
     <SafeAreaView style={styles.safe}>
       <HeaderLogo isVisible />
       <ScrollView style={styles.scroll}>
-        <View style={{paddingBottom: 200}}>
+        <View style={{paddingBottom: 80}}>
           <ScreenTitle>Создание вакансии</ScreenTitle>
           {/* Main info */}
           <View style={styles.mainInfoContainer}>
@@ -50,6 +80,8 @@ const CreateVacancyScreen = () => {
             <GroupInput
               label="Адрес офиса (не обязательно)"
               placeholder="Укажите адресс"
+              mapBtn
+              handleWorkLocation={handleWorkLocation}
             />
           </View>
           <Text style={styles.desc}>Описание</Text>
@@ -73,7 +105,7 @@ const CreateVacancyScreen = () => {
                 style={styles.input}
                 maxLength={120}
                 multiline={true}
-                placeholder="Введите навыки"
+                placeholder={Platform.OS === 'ios' ? 'Введите навыки' : ''}
               />
             </View>
             <Text style={styles.condition}>
@@ -93,40 +125,50 @@ const CreateVacancyScreen = () => {
                 style={styles.input}
                 maxLength={120}
                 multiline={true}
-                placeholder="Введите описание"
+                placeholder={Platform.OS === 'ios' ? 'Введите описание' : ''}
               />
             </View>
             <Text style={styles.condition}>
               Используйте только при публикации анонимных вакансий
             </Text>
           </View>
-          {/*  */}
+          {/* employmentType */}
           <View style={styles.mainInfoContainer}>
             <Text style={[styles.main, {marginBottom: 20}]}>Тип занятости</Text>
             {condition.map((item, index) => {
               return (
-                <View key={index} style={styles.checkBoxContainer}>
+                <TouchableOpacity
+                  onPress={() => handleEmploymentType(item, index)}
+                  key={index}
+                  style={styles.checkBoxContainer}>
                   <View style={styles.ratio}>
-                    <View style={styles.checked} />
+                    {employmentTypeIndex === index ? (
+                      <View style={styles.checked} />
+                    ) : null}
                   </View>
                   <Text>{item}</Text>
-                </View>
+                </TouchableOpacity>
               );
             })}
           </View>
-
+          {/* Work mode */}
           <View style={styles.mainInfoContainer}>
             <Text style={[styles.main, {marginBottom: 20}]}>Режим работы</Text>
             {mode.map((item, index) => {
               return (
-                <View key={index} style={styles.checkBoxContainer}>
+                <TouchableOpacity
+                  onPress={() => handleWorkMode(item, index)}
+                  key={index}
+                  style={styles.checkBoxContainer}>
                   <View style={styles.checkBox}>
-                    <View style={styles.active}>
-                      <CheckIcon />
-                    </View>
+                    {workModeIndex === index ? (
+                      <View style={styles.active}>
+                        <CheckIcon />
+                      </View>
+                    ) : null}
                   </View>
                   <Text>{item}</Text>
-                </View>
+                </TouchableOpacity>
               );
             })}
           </View>
@@ -175,8 +217,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   input: {
-    width: '100%',
-    height: '100%',
+    height: Platform.OS === 'ios' ? '100%' : null,
   },
   blockTitle: {
     color: COLORS.black,

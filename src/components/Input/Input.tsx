@@ -1,6 +1,6 @@
 import {StyleSheet, TextInput, View, ViewStyle} from 'react-native';
 import React from 'react';
-import {COLORS} from '../../theme/theme';
+import {COLORS, SIZES} from '../../theme/theme';
 
 interface ITextInput {
   placeholder?: string;
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     width: '100%',
-    height: '100%',
+    height: 40,
+    fontSize: SIZES.md,
   },
 });

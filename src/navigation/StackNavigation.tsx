@@ -5,6 +5,7 @@ import LoginScreen from '../screens/Auth/LoginScreen';
 import TabNavigation from './TabNavigation';
 import {StackNavigationParams} from './types/types';
 import CreateVacancyScreen from '../screens/CreateVacancyScreen/CreateVacancyScreen';
+import MapScreen from '../screens/MapScreen/MapScreen';
 
 const Stack = createStackNavigator<StackNavigationParams>();
 
@@ -17,6 +18,14 @@ const StackNavigation = () => {
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="Tab" component={TabNavigation} />
       <Stack.Screen name="CreateVacancy" component={CreateVacancyScreen} />
+      <Stack.Screen
+        name="Map"
+        component={MapScreen}
+        options={{
+          presentation: 'modal',
+          animationEnabled: true,
+        }}
+      />
     </Stack.Navigator>
   );
 };
