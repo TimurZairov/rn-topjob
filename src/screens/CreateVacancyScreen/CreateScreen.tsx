@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image,
 } from 'react-native';
 import React, {useContext, useState} from 'react';
 //
@@ -34,7 +35,12 @@ const CreateVacancyScreen = ({navigation}: any) => {
     setVacancySalaryFrom,
     vacancySalaryTo,
     setVacancySalaryTo,
+    isVacancy,
+    isTask,
+    isService,
   } = useContext(AppContext);
+
+  console.log(isVacancy);
 
   //Text input not component
   const [vacancyDescription, setVacancyDescription] = useState('');
@@ -223,10 +229,51 @@ const CreateVacancyScreen = ({navigation}: any) => {
               );
             })}
           </View>
+
+          {/* SERVICE */}
+          {isService && (
+            <View style={styles.mainInfoContainer}>
+              <Text style={styles.main}>Фотографии</Text>
+              <Button
+                style={{
+                  width: width / 2,
+                  backgroundColor: COLORS.lightBlue,
+                  marginTop: 16,
+                }}>
+                Прикрепить фото
+              </Button>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginTop: 16,
+                }}>
+                {[...Array(4)].map((_, index) => {
+                  return (
+                    <TouchableOpacity
+                      key={index}
+                      activeOpacity={0.5}
+                      style={{
+                        width: 70,
+                        height: 70,
+                        backgroundColor: COLORS.greyMedium,
+                        borderRadius: 10,
+                        borderColor: COLORS.darkGrey,
+                        borderWidth: 1,
+                        borderStyle: 'dashed',
+                      }}>
+                      <Image />
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </View>
+          )}
           <Button
             onPress={handleSaveVacancy}
             style={{width: width / 2, alignSelf: 'center', marginTop: 16}}>
-            Создать вакансию
+            Создать {isVacancy && 'вакансию'} {isTask && 'задачу'}{' '}
+            {isService && 'услугу'}
           </Button>
         </View>
       </ScrollView>

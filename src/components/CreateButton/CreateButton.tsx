@@ -1,5 +1,5 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 //
 import LinearGradient from 'react-native-linear-gradient';
 import {COLORS, SIZES} from '../../theme/theme';
@@ -8,18 +8,23 @@ import GroupIcon from '../../assets/icons/GroupIcon';
 import CreateTask from '../../assets/icons/CreateTask';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationParamsProps} from '../../navigation/types/types';
+import {AppContext} from '../../context/context';
 
 const CreateButton = () => {
   const navigation = useNavigation<StackNavigationParamsProps>();
   const [showCreateBtn, setShowCreateBtn] = useState(false);
+  const {setIsVacancy, setIsService, setIsTask} = useContext(AppContext);
 
   const handlePress = () => {
     setShowCreateBtn(prev => !prev);
   };
   //create new Vacancy change screen
   const handleCreateVacancyScreen = () => {
-    navigation.navigate('CreateVacancy');
+    navigation.navigate('Create');
     setShowCreateBtn(false);
+    setIsVacancy(true);
+    setIsTask(false);
+    setIsService(false);
   };
 
   return (

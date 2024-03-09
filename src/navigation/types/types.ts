@@ -2,9 +2,10 @@ import {NavigatorScreenParams} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export type StackNavigationParams = {
+  Splash: undefined;
   Login: undefined;
   Register: undefined;
-  CreateVacancy: undefined;
+  Create: undefined;
   Map: undefined;
   Category: undefined;
   Tab: NavigatorScreenParams<TabNavigationParams>;

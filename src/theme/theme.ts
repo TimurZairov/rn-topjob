@@ -12,6 +12,7 @@ export const COLORS = {
   borderColor: '#EDEDED',
   textGrey: '#888888',
   green: '#1DBA6E',
+  greyMedium: '#E0E5EB',
 };
 
 export const FONTS = {

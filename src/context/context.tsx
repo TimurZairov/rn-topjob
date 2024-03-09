@@ -14,6 +14,12 @@ interface AppContextProps {
   setVacancySalaryFrom: React.Dispatch<React.SetStateAction<string>>;
   vacancySalaryTo: string;
   setVacancySalaryTo: React.Dispatch<React.SetStateAction<string>>;
+  isTask: boolean;
+  isVacancy: boolean;
+  isService: boolean;
+  setIsTask: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsVacancy: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsService: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface IAppContextProvider {
@@ -33,6 +39,13 @@ export const AppContext = createContext<AppContextProps>({
   setVacancySalaryFrom: () => {},
   vacancySalaryTo: '',
   setVacancySalaryTo: () => {},
+  //
+  isTask: false,
+  isVacancy: false,
+  isService: false,
+  setIsTask: () => {},
+  setIsVacancy: () => {},
+  setIsService: () => {},
 });
 
 const AppContextProvider = ({children}: IAppContextProvider) => {
@@ -42,6 +55,9 @@ const AppContextProvider = ({children}: IAppContextProvider) => {
   const [vacancyAddress, setVacancyAddress] = useState('');
   const [vacancySalaryFrom, setVacancySalaryFrom] = useState('');
   const [vacancySalaryTo, setVacancySalaryTo] = useState('');
+  const [isTask, setIsTask] = useState<boolean>(false);
+  const [isVacancy, setIsVacancy] = useState<boolean>(false);
+  const [isService, setIsService] = useState<boolean>(false);
   return (
     <AppContext.Provider
       value={{
@@ -57,6 +73,12 @@ const AppContextProvider = ({children}: IAppContextProvider) => {
         setVacancySalaryFrom,
         vacancySalaryTo,
         setVacancySalaryTo,
+        isTask,
+        setIsTask,
+        isVacancy,
+        setIsVacancy,
+        isService,
+        setIsService,
       }}>
       {children}
     </AppContext.Provider>
