@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 //
 import {FONTS, SIZES} from '../../theme/theme';
 import Input from '../Input/Input';
@@ -8,13 +8,19 @@ interface IAuthWrapper {
   label: string;
   placeholder: string;
   margin?: number;
+  setState?: Dispatch<SetStateAction<string>>;
 }
 
-const AuthWrapper = ({label, placeholder, margin = 0}: IAuthWrapper) => {
+const AuthWrapper = ({
+  label,
+  placeholder,
+  margin = 0,
+  setState,
+}: IAuthWrapper) => {
   return (
     <View style={{marginTop: margin}}>
       <Text style={styles.label}>{label}</Text>
-      <Input placeholder={placeholder} />
+      <Input placeholder={placeholder} setState={setState} />
     </View>
   );
 };

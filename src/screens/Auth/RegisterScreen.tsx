@@ -6,15 +6,54 @@ import {
   Text,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 //
 import HeaderLogo from '../../components/HeaderLogo/HeaderLogo';
 import {COLORS, FONTS, SIZES} from '../../theme/theme';
 import AuthWrapper from '../../components/AuthWrapper/AuthWrapper';
 import Button from '../../components/Button/Button';
 import ScreenTitle from '../../components/ScreenTitle/ScreenTitle';
+import {registrationUser} from '../../redux/actions/registrationAction';
+import {useAppDispatch} from '../../redux/type';
 
 const RegisterScreen = () => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirm, setConfirm] = useState<string>('');
+  const emailValidation = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+  //
+  const dispatch = useAppDispatch();
+
+  const handleNewUserRegistration = () => {
+    const user = {
+      email: email.toLowerCase(),
+      password,
+    };
+    //email validation check
+    if (emailValidation.test(email) === false) {
+      console.warn('not');
+      return;
+    }
+    //fill all fields check
+    if (
+      confirm.trim() === '' ||
+      password.trim() === '' ||
+      email.trim() === ''
+    ) {
+      console.warn('fill the fields');
+      return;
+    }
+
+    //confirm password check
+    if (confirm !== password) {
+      console.warn('cont confirmed');
+      return;
+    }
+
+    //registration action
+    dispatch(registrationUser(user));
+  };
+
   return (
     <SafeAreaView style={styles.safe}>
       <HeaderLogo isVisible />
@@ -22,13 +61,19 @@ const RegisterScreen = () => {
       <ScrollView style={styles.scroll}>
         <ScreenTitle>Регистрация</ScreenTitle>
         <View style={styles.wrapper}>
-          <AuthWrapper label="E-mail" placeholder='"example@outlook.com"' />
           <AuthWrapper
+            setState={setEmail}
+            label="E-mail"
+            placeholder='"example@outlook.com"'
+          />
+          <AuthWrapper
+            setState={setPassword}
             label="Пароль"
             placeholder='"введите ваш пароль"'
             margin={20}
           />
           <AuthWrapper
+            setState={setConfirm}
             label="Повторите пароль еще раз"
             placeholder='"еще раз пароль"'
             margin={20}
@@ -55,7 +100,11 @@ const RegisterScreen = () => {
               условиями. Если вы отказываетесь от обработки персональных данных,
               не нажимайте кнопку "Зарегестрироваться".
             </Text>
-            <Button style={styles.marginBtn}> Зарегестрироваться</Button>
+            <Button
+              onPress={handleNewUserRegistration}
+              style={styles.marginBtn}>
+              Зарегестрироваться
+            </Button>
           </View>
         </View>
       </ScrollView>
