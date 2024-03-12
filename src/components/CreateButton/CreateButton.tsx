@@ -19,11 +19,29 @@ const CreateButton = () => {
     setShowCreateBtn(prev => !prev);
   };
   //create new Vacancy change screen
-  const handleCreateVacancyScreen = () => {
+  const handleCreateVacancy = () => {
     navigation.navigate('Create');
     setShowCreateBtn(false);
     setIsVacancy(true);
     setIsTask(false);
+    setIsService(false);
+  };
+
+  //create new Task change screen
+  const handleCreateService = () => {
+    navigation.navigate('Create');
+    setShowCreateBtn(false);
+    setIsVacancy(false);
+    setIsTask(false);
+    setIsService(true);
+  };
+
+  //create new Task change screen
+  const handleCreateTask = () => {
+    navigation.navigate('Create');
+    setShowCreateBtn(false);
+    setIsVacancy(false);
+    setIsTask(true);
     setIsService(false);
   };
 
@@ -39,15 +57,17 @@ const CreateButton = () => {
         <View style={styles.btnWrapper}>
           <TouchableOpacity
             style={styles.btnPopup}
-            onPress={handleCreateVacancyScreen}>
+            onPress={handleCreateVacancy}>
             <CreateVacancy />
             <Text style={styles.text}>Создать вакансию</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btnPopup}>
+          <TouchableOpacity
+            onPress={handleCreateService}
+            style={styles.btnPopup}>
             <GroupIcon />
             <Text style={styles.text}>Создать услугу</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btnPopup}>
+          <TouchableOpacity onPress={handleCreateTask} style={styles.btnPopup}>
             <CreateTask />
             <Text style={styles.text}>Создать задачу</Text>
           </TouchableOpacity>

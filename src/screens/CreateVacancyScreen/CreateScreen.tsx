@@ -19,7 +19,7 @@ import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import CheckIcon from '../../assets/icons/CheckIcon';
 import {AppContext} from '../../context/context';
-import {condition, mode} from '../../data/workCategory';
+import {condition, mode, paymentMethod} from '../../data/workCategory';
 
 const CreateVacancyScreen = ({navigation}: any) => {
   //vacancy info saved in context store to save in DB
@@ -40,11 +40,11 @@ const CreateVacancyScreen = ({navigation}: any) => {
     isService,
   } = useContext(AppContext);
 
-  console.log(isVacancy);
-
   //Text input not component
   const [vacancyDescription, setVacancyDescription] = useState('');
   const [vacancySkills, setVacancySkills] = useState('');
+  const [remote, setRemote] = useState(false);
+  const [payment, setPayment] = useState('');
 
   const [employmentType, setEmploymentType] = useState('');
   const [employmentTypeIndex, setEmploymentTypeIndex] = useState<number | null>(
@@ -70,10 +70,22 @@ const CreateVacancyScreen = ({navigation}: any) => {
   const handleVacancyCategory = () => {
     navigation.navigate('Category');
   };
-  //Publish Vacancy
 
-  const handleSaveVacancy = () => {
-    const newVacancy = {
+  //is task can be done Remote
+  const handleRemote = () => {
+    setRemote(prev => !prev);
+  };
+
+  //set handle payment method
+
+  const handlePaymentMethod = (p: any, index: number) => {
+    setPayment(p);
+    setEmploymentTypeIndex(index);
+  };
+
+  //Publish Vacancy
+  const handleSave = () => {
+    const newCreated = {
       vacancyName,
       vacancyCategory,
       vacancyAddress,
@@ -86,8 +98,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
       workMode,
       userId: 0,
     };
-
-    console.log(newVacancy);
+    console.log(newCreated);
   };
 
   return (
@@ -95,12 +106,22 @@ const CreateVacancyScreen = ({navigation}: any) => {
       <HeaderLogo isVisible />
       <ScrollView style={styles.scroll}>
         <View style={{paddingBottom: 80}}>
-          <ScreenTitle>Создание вакансии</ScreenTitle>
+          <ScreenTitle>
+            Создание
+            {isVacancy && ' вакансии'} {isService && 'услуги'}{' '}
+            {isTask && 'задачи'}
+          </ScreenTitle>
           {/* Main info */}
           <View style={styles.mainInfoContainer}>
             <Text style={styles.main}>Основная информация</Text>
             <GroupInput
-              label="Название вакансии"
+              label={
+                isVacancy
+                  ? 'Название вакансии'
+                  : isService
+                  ? 'Название услуги'
+                  : 'Название задачи'
+              }
               placeholder="Введите название"
               setState={setVacancyName}
             />
@@ -113,7 +134,10 @@ const CreateVacancyScreen = ({navigation}: any) => {
             />
           </View>
           <View style={styles.mainInfoContainer}>
-            <Text style={styles.main}>Место выполнения услуги</Text>
+            <Text style={styles.main}>
+              Место выполнения {isVacancy && ' вакансии'}{' '}
+              {isService && 'услуги'} {isTask && 'задачи'}
+            </Text>
             <GroupInput
               label="Вакансия в городе"
               placeholder="Введите название"
@@ -137,98 +161,109 @@ const CreateVacancyScreen = ({navigation}: any) => {
             />
           </View>
           {/*  */}
-          <View style={styles.mainInfoContainer}>
-            <Text style={styles.blockTitle}>Предлагаемая зарплата</Text>
-            <Input
-              setState={setVacancySalaryFrom}
-              placeholder="от"
-              style={{marginTop: 10}}
-            />
-            <Input
-              setState={setVacancySalaryTo}
-              placeholder="до"
-              style={{marginTop: 5}}
-            />
-            <Text style={[styles.blockTitle, {marginTop: 10}]}>
-              Ключевые навыки
-            </Text>
-            <View
-              style={[
-                styles.textArea,
-                {height: 150, backgroundColor: COLORS.white},
-              ]}>
-              <TextInput
-                style={styles.input}
-                maxLength={120}
-                multiline={true}
-                placeholder={Platform.OS === 'ios' ? 'Введите навыки' : ''}
-                onChangeText={setVacancySkills}
+          {isVacancy && (
+            <View style={styles.mainInfoContainer}>
+              <Text style={styles.blockTitle}>Предлагаемая зарплата</Text>
+              <Input
+                setState={setVacancySalaryFrom}
+                placeholder="от"
+                style={{marginTop: 10}}
               />
-            </View>
-            <Text style={styles.condition}>
-              Укажите главные качества или навыки владения программами, которыми
-              долже обладать кандидат
-            </Text>
+              <Input
+                setState={setVacancySalaryTo}
+                placeholder="до"
+                style={{marginTop: 5}}
+              />
+              <Text style={[styles.blockTitle, {marginTop: 10}]}>
+                Ключевые навыки
+              </Text>
+              <View
+                style={[
+                  styles.textArea,
+                  {height: 150, backgroundColor: COLORS.white},
+                ]}>
+                <TextInput
+                  style={styles.input}
+                  maxLength={120}
+                  multiline={true}
+                  placeholder={Platform.OS === 'ios' ? 'Введите навыки' : ''}
+                  onChangeText={setVacancySkills}
+                />
+              </View>
+              <Text style={styles.condition}>
+                Укажите главные качества или навыки владения программами,
+                которыми долже обладать кандидат
+              </Text>
 
-            <Text style={[styles.blockTitle, {marginTop: 10}]}>
-              Кратоке описание компании
-            </Text>
-            <View
-              style={[
-                styles.textArea,
-                {height: 150, backgroundColor: COLORS.white},
-              ]}>
-              <TextInput
-                style={styles.input}
-                maxLength={120}
-                multiline={true}
-                placeholder={Platform.OS === 'ios' ? 'Введите описание' : ''}
-              />
+              <Text style={[styles.blockTitle, {marginTop: 10}]}>
+                Кратоке описание компании
+              </Text>
+              <View
+                style={[
+                  styles.textArea,
+                  {height: 150, backgroundColor: COLORS.white},
+                ]}>
+                <TextInput
+                  style={styles.input}
+                  maxLength={120}
+                  multiline={true}
+                  placeholder={Platform.OS === 'ios' ? 'Введите описание' : ''}
+                />
+              </View>
+              <Text style={styles.condition}>
+                Используйте только при публикации анонимных вакансий
+              </Text>
             </View>
-            <Text style={styles.condition}>
-              Используйте только при публикации анонимных вакансий
-            </Text>
-          </View>
+          )}
+
           {/* employmentType */}
-          <View style={styles.mainInfoContainer}>
-            <Text style={[styles.main, {marginBottom: 20}]}>Тип занятости</Text>
-            {condition.map((item, index) => {
-              return (
-                <TouchableOpacity
-                  onPress={() => handleEmploymentType(item, index)}
-                  key={index}
-                  style={styles.checkBoxContainer}>
-                  <View style={styles.ratio}>
-                    {employmentTypeIndex === index ? (
-                      <View style={styles.checked} />
-                    ) : null}
-                  </View>
-                  <Text>{item}</Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
+          {isVacancy && (
+            <View style={styles.mainInfoContainer}>
+              <Text style={[styles.main, {marginBottom: 20}]}>
+                Тип занятости
+              </Text>
+              {condition.map((item, index) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => handleEmploymentType(item, index)}
+                    key={index}
+                    style={styles.checkBoxContainer}>
+                    <View style={styles.ratio}>
+                      {employmentTypeIndex === index ? (
+                        <View style={styles.checked} />
+                      ) : null}
+                    </View>
+                    <Text>{item}</Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          )}
           {/* Work mode */}
-          <View style={styles.mainInfoContainer}>
-            <Text style={[styles.main, {marginBottom: 20}]}>Режим работы</Text>
-            {mode.map((item, index) => {
-              return (
-                <TouchableOpacity
-                  onPress={() => handleWorkMode(item, index)}
-                  key={index}
-                  style={styles.checkBoxContainer}>
-                  <View style={styles.checkBox}>
-                    {workModeIndex === index ? (
-                      <View style={styles.active}>
-                        <CheckIcon />
-                      </View>
-                    ) : null}
-                  </View>
-                  <Text>{item}</Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
+          {isVacancy && (
+            <View style={styles.mainInfoContainer}>
+              <Text style={[styles.main, {marginBottom: 20}]}>
+                Режим работы
+              </Text>
+              {mode.map((item, index) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => handleWorkMode(item, index)}
+                    key={index}
+                    style={styles.checkBoxContainer}>
+                    <View style={styles.checkBox}>
+                      {workModeIndex === index ? (
+                        <View style={styles.active}>
+                          <CheckIcon />
+                        </View>
+                      ) : null}
+                    </View>
+                    <Text>{item}</Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          )}
 
           {/* SERVICE */}
           {isService && (
@@ -269,8 +304,62 @@ const CreateVacancyScreen = ({navigation}: any) => {
               </View>
             </View>
           )}
+
+          {/* for TASK */}
+          {isTask && (
+            <>
+              <View style={styles.mainInfoContainer}>
+                <Text style={styles.main}>Завершить задание до</Text>
+                <View style={{marginTop: 16}}>
+                  <GroupInput
+                    label="Дата начала"
+                    placeholder="от"
+                    setState={setVacancyCity}
+                  />
+                  <GroupInput
+                    label="Дата окончания"
+                    placeholder="до"
+                    setState={setVacancyCity}
+                  />
+                </View>
+              </View>
+              <View style={styles.remoteContainer}>
+                <TouchableOpacity
+                  style={styles.checkBox}
+                  onPress={handleRemote}>
+                  {remote && (
+                    <View style={styles.active}>
+                      <CheckIcon />
+                    </View>
+                  )}
+                </TouchableOpacity>
+                <Text>Работать можно удаленно</Text>
+              </View>
+              {/* PAYMENT METHOD */}
+              <View style={styles.mainInfoContainer}>
+                <Text style={styles.main}>Способ оплаты</Text>
+                <View style={{marginTop: 10}}>
+                  {paymentMethod.map((item, index) => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() => handlePaymentMethod(item, index)}
+                        key={index}
+                        style={styles.checkBoxContainer}>
+                        <View style={styles.ratio}>
+                          {employmentTypeIndex === index ? (
+                            <View style={styles.checked} />
+                          ) : null}
+                        </View>
+                        <Text>{item}</Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              </View>
+            </>
+          )}
           <Button
-            onPress={handleSaveVacancy}
+            onPress={handleSave}
             style={{width: width / 2, alignSelf: 'center', marginTop: 16}}>
             Создать {isVacancy && 'вакансию'} {isTask && 'задачу'}{' '}
             {isService && 'услугу'}
@@ -368,5 +457,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.green,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  remoteContainer: {
+    flexDirection: 'row',
+    marginTop: 16,
   },
 });

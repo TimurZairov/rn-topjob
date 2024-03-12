@@ -1,9 +1,9 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {COLORS, FONTS, SIZES} from '../../theme/theme';
 
 interface IScreenTitle {
-  children: string;
+  children: ReactNode;
 }
 
 const ScreenTitle = ({children}: IScreenTitle) => {
