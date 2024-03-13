@@ -1,12 +1,18 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {registrationUser} from '../../actions/registrationAction';
-import {AxiosError} from 'axios';
 import {User} from '../../../types/type';
+import {checkTokenAction} from '../../actions/checkTokenAction';
 
-const initialState = {
-  user: null as User | unknown,
+interface AuthState {
+  user: User | null;
+  loading: boolean;
+  error: string | unknown;
+}
+
+const initialState: AuthState = {
+  user: null,
   loading: false,
-  error: null as AxiosError | unknown,
+  error: null,
 };
 
 const authSlice = createSlice({
@@ -22,7 +28,23 @@ const authSlice = createSlice({
       state.user = action.payload;
     });
     builder.addCase(registrationUser.rejected, (state, action) => {
-      state.error = action.payload;
+      state.loading = false;
+      state.error = action?.payload || 'Error';
+    });
+
+    //splash screen check token
+    builder.addCase(checkTokenAction.pending, state => {
+      state.loading = true;
+    });
+
+    builder.addCase(checkTokenAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.user = action.payload;
+    });
+
+    builder.addCase(checkTokenAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action?.payload || 'Error';
     });
   },
 });

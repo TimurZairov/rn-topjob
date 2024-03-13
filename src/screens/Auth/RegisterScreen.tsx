@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 //
 import HeaderLogo from '../../components/HeaderLogo/HeaderLogo';
 import {COLORS, FONTS, SIZES} from '../../theme/theme';
@@ -14,45 +14,59 @@ import AuthWrapper from '../../components/AuthWrapper/AuthWrapper';
 import Button from '../../components/Button/Button';
 import ScreenTitle from '../../components/ScreenTitle/ScreenTitle';
 import {registrationUser} from '../../redux/actions/registrationAction';
-import {useAppDispatch} from '../../redux/type';
+import {useAppDispatch, useAppSelector} from '../../redux/type';
+import Toast from 'react-native-toast-message';
+import {AxiosError} from 'axios';
+import CheckIcon from '../../assets/icons/CheckIcon';
+import {registration} from '../../helpers/registration';
+
+interface IState {
+  loading: boolean;
+  error: AxiosError | null | unknown;
+}
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirm, setConfirm] = useState<string>('');
-  const emailValidation = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+  const [checked, setChecked] = useState<boolean>(false);
   //
   const dispatch = useAppDispatch();
+  const {loading, error} = useAppSelector<IState>(state => state.user);
 
+  const handleApplyAgreement = () => {
+    setChecked(prev => !prev);
+  };
+
+  //validation all inputs
   const handleNewUserRegistration = () => {
+    if (loading) {
+      return;
+    }
     const user = {
       email: email.toLowerCase(),
       password,
     };
-    //email validation check
-    if (emailValidation.test(email) === false) {
-      console.warn('not');
-      return;
-    }
-    //fill all fields check
-    if (
-      confirm.trim() === '' ||
-      password.trim() === '' ||
-      email.trim() === ''
-    ) {
-      console.warn('fill the fields');
-      return;
-    }
+    //validation helpers
+    const checkFields = registration({email, password, confirm, checked});
 
-    //confirm password check
-    if (confirm !== password) {
-      console.warn('cont confirmed');
+    if (!checkFields) {
       return;
     }
 
     //registration action
     dispatch(registrationUser(user));
   };
+
+  useEffect(() => {
+    if (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Ошибка',
+        text2: `${error}`,
+      });
+    }
+  }, [error]);
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -81,8 +95,14 @@ const RegisterScreen = () => {
         </View>
         <View style={styles.wrapper}>
           <View style={styles.agreement}>
-            <Pressable>
-              <View style={styles.checkbox} />
+            <Pressable hitSlop={10} onPress={handleApplyAgreement}>
+              <View style={styles.checkbox}>
+                {checked && (
+                  <View style={styles.checkBoxActive}>
+                    <CheckIcon />
+                  </View>
+                )}
+              </View>
             </Pressable>
 
             <Text style={styles.textCheckbox}>
@@ -102,6 +122,7 @@ const RegisterScreen = () => {
             </Text>
             <Button
               onPress={handleNewUserRegistration}
+              loading={loading}
               style={styles.marginBtn}>
               Зарегестрироваться
             </Button>
@@ -137,6 +158,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.borderColor,
     marginRight: 10,
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  checkBoxActive: {
+    backgroundColor: COLORS.green,
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textCheckbox: {
     marginBottom: 8,

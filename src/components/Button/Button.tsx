@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   StyleSheet,
   Text,
   TextStyle,
@@ -13,12 +14,17 @@ interface IButton {
   style?: ViewStyle;
   textStyle?: TextStyle;
   onPress?: () => void;
+  loading?: boolean;
 }
 
-const Button = ({children, style, textStyle, onPress}: IButton) => {
+const Button = ({children, style, textStyle, onPress, loading}: IButton) => {
   return (
     <TouchableOpacity style={[styles.btn, style]} onPress={onPress}>
-      <Text style={[styles.btnText, textStyle]}>{children}</Text>
+      {loading ? (
+        <ActivityIndicator color={COLORS.white} size={16} />
+      ) : (
+        <Text style={[styles.btnText, textStyle]}>{children}</Text>
+      )}
     </TouchableOpacity>
   );
 };

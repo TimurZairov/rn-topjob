@@ -2,16 +2,13 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import axios, {AxiosError} from 'axios';
 import {BASE_URL} from '../../config/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {User} from '../../types/type';
 
-interface IUserData {
-  email: string;
-  password: string;
-}
 //userRegistration
 export const registrationUser = createAsyncThunk(
   'register/user',
 
-  async (userData: IUserData, {rejectWithValue}) => {
+  async (userData: Pick<User, 'email' | 'password'>, {rejectWithValue}) => {
     try {
       let result = await axios.post(`${BASE_URL}/auth/register`, userData);
       if (!result) {
@@ -24,7 +21,7 @@ export const registrationUser = createAsyncThunk(
         //return error with axios status
         const axiosError = error as AxiosError;
         if (axiosError.response && axiosError.response.status === 400) {
-          return rejectWithValue({errorMessage: 'Пользователь уже существует'});
+          return rejectWithValue('Пользователь уже существует');
         }
       }
       throw error;

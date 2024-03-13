@@ -1,6 +1,7 @@
 import React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
 import {NavigationContainer} from '@react-navigation/native';
 import StackNavigation from './src/navigation/StackNavigation';
 import AppContextProvider from './src/context/context';
@@ -14,6 +15,7 @@ const App = () => {
         <NavigationContainer>
           <SafeAreaProvider>
             <StackNavigation />
+            <Toast />
           </SafeAreaProvider>
         </NavigationContainer>
       </AppContextProvider>
