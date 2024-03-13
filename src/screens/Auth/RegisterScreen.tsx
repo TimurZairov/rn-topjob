@@ -19,10 +19,14 @@ import Toast from 'react-native-toast-message';
 import {AxiosError} from 'axios';
 import CheckIcon from '../../assets/icons/CheckIcon';
 import {registration} from '../../helpers/registration';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationParamsProps} from '../../navigation/types/types';
+import {User} from '../../types/type';
 
 interface IState {
   loading: boolean;
   error: AxiosError | null | unknown;
+  user: User | null;
 }
 
 const RegisterScreen = () => {
@@ -32,18 +36,19 @@ const RegisterScreen = () => {
   const [checked, setChecked] = useState<boolean>(false);
   //
   const dispatch = useAppDispatch();
-  const {loading, error} = useAppSelector<IState>(state => state.user);
+  const navigation = useNavigation<StackNavigationParamsProps>();
+  const {loading, error, user} = useAppSelector<IState>(state => state.user);
 
   const handleApplyAgreement = () => {
     setChecked(prev => !prev);
   };
 
   //validation all inputs
-  const handleNewUserRegistration = () => {
+  const handleNewUserRegistration = async () => {
     if (loading) {
       return;
     }
-    const user = {
+    const userData = {
       email: email.toLowerCase(),
       password,
     };
@@ -55,7 +60,10 @@ const RegisterScreen = () => {
     }
 
     //registration action
-    dispatch(registrationUser(user));
+    await dispatch(registrationUser(userData));
+    if (user) {
+      navigation.replace('Tab', {screen: 'Profile'});
+    }
   };
 
   useEffect(() => {

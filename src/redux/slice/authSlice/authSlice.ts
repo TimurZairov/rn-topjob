@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import {registrationUser} from '../../actions/registrationAction';
 import {User} from '../../../types/type';
 import {checkTokenAction} from '../../actions/checkTokenAction';
+import {loginAction} from '../../actions/loginAction';
 
 interface AuthState {
   user: User | null;
@@ -45,6 +46,19 @@ const authSlice = createSlice({
     builder.addCase(checkTokenAction.rejected, (state, action) => {
       state.loading = false;
       state.error = action?.payload || 'Error';
+    });
+
+    //login user
+    builder.addCase(loginAction.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(loginAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.user = action.payload;
+    });
+    builder.addCase(loginAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
     });
   },
 });

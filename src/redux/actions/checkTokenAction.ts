@@ -6,7 +6,7 @@ import {BASE_URL} from '../../config/config';
 import {User} from '../../types/type';
 
 export const checkTokenAction = createAsyncThunk(
-  'check/token',
+  'user/token',
   async (_, {rejectWithValue}) => {
     try {
       const token = await AsyncStorage.getItem('@token');
