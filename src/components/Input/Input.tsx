@@ -28,6 +28,7 @@ const Input = ({placeholder = '', style, setState, state}: ITextInput) => {
         placeholderTextColor={COLORS.darkGrey}
         onChangeText={setInputState}
         value={inputState}
+        autoCapitalize="none"
       />
     </View>
   );

@@ -3,8 +3,11 @@ import React from 'react';
 //
 import {COLORS, width} from '../../theme/theme';
 import Button from '../../components/Button/Button';
+import {useAppSelector} from '../../redux/type';
+import Profile from '../../components/Profile/Profile';
 
 const ProfileScreen = ({navigation}: any) => {
+  const {user} = useAppSelector(state => state.user);
   //if user is not sign in or sign up
   const handleAuthScreen = () => {
     navigation.navigate('Login');
@@ -12,18 +15,22 @@ const ProfileScreen = ({navigation}: any) => {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <View style={styles.container}>
-        <Image
-          style={styles.logo}
-          source={require('../../assets/images/logo.png')}
-        />
-        <Text style={styles.enter}>
-          Войдите под своим логином и паролем или зарегистрируйтесь
-        </Text>
-        <Button onPress={handleAuthScreen} style={styles.btn}>
-          Войти
-        </Button>
-      </View>
+      {!user ? (
+        <View style={styles.container}>
+          <Image
+            style={styles.logo}
+            source={require('../../assets/images/logo.png')}
+          />
+          <Text style={styles.enter}>
+            Войдите под своим логином и паролем или зарегистрируйтесь
+          </Text>
+          <Button onPress={handleAuthScreen} style={styles.btn}>
+            Войти
+          </Button>
+        </View>
+      ) : (
+        <Profile />
+      )}
     </SafeAreaView>
   );
 };

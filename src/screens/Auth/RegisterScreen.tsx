@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 //
 import HeaderLogo from '../../components/HeaderLogo/HeaderLogo';
 import {COLORS, FONTS, SIZES} from '../../theme/theme';
@@ -15,7 +15,7 @@ import Button from '../../components/Button/Button';
 import ScreenTitle from '../../components/ScreenTitle/ScreenTitle';
 import {registrationUser} from '../../redux/actions/registrationAction';
 import {useAppDispatch, useAppSelector} from '../../redux/type';
-import Toast from 'react-native-toast-message';
+
 import {AxiosError} from 'axios';
 import CheckIcon from '../../assets/icons/CheckIcon';
 import {registration} from '../../helpers/registration';
@@ -37,7 +37,7 @@ const RegisterScreen = () => {
   //
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationParamsProps>();
-  const {loading, error, user} = useAppSelector<IState>(state => state.user);
+  const {loading, user} = useAppSelector<IState>(state => state.user);
 
   const handleApplyAgreement = () => {
     setChecked(prev => !prev);
@@ -65,16 +65,6 @@ const RegisterScreen = () => {
       navigation.replace('Tab', {screen: 'Profile'});
     }
   };
-
-  useEffect(() => {
-    if (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Ошибка',
-        text2: `${error}`,
-      });
-    }
-  }, [error]);
 
   return (
     <SafeAreaView style={styles.safe}>
