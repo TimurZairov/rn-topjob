@@ -40,12 +40,13 @@ const LoginScreen = ({navigation}: ILoginScreen) => {
     }
     //login user
     await dispatch(loginAction(userData));
-    if (user) {
-      navigation.goBack();
-      setEmail('');
-      setPassword('');
-    }
+
+    navigation.goBack();
+    setEmail('');
+    setPassword('');
   };
+
+  console.log(user);
 
   return (
     <SafeAreaView style={styles.safe}>

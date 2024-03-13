@@ -1,25 +1,25 @@
 import {Image, StyleSheet, View} from 'react-native';
 import React, {useCallback, useEffect} from 'react';
 import {COLORS} from '../../theme/theme';
-import {useAppDispatch, useAppSelector} from '../../redux/type';
+import {useAppDispatch} from '../../redux/type';
 import {checkTokenAction} from '../../redux/actions/checkTokenAction';
 
 const SplashScreen = ({navigation}: any) => {
   const dispatch = useAppDispatch();
-  const {loading} = useAppSelector(state => state.user);
 
   //if token not expired check user
   const isAuth = useCallback(async () => {
     dispatch(checkTokenAction());
-  }, [dispatch]);
+    setTimeout(() => {
+      navigation.replace('Tab');
+    }, 3000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   //check token
   useEffect(() => {
     isAuth();
-    if (!loading) {
-      navigation.replace('Tab');
-    }
-  }, [isAuth, navigation, loading]);
+  }, [isAuth]);
 
   return (
     <View style={styles.splash}>

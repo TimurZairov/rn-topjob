@@ -1,6 +1,5 @@
 import {StyleSheet, View} from 'react-native';
 import React, {ReactNode} from 'react';
-import {COLORS} from '../../theme/theme';
 
 interface IContainerBlock {
   children: ReactNode;
@@ -16,5 +15,6 @@ const styles = StyleSheet.create({
   block: {
     backgroundColor: '#FBFBFD',
     padding: 10,
+    height: 180,
   },
 });

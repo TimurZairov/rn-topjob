@@ -12,4 +12,5 @@ export type User = {
   password: string;
   updatedAt: string;
   userVacancies: string[];
+  reviews: number;
 };

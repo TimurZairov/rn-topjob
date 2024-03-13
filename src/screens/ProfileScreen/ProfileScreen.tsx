@@ -29,7 +29,7 @@ const ProfileScreen = ({navigation}: any) => {
           </Button>
         </View>
       ) : (
-        <Profile />
+        <Profile user={user} />
       )}
     </SafeAreaView>
   );

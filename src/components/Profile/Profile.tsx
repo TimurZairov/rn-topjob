@@ -7,12 +7,33 @@ import ContainerBlock from '../ContainerBlock/ContainerBlock';
 import DefaultAvatar from '../DefaultAvatar/DefaultAvatar';
 import LikeIcon from '../../assets/icons/LikeIcon';
 import DislikeIcon from '../../assets/icons/DislikeIcon';
+import Button from '../Button/Button';
+import {User} from '../../types/type';
 
-const Profile = () => {
+interface IProfile {
+  user: User;
+}
+
+const Profile = ({user}: IProfile) => {
+  const {dislikes, likes, reviews, createdAt} = user;
+  //transform date to format
+  const handleDate = () => {
+    if (user) {
+      const registerDay = new Date(createdAt);
+      //date UTC
+      const day = registerDay.getUTCDate(); // get day
+      const month = registerDay.getUTCMonth(); // get month
+      const year = registerDay.getUTCFullYear(); // get year
+
+      return `${day < 10 ? '0' + day : day}/${
+        month < 10 ? '0' + month : month
+      }/${year}`;
+    }
+  };
+
   return (
     <>
       <HeaderLogo />
-
       <ScrollView style={{flex: 1}}>
         <View style={styles.profileContainer}>
           <Title style={styles.titleContainer} textStyle={styles.title}>
@@ -30,16 +51,16 @@ const Profile = () => {
             <View style={styles.reviewsContainer}>
               <View style={styles.reviews}>
                 <Text style={styles.reviewTitle}>отзывы</Text>
-                <Text style={styles.review}>284</Text>
+                <Text style={styles.review}>{reviews}</Text>
               </View>
               <View style={styles.likesContainer}>
                 <View style={styles.like}>
                   <LikeIcon />
-                  <Text style={styles.likeNum}>285</Text>
+                  <Text style={styles.likeNum}>{likes}</Text>
                 </View>
                 <View style={styles.like}>
                   <DislikeIcon />
-                  <Text style={styles.likeNum}>285</Text>
+                  <Text style={styles.likeNum}>{dislikes}</Text>
                 </View>
               </View>
             </View>
@@ -58,8 +79,8 @@ const Profile = () => {
             </View>
             {/* Date */}
             <View>
-              <Text style={styles.userDatTitle}>Дата рождения:</Text>
-              <Text style={styles.userDataInfo}>22/05/1998</Text>
+              <Text style={styles.userDatTitle}>Дата регистрации:</Text>
+              <Text style={styles.userDataInfo}>{handleDate()}</Text>
             </View>
             {/* Category */}
             <View>
@@ -86,6 +107,7 @@ const Profile = () => {
               </Text>
             </View>
           </View>
+          <Button>Изменить профиль</Button>
         </View>
       </ScrollView>
     </>
@@ -109,11 +131,13 @@ const styles = StyleSheet.create({
   userData: {
     flexDirection: 'row',
     alignItems: 'center',
+    height: 90,
   },
   avatar: {
     backgroundColor: COLORS.greyMedium,
     alignSelf: 'baseline',
     padding: 27,
+    aspectRatio: 1,
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
@@ -131,7 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.grey,
     borderRadius: 4,
     overflow: 'hidden',
-    marginTop: 16,
+    marginTop: 10,
   },
   reviews: {
     backgroundColor: COLORS.mainOrange,
