@@ -1,6 +1,10 @@
 import {NavigatorScreenParams} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
+export type DrawerNavigationParams = {
+  Stack: NavigatorScreenParams<StackNavigationParams>;
+};
+
 export type StackNavigationParams = {
   Splash: undefined;
   Login: undefined;
