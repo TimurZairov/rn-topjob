@@ -16,18 +16,19 @@ export type User = {
 };
 
 export type Vacancy = {
-  __v: number;
+  __v?: number;
   _id: string;
-  category: string[];
+  category: string;
   companyName: string;
   createdAt: string;
   description: number;
   img: string;
   location: string;
-  name: string[];
-  salary: number;
+  name: string;
+  salaryFrom: number;
+  salaryTo: number;
   updatedAt: string;
-  workTime: string[];
+  workTime: string;
   views: number;
 };
 

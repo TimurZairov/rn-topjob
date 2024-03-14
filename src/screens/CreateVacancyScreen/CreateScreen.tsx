@@ -20,8 +20,14 @@ import Button from '../../components/Button/Button';
 import CheckIcon from '../../assets/icons/CheckIcon';
 import {AppContext} from '../../context/context';
 import {condition, mode, paymentMethod} from '../../data/workCategory';
+import {useAppDispatch, useAppSelector} from '../../redux/type';
+import {vacancyCheckValidation} from '../../helpers/vacancy';
+import {createVacancy} from '../../redux/actions/vacanciesAction';
+import Toast from 'react-native-toast-message';
 
 const CreateVacancyScreen = ({navigation}: any) => {
+  //store
+  const {user} = useAppSelector(state => state.user);
   //vacancy info saved in context store to save in DB
   const {
     vacancyName,
@@ -39,6 +45,8 @@ const CreateVacancyScreen = ({navigation}: any) => {
     isTask,
     isService,
   } = useContext(AppContext);
+
+  const dispatch = useAppDispatch();
 
   //Text input not component
   const [vacancyDescription, setVacancyDescription] = useState('');
@@ -84,21 +92,34 @@ const CreateVacancyScreen = ({navigation}: any) => {
   };
 
   //Publish Vacancy
-  const handleSave = () => {
+  const handleSave = async () => {
     const newCreated = {
-      vacancyName,
-      vacancyCategory,
-      vacancyAddress,
-      vacancyCity,
-      vacancySalaryFrom,
-      vacancySalaryTo,
-      vacancySkills,
-      vacancyDescription,
+      name: vacancyName,
+      category: vacancyCategory,
+      location: vacancyAddress,
+      city: vacancyCity,
+      salaryFrom: vacancySalaryFrom,
+      salaryTo: vacancySalaryTo,
+      description: vacancyDescription,
       employmentType,
-      workMode,
-      userId: 0,
+      workTime: workMode,
+      userId: user?._id,
     };
-    console.log(newCreated);
+    const checked = vacancyCheckValidation(newCreated);
+
+    if (!checked) {
+      return;
+    }
+    if (!user) {
+      console.log(user);
+      Toast.show({
+        type: 'info',
+        text1: 'Войдите или пройдите регистарцию',
+      });
+      return;
+    }
+    await dispatch(createVacancy(newCreated));
+    navigation.goBack();
   };
 
   return (
