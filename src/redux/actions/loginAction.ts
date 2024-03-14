@@ -7,7 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const loginAction = createAsyncThunk(
   'user/login',
   async (userData: Pick<User, 'email' | 'password'>, {rejectWithValue}) => {
-    console.log(userData);
     try {
       const result = await axios.post(`${BASE_URL}/auth/login`, userData);
       if (!result) {

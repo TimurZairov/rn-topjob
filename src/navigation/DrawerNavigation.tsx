@@ -3,8 +3,9 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import StackNavigation from './StackNavigation';
 import DrawerScreen from '../screens/DrawerScreen/DrawerScreen';
 import {COLORS} from '../theme/theme';
+import {DrawerNavigationParams} from './types/types';
 
-const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator<DrawerNavigationParams>();
 
 const DrawerNavigation = () => {
   return (

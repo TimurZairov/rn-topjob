@@ -3,19 +3,42 @@ import React from 'react';
 import {COLORS, FONTS, SIZES} from '../../theme/theme';
 import CalendarIcon from '../../assets/icons/CalendarIcon';
 import ViewIcon from '../../assets/icons/ViewIcon';
+import {Vacancy} from '../../types/type';
 
-const Card = () => {
+interface ICard {
+  vacancy: Vacancy;
+}
+
+const Card = ({vacancy}: ICard) => {
+  const {salary, companyName, createdAt, views, description, location} =
+    vacancy;
+
+  //formate date
+  const formateDate = () => {
+    if (createdAt) {
+      const created = new Date(createdAt);
+
+      const day = created.getUTCDate(); // get day
+      const month = created.getUTCMonth(); // get month
+      const year = created.getUTCFullYear(); //year
+
+      return `${day < 10 ? '0' + day : day}.${
+        month < 10 ? '0' + month : month
+      }.${year}`;
+    }
+  };
+
   return (
     <View style={styles.card}>
       {/* CardHeader */}
       <View style={styles.cardHeader}>
-        <Text style={styles.name}>CompanyName</Text>
+        <Text style={styles.name}>{companyName}</Text>
         <View style={styles.data}>
           <CalendarIcon color={COLORS.darkGrey} />
-          <Text style={styles.dataText}>20.12.2024</Text>
+          <Text style={styles.dataText}>{formateDate()}</Text>
           <Text style={{marginHorizontal: 6, color: COLORS.darkGrey}}>|</Text>
           <ViewIcon color={COLORS.darkGrey} />
-          <Text style={styles.dataText}>559</Text>
+          <Text style={styles.dataText}>{views}</Text>
         </View>
       </View>
       {/* CARD MAIN */}
@@ -29,17 +52,14 @@ const Card = () => {
         />
         <View style={styles.cardName}>
           <Text style={styles.vacancyName}>Графический дизайнер</Text>
-          <Text style={styles.salary}>от 6-9 млн сум</Text>
+          <Text style={styles.salary}>{salary} сум</Text>
         </View>
       </View>
       {/* CARD DESCRIPTION */}
       <View style={styles.desc}>
-        <Text style={styles.descText}>
-          Описание: Здравствуйте я арт-директор Рек. аг. Мандарин нам требуются
-          дизайнеры аг. Мандарин нам требуются дизайнеры нам требуются арт...
-        </Text>
+        <Text style={styles.descText}>{description}</Text>
       </View>
-      <Text style={styles.descText}>Ташкент - Шайхонтохурский район</Text>
+      <Text style={styles.descText}>{location}</Text>
     </View>
   );
 };

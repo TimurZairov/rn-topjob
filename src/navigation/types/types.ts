@@ -1,8 +1,9 @@
+// import {DrawerNavigationProp} from '@react-navigation/drawer';
 import {NavigatorScreenParams} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export type DrawerNavigationParams = {
-  Stack: NavigatorScreenParams<StackNavigationParams>;
+  Stack: StackNavigationParams;
 };
 
 export type StackNavigationParams = {
