@@ -62,7 +62,7 @@ const RegisterScreen = () => {
     //registration action
     await dispatch(registrationUser(userData));
     if (user) {
-      navigation.replace('Tab', {screen: 'Profile'});
+      navigation.replace('Fill');
     }
   };
 

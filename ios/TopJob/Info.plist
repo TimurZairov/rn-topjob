@@ -33,6 +33,13 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string/>
+
+	<!-- Gallery -->
+	<key>NSCameraUsageDescription</key>
+	<string>Для изменения аватарки профиля необходимо дать доступ к вашей камере. Пожалуйста, разрешите доступ к камере.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Для изменения аватарки профиля из галереи необходимо дать доступ к вашим медиа-файлам. Пожалуйста, разрешите доступ к галерее.</string>
+
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

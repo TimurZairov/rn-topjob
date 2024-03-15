@@ -31,7 +31,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
   //vacancy info saved in context store to save in DB
   const {
     vacancyName,
-    vacancyCategory,
+    category,
     setVacancyName,
     vacancyCity,
     setVacancyCity,
@@ -95,7 +95,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
   const handleSave = async () => {
     const newCreated = {
       name: vacancyName,
-      category: vacancyCategory,
+      category: category,
       location: vacancyAddress,
       city: vacancyCity,
       salaryFrom: vacancySalaryFrom,
@@ -151,7 +151,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
               placeholder="Выберите категорию"
               category
               handleVacancyCategory={handleVacancyCategory}
-              vacancyCategory={vacancyCategory}
+              vacancyCategory={category}
             />
           </View>
           <View style={styles.mainInfoContainer}>

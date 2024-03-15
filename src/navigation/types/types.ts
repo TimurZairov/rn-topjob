@@ -10,6 +10,7 @@ export type StackNavigationParams = {
   Splash: undefined;
   Login: undefined;
   Register: undefined;
+  Fill: undefined;
   Create: undefined;
   Map: undefined;
   Category: undefined;

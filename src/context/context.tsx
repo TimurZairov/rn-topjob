@@ -2,8 +2,8 @@ import {ReactNode, createContext, useState} from 'react';
 import React from 'react';
 
 interface AppContextProps {
-  vacancyCategory: string;
-  setVacancyCategory: React.Dispatch<React.SetStateAction<string>>;
+  //
+
   vacancyName: string;
   setVacancyName: React.Dispatch<React.SetStateAction<string>>;
   vacancyCity: string;
@@ -14,12 +14,27 @@ interface AppContextProps {
   setVacancySalaryFrom: React.Dispatch<React.SetStateAction<string>>;
   vacancySalaryTo: string;
   setVacancySalaryTo: React.Dispatch<React.SetStateAction<string>>;
+  //create props
   isTask: boolean;
   isVacancy: boolean;
   isService: boolean;
   setIsTask: React.Dispatch<React.SetStateAction<boolean>>;
   setIsVacancy: React.Dispatch<React.SetStateAction<boolean>>;
   setIsService: React.Dispatch<React.SetStateAction<boolean>>;
+
+  //User
+  name: string;
+  lastName: string;
+  phoneNumber: string;
+  city: string;
+  about: string;
+  category: string;
+  setName: React.Dispatch<React.SetStateAction<string>>;
+  setLastName: React.Dispatch<React.SetStateAction<string>>;
+  setPhoneNumber: React.Dispatch<React.SetStateAction<string>>;
+  setCity: React.Dispatch<React.SetStateAction<string>>;
+  setAbout: React.Dispatch<React.SetStateAction<string>>;
+  setCategory: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface IAppContextProvider {
@@ -27,8 +42,8 @@ interface IAppContextProvider {
 }
 
 export const AppContext = createContext<AppContextProps>({
-  vacancyCategory: '',
-  setVacancyCategory: () => {},
+  //vacancy
+
   vacancyName: '',
   setVacancyName: () => {},
   vacancyCity: '',
@@ -39,30 +54,53 @@ export const AppContext = createContext<AppContextProps>({
   setVacancySalaryFrom: () => {},
   vacancySalaryTo: '',
   setVacancySalaryTo: () => {},
-  //
+  //task
   isTask: false,
   isVacancy: false,
   isService: false,
   setIsTask: () => {},
   setIsVacancy: () => {},
   setIsService: () => {},
+  //user
+  name: '',
+  lastName: '',
+  phoneNumber: '',
+  city: '',
+  about: '',
+  category: '',
+  setName: () => {},
+  setLastName: () => {},
+  setPhoneNumber: () => {},
+  setCity: () => {},
+  setAbout: () => {},
+  setCategory: () => {},
 });
 
 const AppContextProvider = ({children}: IAppContextProvider) => {
-  const [vacancyCategory, setVacancyCategory] = useState('');
+  //
+  const [category, setCategory] = useState('');
+
   const [vacancyName, setVacancyName] = useState('');
   const [vacancyCity, setVacancyCity] = useState('');
   const [vacancyAddress, setVacancyAddress] = useState('');
   const [vacancySalaryFrom, setVacancySalaryFrom] = useState('');
   const [vacancySalaryTo, setVacancySalaryTo] = useState('');
+  //
   const [isTask, setIsTask] = useState<boolean>(false);
   const [isVacancy, setIsVacancy] = useState<boolean>(false);
   const [isService, setIsService] = useState<boolean>(false);
+  //user
+  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [city, setCity] = useState('');
+  const [about, setAbout] = useState('');
+
   return (
     <AppContext.Provider
       value={{
-        vacancyCategory,
-        setVacancyCategory,
+        //Vacancy
+
         vacancyName,
         setVacancyName,
         vacancyCity,
@@ -73,12 +111,27 @@ const AppContextProvider = ({children}: IAppContextProvider) => {
         setVacancySalaryFrom,
         vacancySalaryTo,
         setVacancySalaryTo,
+        //
         isTask,
         setIsTask,
         isVacancy,
         setIsVacancy,
         isService,
         setIsService,
+
+        //
+        name,
+        lastName,
+        phoneNumber,
+        city,
+        about,
+        category,
+        setName,
+        setLastName,
+        setPhoneNumber,
+        setCity,
+        setAbout,
+        setCategory,
       }}>
       {children}
     </AppContext.Provider>

@@ -14,12 +14,12 @@ import Title from '../../components/Title/Title';
 import {AppContext} from '../../context/context';
 
 const CategoryModalScreen = ({navigation}: any) => {
-  const {setVacancyCategory} = useContext(AppContext);
+  const {setCategory} = useContext(AppContext);
   const [categoryIndex, setCategoryIndex] = useState<number | null>(null);
 
   const handleSaveCategory = (item: string, index: number) => {
     setCategoryIndex(index);
-    setVacancyCategory(item);
+    setCategory(item);
     setTimeout(() => {
       navigation.goBack();
     }, 500);

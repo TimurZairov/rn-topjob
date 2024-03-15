@@ -1,4 +1,6 @@
 import {
+  Image,
+  PermissionsAndroid,
   Platform,
   SafeAreaView,
   ScrollView,
@@ -7,7 +9,10 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
+import {launchImageLibrary} from 'react-native-image-picker';
+import Toast from 'react-native-toast-message';
+//
 import HeaderLogo from '../../components/HeaderLogo/HeaderLogo';
 import {COLORS, FONTS, SIZES} from '../../theme/theme';
 import Title from '../../components/Title/Title';
@@ -15,11 +20,31 @@ import AuthWrapper from '../../components/AuthWrapper/AuthWrapper';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Button from '../../components/Button/Button';
 import GroupInput from '../../components/GrooupInput/GroupInput';
+import {AppContext} from '../../context/context';
 
 const ProfileFieldScreen = ({navigation}: any) => {
   const [index, setIndex] = useState<number>(1);
   const [employer, setEmployer] = useState<boolean>(false);
+  const [userLibraryImage, setUserLibraryImage] = useState<string | undefined>(
+    undefined,
+  );
 
+  const {
+    name,
+    lastName,
+    phoneNumber,
+    city,
+    about,
+    category,
+    setName,
+    setLastName,
+    setPhoneNumber,
+    setCity,
+    setAbout,
+    setCategory,
+  } = useContext(AppContext);
+
+  //userRole
   const handleRoleEmployer = () => {
     setIndex(1);
     setEmployer(true);
@@ -31,26 +56,116 @@ const ProfileFieldScreen = ({navigation}: any) => {
   };
 
   //get and set to users category work
-  const handleVacancyCategory = () => {
+  const handleUserCategory = () => {
     navigation.navigate('Category');
   };
 
+  //userImage
+
+  const handleLoadUserImage = async () => {
+    try {
+      const result = await launchImageLibrary({
+        mediaType: 'photo',
+        quality: 1,
+        selectionLimit: 1,
+      });
+
+      if (result.didCancel) {
+        return;
+      }
+
+      if (result.errorCode || result.errorMessage) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: result.errorMessage,
+        });
+      }
+      if (result && result.assets) {
+        setUserLibraryImage(result?.assets[0]?.uri);
+      }
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'что то пошло не так',
+      });
+    }
+  };
+  //permission
+  const handleUserImage = async () => {
+    if (Platform.OS === 'android') {
+      const permission = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
+        {
+          title: 'Разрешение на доступ к медиафайлам',
+          message:
+            'Мы нуждаемся в доступе к вашим медиафайлам для выполнения некоторых функций приложения.',
+          buttonPositive: 'Разрешить',
+          buttonNegative: 'Отмена',
+        },
+      );
+      console.log(permission);
+      if (permission === PermissionsAndroid.RESULTS.GRANTED) {
+        handleLoadUserImage();
+      } else {
+        console.log('not');
+      }
+    } else {
+      await handleLoadUserImage();
+    }
+  };
+
+  //update user info
+
+  const handleUpdateUserInfo = () => {
+    const userInfo = {
+      name,
+      lastName,
+      city,
+      phoneNumber,
+      employer,
+      category,
+      about,
+      image: userLibraryImage,
+    };
+
+    console.log(userInfo);
+  };
+  console.log(userLibraryImage);
   return (
     <SafeAreaView style={styles.safe}>
       <HeaderLogo />
-      <ScrollView style={styles.scroll}>
+      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
         <Title style={styles.titleContainer} textStyle={styles.title}>
           Заполните свои данные
         </Title>
         {/* User fields to update */}
-        <AuthWrapper margin={16} label="Имя" placeholder="Ваше имя" />
-        <AuthWrapper margin={16} label="Фамилия" placeholder="Ваше фамилия" />
+        <AuthWrapper
+          setState={setName}
+          margin={16}
+          label="Имя"
+          placeholder="Ваше имя"
+        />
+        <AuthWrapper
+          setState={setLastName}
+          margin={16}
+          label="Фамилия"
+          placeholder="Ваше фамилия"
+        />
         <AuthWrapper
           margin={16}
-          label="Дата рождения"
-          placeholder="Ваше дата"
+          setState={setPhoneNumber}
+          label="Номер "
+          placeholder="Ваше номер телефона"
         />
-        <AuthWrapper margin={16} label="Город" placeholder="Ваше город" />
+
+        <AuthWrapper
+          setState={setCity}
+          margin={16}
+          label="Город"
+          placeholder="Ваше город"
+        />
 
         {/* GET ROLE */}
         <View style={styles.roleContainer}>
@@ -72,15 +187,22 @@ const ProfileFieldScreen = ({navigation}: any) => {
           </View>
         </View>
         {/* if Employee */}
-        {index === 2 && <Button style={styles.btnPhoto}>Выберите фото</Button>}
+        {index === 2 && (
+          <>
+            {userLibraryImage && (
+              <Image source={{uri: userLibraryImage}} style={styles.image} />
+            )}
+            <Button style={styles.btnPhoto}>Выберите фото</Button>
+          </>
+        )}
         {index === 1 && (
           <View style={styles.employer}>
             <GroupInput
               label="Категория"
               placeholder="Выберите категорию"
               category
-              handleVacancyCategory={handleVacancyCategory}
-              // vacancyCategory={vacancyCategory}
+              handleVacancyCategory={handleUserCategory}
+              vacancyCategory={category}
             />
 
             <Text style={[styles.blockTitle, {marginTop: 10}]}>О себе</Text>
@@ -93,11 +215,23 @@ const ProfileFieldScreen = ({navigation}: any) => {
                 style={styles.input}
                 maxLength={120}
                 multiline={true}
-                placeholder={Platform.OS === 'ios' ? 'Введите навыки' : ''}
-                // onChangeText={setVacancySkills}
+                onChangeText={setAbout}
               />
             </View>
-            <Button style={styles.btnPhoto}>Выберите фото</Button>
+
+            {userLibraryImage && (
+              <Image source={{uri: userLibraryImage}} style={styles.image} />
+            )}
+
+            <Button
+              onPress={
+                userLibraryImage === undefined
+                  ? handleUserImage
+                  : handleUpdateUserInfo
+              }
+              style={styles.btnPhoto}>
+              {userLibraryImage === undefined ? 'Выберите фото' : 'Сохранить'}
+            </Button>
           </View>
         )}
       </ScrollView>
@@ -146,8 +280,9 @@ const styles = StyleSheet.create({
   },
   btnPhoto: {
     width: 200,
-    marginTop: 50,
+    marginTop: 20,
     alignSelf: 'center',
+    backgroundColor: COLORS.darkBlue,
   },
   circle: {
     width: 10,
@@ -157,6 +292,7 @@ const styles = StyleSheet.create({
   },
   employer: {
     marginTop: 10,
+    marginBottom: 20,
   },
   blockTitle: {
     color: COLORS.black,
@@ -174,4 +310,27 @@ const styles = StyleSheet.create({
   input: {
     height: Platform.OS === 'ios' ? '100%' : null,
   },
+  image: {
+    width: '100%',
+    height: 200,
+    marginTop: 10,
+    resizeMode: 'cover',
+    borderRadius: 10,
+  },
 });
+
+// const userSchema = new mongoose.Schema(
+//   {
+//     email:
+//     password:
+//     name:
+//     lastName:
+//     phoneNumber:
+//     image:
+//     employer:
+//     category:
+//     city:
+//     about
+//   },
+
+// );
