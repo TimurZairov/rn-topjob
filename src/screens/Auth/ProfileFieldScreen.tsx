@@ -28,7 +28,7 @@ const ProfileFieldScreen = ({navigation}: any) => {
   const [userLibraryImage, setUserLibraryImage] = useState<string | undefined>(
     undefined,
   );
-
+  //context
   const {
     name,
     lastName,
@@ -41,7 +41,6 @@ const ProfileFieldScreen = ({navigation}: any) => {
     setPhoneNumber,
     setCity,
     setAbout,
-    setCategory,
   } = useContext(AppContext);
 
   //userRole
@@ -61,7 +60,6 @@ const ProfileFieldScreen = ({navigation}: any) => {
   };
 
   //userImage
-
   const handleLoadUserImage = async () => {
     try {
       const result = await launchImageLibrary({
@@ -92,6 +90,7 @@ const ProfileFieldScreen = ({navigation}: any) => {
       });
     }
   };
+
   //permission
   const handleUserImage = async () => {
     if (Platform.OS === 'android') {
@@ -132,7 +131,6 @@ const ProfileFieldScreen = ({navigation}: any) => {
 
     console.log(userInfo);
   };
-  console.log(userLibraryImage);
   return (
     <SafeAreaView style={styles.safe}>
       <HeaderLogo />
