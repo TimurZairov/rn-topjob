@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "487487451009",
+    "project_id": "topjob-356e5",
+    "storage_bucket": "topjob-356e5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:487487451009:android:618196f17c2b27c76d8280",
+        "android_client_info": {
+          "package_name": "com.topjob"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6cvr0Iy2UYgoi1osA01ALHD8N-4Up9mc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
