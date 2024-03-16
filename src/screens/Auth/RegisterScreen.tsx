@@ -22,6 +22,7 @@ import {registration} from '../../helpers/registration';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationParamsProps} from '../../navigation/types/types';
 import {User} from '../../types/type';
+import Toast from 'react-native-toast-message';
 
 interface IState {
   loading: boolean;
@@ -61,9 +62,15 @@ const RegisterScreen = () => {
 
     //registration action
     await dispatch(registrationUser(userData));
-    if (user) {
-      navigation.replace('Fill');
+    if (!user) {
+      Toast.show({
+        type: 'error',
+        text1: 'Ошибка',
+        text2: 'Что то пошло не так',
+      });
+      return;
     }
+    navigation.replace('Fill');
   };
 
   return (

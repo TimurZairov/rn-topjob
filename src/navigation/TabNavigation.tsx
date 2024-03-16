@@ -78,7 +78,7 @@ const TabNavigation = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileFieldScreen}
+        component={ProfileScreen}
         options={{
           // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color}) => {

@@ -1686,13 +1686,18 @@
     prompts "^2.4.2"
     semver "^7.5.2"
 
-"@react-native-firebase/app@^19.0.1":
+"@react-native-firebase/app@^19.0.1", "@react-native-firebase/app@19.0.1":
   version "19.0.1"
   resolved "https://registry.npmjs.org/@react-native-firebase/app/-/app-19.0.1.tgz"
   integrity sha512-opwy3mQfu0Vg7Fz07EzNCuRI6Wr8U3n6wp0IIwDbNg5zJWQN7ALa9OSN1SA16RhPepIXO1fFWbwmRsL2nOgrIw==
   dependencies:
     opencollective-postinstall "^2.0.3"
     superstruct "^0.6.2"
+
+"@react-native-firebase/storage@^19.0.1":
+  version "19.0.1"
+  resolved "https://registry.npmjs.org/@react-native-firebase/storage/-/storage-19.0.1.tgz"
+  integrity sha512-b1k1iN1bp8oLnSMctJ4dj32eTsBNVZUKYGAeKiFECZwebJyMKfsHLilI3LSlmRagfqzMEc0uQAcEKHLMl2E18Q==
 
 "@react-native/assets-registry@0.73.1":
   version "0.73.1"

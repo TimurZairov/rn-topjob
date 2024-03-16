@@ -3,6 +3,7 @@ import {registrationUser} from '../../actions/registrationAction';
 import {User} from '../../../types/type';
 import {checkTokenAction} from '../../actions/checkTokenAction';
 import {loginAction} from '../../actions/loginAction';
+import {userInfoAction} from '../../actions/userInfoAction';
 
 interface AuthState {
   user: User | null;
@@ -57,6 +58,18 @@ const authSlice = createSlice({
       state.user = action.payload;
     });
     builder.addCase(loginAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
+    //update user
+    builder.addCase(userInfoAction.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(userInfoAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.user = action.payload;
+    });
+    builder.addCase(userInfoAction.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
     });

@@ -12,6 +12,7 @@ import {
 import React, {useContext, useState} from 'react';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
+import storage from '@react-native-firebase/storage';
 //
 import HeaderLogo from '../../components/HeaderLogo/HeaderLogo';
 import {COLORS, FONTS, SIZES} from '../../theme/theme';
@@ -21,6 +22,8 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import Button from '../../components/Button/Button';
 import GroupInput from '../../components/GrooupInput/GroupInput';
 import {AppContext} from '../../context/context';
+import {useAppDispatch, useAppSelector} from '../../redux/type';
+import {userInfoAction} from '../../redux/actions/userInfoAction';
 
 const ProfileFieldScreen = ({navigation}: any) => {
   const [index, setIndex] = useState<number>(1);
@@ -28,6 +31,12 @@ const ProfileFieldScreen = ({navigation}: any) => {
   const [userLibraryImage, setUserLibraryImage] = useState<string | undefined>(
     undefined,
   );
+  const [imageRef, setImageRef] = useState<string | undefined>('');
+
+  //redux
+  const dispatch = useAppDispatch();
+  const {user, loading} = useAppSelector(state => state.user);
+
   //context
   const {
     name,
@@ -41,6 +50,7 @@ const ProfileFieldScreen = ({navigation}: any) => {
     setPhoneNumber,
     setCity,
     setAbout,
+    setCategory,
   } = useContext(AppContext);
 
   //userRole
@@ -81,6 +91,7 @@ const ProfileFieldScreen = ({navigation}: any) => {
       }
       if (result && result.assets) {
         setUserLibraryImage(result?.assets[0]?.uri);
+        setImageRef(result?.assets[0]?.fileName);
       }
     } catch (error) {
       Toast.show({
@@ -104,7 +115,7 @@ const ProfileFieldScreen = ({navigation}: any) => {
           buttonNegative: 'Отмена',
         },
       );
-      console.log(permission);
+
       if (permission === PermissionsAndroid.RESULTS.GRANTED) {
         handleLoadUserImage();
       } else {
@@ -116,20 +127,40 @@ const ProfileFieldScreen = ({navigation}: any) => {
   };
 
   //update user info
-
-  const handleUpdateUserInfo = () => {
-    const userInfo = {
-      name,
-      lastName,
-      city,
-      phoneNumber,
-      employer,
-      category,
-      about,
-      image: userLibraryImage,
-    };
-
-    console.log(userInfo);
+  const handleUpdateUserInfo = async () => {
+    try {
+      //upload image to firestore storage
+      const reference = storage().ref(`/images/${imageRef}`); //ref name
+      await reference.putFile(userLibraryImage!); //path to image
+      const url = await reference.getDownloadURL(); //get url from storage
+      //info for update
+      const userInfo = {
+        name,
+        lastName,
+        city,
+        phoneNumber,
+        employer,
+        category,
+        about,
+        image: url,
+        id: user?._id,
+      };
+      await dispatch(userInfoAction(userInfo));
+      navigation.replace('Tab', {screen: 'Vacancy'});
+      //reset
+      setName('');
+      setLastName('');
+      setPhoneNumber('');
+      setCity('');
+      setAbout('');
+      setIndex(1);
+      setEmployer(false);
+      setUserLibraryImage(undefined);
+      setImageRef(undefined);
+      setCategory('');
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <SafeAreaView style={styles.safe}>
