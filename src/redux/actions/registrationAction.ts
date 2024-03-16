@@ -15,6 +15,7 @@ export const registrationUser = createAsyncThunk(
         return rejectWithValue({errorMessage: 'Что то пошло не так'});
       }
       await AsyncStorage.setItem('@token', result.data.token);
+
       return result.data.user;
     } catch (error) {
       if (axios.isAxiosError(error)) {

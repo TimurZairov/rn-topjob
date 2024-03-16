@@ -6,7 +6,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import React, {useContext, useState} from 'react';
@@ -20,7 +19,7 @@ import Title from '../../components/Title/Title';
 import AuthWrapper from '../../components/AuthWrapper/AuthWrapper';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Button from '../../components/Button/Button';
-import GroupInput from '../../components/GrooupInput/GroupInput';
+
 import {AppContext} from '../../context/context';
 import {useAppDispatch, useAppSelector} from '../../redux/type';
 import {userInfoAction} from '../../redux/actions/userInfoAction';
@@ -43,14 +42,10 @@ const ProfileFieldScreen = ({navigation}: any) => {
     lastName,
     phoneNumber,
     city,
-    about,
-    category,
     setName,
     setLastName,
     setPhoneNumber,
     setCity,
-    setAbout,
-    setCategory,
   } = useContext(AppContext);
 
   //userRole
@@ -65,9 +60,6 @@ const ProfileFieldScreen = ({navigation}: any) => {
   };
 
   //get and set to users category work
-  const handleUserCategory = () => {
-    navigation.navigate('Category');
-  };
 
   //userImage
   const handleLoadUserImage = async () => {
@@ -143,8 +135,6 @@ const ProfileFieldScreen = ({navigation}: any) => {
         city,
         phoneNumber,
         employer,
-        category,
-        about,
         image: url,
         id: user?._id,
       };
@@ -156,12 +146,10 @@ const ProfileFieldScreen = ({navigation}: any) => {
       setLastName('');
       setPhoneNumber('');
       setCity('');
-      setAbout('');
       setIndex(1);
       setEmployer(false);
       setUserLibraryImage(undefined);
       setImageRef(undefined);
-      setCategory('');
     } catch (error) {
       console.log(error);
     }
@@ -219,62 +207,21 @@ const ProfileFieldScreen = ({navigation}: any) => {
             <Text>Я ищу сотрудника</Text>
           </View>
         </View>
-        {/* if Employee */}
-        {index === 2 && (
-          <>
-            {userLibraryImage && (
-              <Image source={{uri: userLibraryImage}} style={styles.image} />
-            )}
-            <Button
-              onPress={
-                userLibraryImage === undefined
-                  ? handleUserImage
-                  : handleUpdateUserInfo
-              }
-              style={styles.btnPhoto}>
-              {userLibraryImage === undefined ? 'Выберите фото' : 'Сохранить'}
-            </Button>
-          </>
-        )}
-        {index === 1 && (
-          <View style={styles.employer}>
-            <GroupInput
-              label="Категория"
-              placeholder="Выберите категорию"
-              category
-              handleVacancyCategory={handleUserCategory}
-              vacancyCategory={category}
-            />
-
-            <Text style={[styles.blockTitle, {marginTop: 10}]}>О себе</Text>
-            <View
-              style={[
-                styles.textArea,
-                {height: 150, backgroundColor: COLORS.white},
-              ]}>
-              <TextInput
-                style={styles.input}
-                maxLength={120}
-                multiline={true}
-                onChangeText={setAbout}
-              />
-            </View>
-
-            {userLibraryImage && (
-              <Image source={{uri: userLibraryImage}} style={styles.image} />
-            )}
-
-            <Button
-              onPress={
-                userLibraryImage === undefined
-                  ? handleUserImage
-                  : handleUpdateUserInfo
-              }
-              style={styles.btnPhoto}>
-              {userLibraryImage === undefined ? 'Выберите фото' : 'Сохранить'}
-            </Button>
-          </View>
-        )}
+        {/* Image */}
+        <>
+          {userLibraryImage && (
+            <Image source={{uri: userLibraryImage}} style={styles.image} />
+          )}
+          <Button
+            onPress={
+              userLibraryImage === undefined
+                ? handleUserImage
+                : handleUpdateUserInfo
+            }
+            style={styles.btnPhoto}>
+            {userLibraryImage === undefined ? 'Выберите фото' : 'Сохранить'}
+          </Button>
+        </>
       </ScrollView>
     </SafeAreaView>
   );

@@ -1,4 +1,10 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useContext, useState} from 'react';
 //
 import LinearGradient from 'react-native-linear-gradient';
@@ -90,6 +96,14 @@ const styles = StyleSheet.create({
   plus: {
     color: COLORS.white,
     fontSize: SIZES.xxlg,
+  },
+  feedBack: {
+    backgroundColor: 'red',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    left: 0,
+    bottom: 0,
   },
   btnWrapper: {
     position: 'absolute',

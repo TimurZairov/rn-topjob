@@ -7,12 +7,14 @@ import {userInfoAction} from '../../actions/userInfoAction';
 
 interface AuthState {
   user: User | null;
+  token: undefined | string | null;
   loading: boolean;
   error: string | unknown;
 }
 
 const initialState: AuthState = {
   user: null,
+  token: undefined,
   loading: false,
   error: null,
 };
@@ -41,7 +43,7 @@ const authSlice = createSlice({
 
     builder.addCase(checkTokenAction.fulfilled, (state, action) => {
       state.loading = false;
-      state.user = action.payload;
+      state.token = action.payload;
     });
 
     builder.addCase(checkTokenAction.rejected, (state, action) => {
@@ -66,6 +68,7 @@ const authSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(userInfoAction.fulfilled, (state, action) => {
+      console.log(action.payload);
       state.loading = false;
       state.user = action.payload;
     });

@@ -15,7 +15,8 @@ interface IProfile {
 }
 
 const Profile = ({user}: IProfile) => {
-  const {dislikes, likes, reviews, createdAt} = user;
+  const {dislikes, likes, phoneNumber, createdAt, name, email, city} = user;
+
   //transform date to format
   const handleDate = () => {
     if (user) {
@@ -25,9 +26,9 @@ const Profile = ({user}: IProfile) => {
       const month = registerDay.getUTCMonth(); // get month
       const year = registerDay.getUTCFullYear(); // get year
 
-      return `${day < 10 ? '0' + day : day}/${
-        month < 10 ? '0' + month : month
-      }/${year}`;
+      return `${day < 10 ? '0' + day : day} / ${
+        month < 10 ? '0' + (month + 1) : month
+      } / ${year}`;
     }
   };
 
@@ -45,14 +46,10 @@ const Profile = ({user}: IProfile) => {
               <View style={styles.avatar}>
                 <DefaultAvatar />
               </View>
-              <Text style={styles.userName}>Name</Text>
+              <Text style={styles.userName}>{name}</Text>
             </View>
             {/* Reviews */}
             <View style={styles.reviewsContainer}>
-              <View style={styles.reviews}>
-                <Text style={styles.reviewTitle}>отзывы</Text>
-                <Text style={styles.review}>{reviews}</Text>
-              </View>
               <View style={styles.likesContainer}>
                 <View style={styles.like}>
                   <LikeIcon />
@@ -70,41 +67,22 @@ const Profile = ({user}: IProfile) => {
             {/* PHONE NUMBER */}
             <View>
               <Text style={styles.userDatTitle}>Номер телефона:</Text>
-              <Text style={styles.userDataInfo}>+998 90 438 40 41</Text>
+              <Text style={styles.userDataInfo}>{phoneNumber}</Text>
             </View>
             {/* EMAIL */}
             <View>
               <Text style={styles.userDatTitle}>E-mail:</Text>
-              <Text style={styles.userDataInfo}>sample@outlook.com</Text>
+              <Text style={styles.userDataInfo}>{email}</Text>
             </View>
             {/* Date */}
             <View>
               <Text style={styles.userDatTitle}>Дата регистрации:</Text>
               <Text style={styles.userDataInfo}>{handleDate()}</Text>
             </View>
-            {/* Category */}
-            <View>
-              <Text style={styles.userDatTitle}>Категории</Text>
-              <Text style={styles.userDataInfo}>
-                Офис, работа, стройка, на дому, программирование, сантехника
-              </Text>
-            </View>
-            {/* DESCRIPTION */}
-            <View>
-              <Text style={styles.userDatTitle}>Описание</Text>
-              <Text style={styles.userDataInfo}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat
-              </Text>
-            </View>
             {/* CITY  */}
             <View>
               <Text style={styles.userDatTitle}>Город</Text>
-              <Text style={styles.userDataInfo}>
-                Ташкент, Шайхонтохурский район
-              </Text>
+              <Text style={styles.userDataInfo}>{city}</Text>
             </View>
           </View>
           <Button>Изменить профиль</Button>
@@ -151,7 +129,7 @@ const styles = StyleSheet.create({
   reviewsContainer: {
     flexDirection: 'row',
     height: 58,
-    width: 208,
+    width: 120,
     backgroundColor: COLORS.grey,
     borderRadius: 4,
     overflow: 'hidden',

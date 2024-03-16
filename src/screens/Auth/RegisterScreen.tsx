@@ -7,6 +7,11 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
+import Toast from 'react-native-toast-message';
+import {AxiosError} from 'axios';
+import {StackNavigationParamsProps} from '../../navigation/types/types';
+import {useNavigation} from '@react-navigation/native';
+import {useAppDispatch, useAppSelector} from '../../redux/type';
 //
 import HeaderLogo from '../../components/HeaderLogo/HeaderLogo';
 import {COLORS, FONTS, SIZES} from '../../theme/theme';
@@ -14,15 +19,10 @@ import AuthWrapper from '../../components/AuthWrapper/AuthWrapper';
 import Button from '../../components/Button/Button';
 import ScreenTitle from '../../components/ScreenTitle/ScreenTitle';
 import {registrationUser} from '../../redux/actions/registrationAction';
-import {useAppDispatch, useAppSelector} from '../../redux/type';
 
-import {AxiosError} from 'axios';
 import CheckIcon from '../../assets/icons/CheckIcon';
 import {registration} from '../../helpers/registration';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationParamsProps} from '../../navigation/types/types';
 import {User} from '../../types/type';
-import Toast from 'react-native-toast-message';
 
 interface IState {
   loading: boolean;
@@ -62,14 +62,6 @@ const RegisterScreen = () => {
 
     //registration action
     await dispatch(registrationUser(userData));
-    if (!user) {
-      Toast.show({
-        type: 'error',
-        text1: 'Ошибка',
-        text2: 'Что то пошло не так',
-      });
-      return;
-    }
     navigation.replace('Fill');
   };
 

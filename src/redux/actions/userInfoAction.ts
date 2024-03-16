@@ -5,7 +5,7 @@ import Toast from 'react-native-toast-message';
 
 export const userInfoAction = createAsyncThunk(
   'user/fillInfo',
-  async (userInfo, {rejectWithValue}) => {
+  async (userInfo: any, {rejectWithValue}) => {
     try {
       const result = await axios.post(`${BASE_URL}/auth/update`, {userInfo});
       if (!result) {

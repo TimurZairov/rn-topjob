@@ -23,7 +23,7 @@ const Card = ({vacancy}: ICard) => {
       const year = created.getUTCFullYear(); //year
 
       return `${day < 10 ? '0' + day : day}.${
-        month < 10 ? '0' + month : month
+        month < 10 ? '0' + (month + 1) : month
       }.${year}`;
     }
   };
