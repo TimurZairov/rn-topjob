@@ -128,6 +128,9 @@ const ProfileFieldScreen = ({navigation}: any) => {
 
   //update user info
   const handleUpdateUserInfo = async () => {
+    if (loading) {
+      return;
+    }
     try {
       //upload image to firestore storage
       const reference = storage().ref(`/images/${imageRef}`); //ref name
@@ -145,6 +148,7 @@ const ProfileFieldScreen = ({navigation}: any) => {
         image: url,
         id: user?._id,
       };
+
       await dispatch(userInfoAction(userInfo));
       navigation.replace('Tab', {screen: 'Vacancy'});
       //reset
@@ -221,7 +225,15 @@ const ProfileFieldScreen = ({navigation}: any) => {
             {userLibraryImage && (
               <Image source={{uri: userLibraryImage}} style={styles.image} />
             )}
-            <Button style={styles.btnPhoto}>Выберите фото</Button>
+            <Button
+              onPress={
+                userLibraryImage === undefined
+                  ? handleUserImage
+                  : handleUpdateUserInfo
+              }
+              style={styles.btnPhoto}>
+              {userLibraryImage === undefined ? 'Выберите фото' : 'Сохранить'}
+            </Button>
           </>
         )}
         {index === 1 && (
