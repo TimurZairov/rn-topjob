@@ -4,14 +4,25 @@ import {COLORS, FONTS, SIZES} from '../../theme/theme';
 import CalendarIcon from '../../assets/icons/CalendarIcon';
 import ViewIcon from '../../assets/icons/ViewIcon';
 import {Vacancy} from '../../types/type';
+import Photo from '../../assets/icons/Photo';
 
 interface ICard {
   vacancy: Vacancy;
 }
 
 const Card = ({vacancy}: ICard) => {
-  const {salary, companyName, createdAt, views, description, location} =
-    vacancy;
+  const {
+    salary,
+    companyName,
+    createdAt,
+    views,
+    description,
+    location,
+    img,
+    name,
+    salaryFrom,
+    salaryTo,
+  } = vacancy;
 
   //formate date
   const formateDate = () => {
@@ -43,16 +54,28 @@ const Card = ({vacancy}: ICard) => {
       </View>
       {/* CARD MAIN */}
       <View style={styles.cardMain}>
-        <Image
-          source={{
-            uri: 'https://api.logobank.uz/media/logos_preview/just-01.jpg',
-          }}
-          style={styles.image}
-          resizeMode="contain"
-        />
+        {img ? (
+          <Image
+            source={{
+              uri: img,
+            }}
+            style={styles.image}
+            resizeMode="cover"
+          />
+        ) : (
+          <View style={styles.defaultImg}>
+            <Photo />
+          </View>
+        )}
         <View style={styles.cardName}>
-          <Text style={styles.vacancyName}>Графический дизайнер</Text>
-          <Text style={styles.salary}>{salary} сум</Text>
+          <Text style={styles.vacancyName}>{name}</Text>
+          {salary ? (
+            <Text style={styles.salary}>{salary} сум</Text>
+          ) : (
+            <Text style={styles.salary}>
+              {`${salaryFrom} - ${salaryTo}`} сум
+            </Text>
+          )}
         </View>
       </View>
       {/* CARD DESCRIPTION */}
@@ -99,14 +122,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: 100,
-    height: 100,
-    borderRadius: 5,
+    width: 80,
+    height: 80,
+    borderRadius: 10,
     marginRight: 20,
+    marginBottom: 10,
   },
   cardName: {
     height: 50,
     justifyContent: 'space-between',
+  },
+  defaultImg: {
+    width: 80,
+    height: 80,
+
+    borderRadius: 10,
+    marginRight: 20,
+    marginBottom: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: COLORS.darkGrey,
+    borderWidth: 1,
+    borderStyle: 'dashed',
   },
   vacancyName: {
     color: COLORS.black,

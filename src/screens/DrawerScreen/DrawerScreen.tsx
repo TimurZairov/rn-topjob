@@ -12,6 +12,7 @@ import Title from '../../components/Title/Title';
 import {COLORS, FONTS, SIZES} from '../../theme/theme';
 import Button from '../../components/Button/Button';
 import RightArrowIcon from '../../assets/icons/RightArrowIcon';
+import {useAppSelector} from '../../redux/type';
 
 const pages = [
   {pageTitle: 'Мои данные', name: 'MyData'},
@@ -22,26 +23,30 @@ const pages = [
 ];
 
 const DrawerScreen = (props: DrawerContentComponentProps) => {
-  const {navigation} = props;
+  const {user} = useAppSelector(state => state.user);
+
+  const {navigation} = props; // todo
   return (
     <SafeAreaView style={styles.safe}>
       <Title style={styles.title} textStyle={styles.titleText}>
         Мой профиль
       </Title>
-      <View style={styles.drawerNavigation}>
-        {pages.map((page, index) => {
-          return (
-            <TouchableOpacity
-              key={index}
-              style={styles.page}
-              activeOpacity={0.7}>
-              <Text style={styles.pageTitle}>{page.pageTitle}</Text>
-              <RightArrowIcon />
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-      <Button>Выйти</Button>
+      {user ? (
+        <View style={styles.drawerNavigation}>
+          {pages.map((page, index) => {
+            return (
+              <TouchableOpacity
+                key={index}
+                style={styles.page}
+                activeOpacity={0.7}>
+                <Text style={styles.pageTitle}>{page.pageTitle}</Text>
+                <RightArrowIcon />
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      ) : null}
+      <Button>{user ? 'Выйти' : 'Войти'}</Button>
     </SafeAreaView>
   );
 };

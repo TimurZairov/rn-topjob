@@ -30,5 +30,6 @@ export type Vacancy = {
   salaryTo: number;
   updatedAt: string;
   workTime: string;
+  salary: string;
   views: number;
 };

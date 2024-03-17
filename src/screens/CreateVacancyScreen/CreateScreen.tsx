@@ -104,6 +104,8 @@ const CreateVacancyScreen = ({navigation}: any) => {
       employmentType,
       workTime: workMode,
       userId: user?._id,
+      img: user?.image,
+      companyName: user?.name,
     };
     const checked = vacancyCheckValidation(newCreated);
 
