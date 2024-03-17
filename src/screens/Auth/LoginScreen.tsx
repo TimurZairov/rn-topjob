@@ -65,6 +65,7 @@ const LoginScreen = ({navigation}: ILoginScreen) => {
             placeholder='"введите ваш пароль"'
             margin={20}
             setState={setPassword}
+            secureTextEntry
           />
         </View>
         <View style={styles.wrapper}>

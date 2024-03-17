@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-import Toast from 'react-native-toast-message';
+
 import {AxiosError} from 'axios';
 import {StackNavigationParamsProps} from '../../navigation/types/types';
 import {useNavigation} from '@react-navigation/native';
@@ -38,7 +38,7 @@ const RegisterScreen = () => {
   //
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationParamsProps>();
-  const {loading, user} = useAppSelector<IState>(state => state.user);
+  const {loading} = useAppSelector<IState>(state => state.user);
 
   const handleApplyAgreement = () => {
     setChecked(prev => !prev);
@@ -82,12 +82,14 @@ const RegisterScreen = () => {
             label="Пароль"
             placeholder='"введите ваш пароль"'
             margin={20}
+            secureTextEntry
           />
           <AuthWrapper
             setState={setConfirm}
             label="Повторите пароль еще раз"
             placeholder='"еще раз пароль"'
             margin={20}
+            secureTextEntry
           />
         </View>
         <View style={styles.wrapper}>

@@ -7,9 +7,16 @@ interface ITextInput {
   style?: ViewStyle;
   setState?: (input: string) => void | undefined;
   state?: string;
+  secureTextEntry?: boolean;
 }
 
-const Input = ({placeholder = '', style, setState, state}: ITextInput) => {
+const Input = ({
+  placeholder = '',
+  style,
+  setState,
+  state,
+  secureTextEntry,
+}: ITextInput) => {
   const [inputState, setInputState] = useState('');
 
   useEffect(() => {
@@ -29,6 +36,7 @@ const Input = ({placeholder = '', style, setState, state}: ITextInput) => {
         onChangeText={setInputState}
         value={inputState}
         autoCapitalize="none"
+        secureTextEntry={secureTextEntry}
       />
     </View>
   );

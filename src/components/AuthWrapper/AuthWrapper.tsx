@@ -9,6 +9,7 @@ interface IAuthWrapper {
   placeholder: string;
   margin?: number;
   setState?: Dispatch<SetStateAction<string>>;
+  secureTextEntry?: boolean;
 }
 
 const AuthWrapper = ({
@@ -16,11 +17,16 @@ const AuthWrapper = ({
   placeholder,
   margin = 0,
   setState,
+  secureTextEntry,
 }: IAuthWrapper) => {
   return (
     <View style={{marginTop: margin}}>
       <Text style={styles.label}>{label}</Text>
-      <Input placeholder={placeholder} setState={setState} />
+      <Input
+        secureTextEntry={secureTextEntry}
+        placeholder={placeholder}
+        setState={setState}
+      />
     </View>
   );
 };

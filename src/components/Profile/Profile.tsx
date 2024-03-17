@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import HeaderLogo from '../HeaderLogo/HeaderLogo';
 import Title from '../Title/Title';
@@ -15,7 +15,8 @@ interface IProfile {
 }
 
 const Profile = ({user}: IProfile) => {
-  const {dislikes, likes, phoneNumber, createdAt, name, email, city} = user;
+  const {dislikes, likes, phoneNumber, createdAt, name, email, city, image} =
+    user;
 
   //transform date to format
   const handleDate = () => {
@@ -43,9 +44,28 @@ const Profile = ({user}: IProfile) => {
           {/* HEADER */}
           <ContainerBlock>
             <View style={styles.userData}>
-              <View style={styles.avatar}>
-                <DefaultAvatar />
-              </View>
+              {image.length > 0 ? (
+                <View
+                  style={{
+                    width: 90,
+                    aspectRatio: 1,
+                    borderRadius: 50,
+                    backgroundColor: 'red',
+                    overflow: 'hidden',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Image
+                    source={{uri: image}}
+                    style={{width: '100%', height: '100%'}}
+                  />
+                </View>
+              ) : (
+                <View style={styles.avatar}>
+                  <DefaultAvatar />
+                </View>
+              )}
+
               <Text style={styles.userName}>{name}</Text>
             </View>
             {/* Reviews */}

@@ -43,7 +43,7 @@ const authSlice = createSlice({
 
     builder.addCase(checkTokenAction.fulfilled, (state, action) => {
       state.loading = false;
-      state.token = action.payload;
+      state.user = action.payload;
     });
 
     builder.addCase(checkTokenAction.rejected, (state, action) => {
