@@ -45,16 +45,7 @@ const Profile = ({user}: IProfile) => {
           <ContainerBlock>
             <View style={styles.userData}>
               {image.length > 0 ? (
-                <View
-                  style={{
-                    width: 90,
-                    aspectRatio: 1,
-                    borderRadius: 50,
-                    backgroundColor: 'red',
-                    overflow: 'hidden',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                <View style={styles.imageWrapper}>
                   <Image
                     source={{uri: image}}
                     style={{width: '100%', height: '100%'}}
@@ -130,6 +121,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 90,
+  },
+  imageWrapper: {
+    width: 90,
+    aspectRatio: 1,
+    borderRadius: 50,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   avatar: {
     backgroundColor: COLORS.greyMedium,

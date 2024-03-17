@@ -9,6 +9,8 @@ import {
   Image,
 } from 'react-native';
 import React, {useContext, useState} from 'react';
+import Toast from 'react-native-toast-message';
+import {useAppDispatch, useAppSelector} from '../../redux/type';
 //
 import HeaderLogo from '../../components/HeaderLogo/HeaderLogo';
 import {COLORS, FONTS, SIZES, width} from '../../theme/theme';
@@ -20,10 +22,11 @@ import Button from '../../components/Button/Button';
 import CheckIcon from '../../assets/icons/CheckIcon';
 import {AppContext} from '../../context/context';
 import {condition, mode, paymentMethod} from '../../data/workCategory';
-import {useAppDispatch, useAppSelector} from '../../redux/type';
 import {vacancyCheckValidation} from '../../helpers/vacancy';
 import {createVacancy} from '../../redux/actions/vacanciesAction';
-import Toast from 'react-native-toast-message';
+import LikeIcon from '../../assets/icons/LikeIcon';
+import {getImages} from '../../helpers/servicies';
+import {Asset} from 'react-native-image-picker';
 
 const CreateVacancyScreen = ({navigation}: any) => {
   //store
@@ -32,6 +35,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
   const {
     vacancyName,
     category,
+    setCategory,
     setVacancyName,
     vacancyCity,
     setVacancyCity,
@@ -54,6 +58,9 @@ const CreateVacancyScreen = ({navigation}: any) => {
   const [remote, setRemote] = useState(false);
   const [payment, setPayment] = useState('');
 
+  const [contract, setContract] = useState(false);
+  const [images, setImages] = useState<Asset[] | null>([...Array(4)]);
+
   const [employmentType, setEmploymentType] = useState('');
   const [employmentTypeIndex, setEmploymentTypeIndex] = useState<number | null>(
     null,
@@ -61,6 +68,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
   const [workMode, setWorkMode] = useState('');
   const [workModeIndex, setWorkModeIndex] = useState<number | null>(null);
 
+  //CREATE VACANCY
   const handleEmploymentType = (item: string, index: number) => {
     setEmploymentType(item);
     setEmploymentTypeIndex(index);
@@ -122,7 +130,23 @@ const CreateVacancyScreen = ({navigation}: any) => {
     }
     await dispatch(createVacancy(newCreated));
     navigation.goBack();
+    setCategory('');
   };
+
+  //CREATE SERVICE
+
+  const handleContract = () => {
+    setContract(prev => !prev);
+  };
+
+  const handleLoadImages = async () => {
+    const localImages = await getImages();
+    if (localImages) {
+      setImages(localImages);
+    }
+  };
+
+  console.log(images);
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -156,16 +180,55 @@ const CreateVacancyScreen = ({navigation}: any) => {
               vacancyCategory={category}
             />
           </View>
+          {/* VACANCY INPUT OFFICE || TASK SERVICE SALARY FROM SALARY TO */}
           <View style={styles.mainInfoContainer}>
             <Text style={styles.main}>
               Место выполнения {isVacancy && ' вакансии'}{' '}
               {isService && 'услуги'} {isTask && 'задачи'}
             </Text>
-            <GroupInput
-              label="Вакансия в городе"
-              placeholder="Введите название"
-              setState={setVacancyCity}
-            />
+            {isVacancy ? (
+              <GroupInput
+                label="Вакансия в городе"
+                placeholder="Введите название"
+                setState={setVacancyCity}
+              />
+            ) : (
+              <>
+                <Text
+                  style={[styles.blockTitle, {marginTop: !isVacancy ? 16 : 0}]}>
+                  Предлагаемая сумма
+                </Text>
+                <Input
+                  setState={setVacancySalaryFrom}
+                  placeholder="от"
+                  style={{marginTop: 10}}
+                />
+                <Input
+                  setState={setVacancySalaryTo}
+                  placeholder="до"
+                  style={{marginTop: 5}}
+                />
+                <View style={styles.agreement}>
+                  <TouchableOpacity
+                    onPress={handleContract}
+                    style={styles.checkAgreement}>
+                    {contract && (
+                      <View
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          backgroundColor: COLORS.green,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <CheckIcon />
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                  <Text>Договорная</Text>
+                </View>
+              </>
+            )}
             <GroupInput
               label="Адрес офиса (не обязательно)"
               placeholder="Укажите адресс"
@@ -174,6 +237,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
               setState={setVacancyAddress}
             />
           </View>
+          {/* DESCRIPTION */}
           <Text style={styles.desc}>Описание</Text>
           <View style={styles.textArea}>
             <TextInput
@@ -183,7 +247,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
               multiline={true}
             />
           </View>
-          {/*  */}
+          {/* VACANCY SALARY  */}
           {isVacancy && (
             <View style={styles.mainInfoContainer}>
               <Text style={styles.blockTitle}>Предлагаемая зарплата</Text>
@@ -197,6 +261,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
                 placeholder="до"
                 style={{marginTop: 5}}
               />
+              {/* SKILLS */}
               <Text style={[styles.blockTitle, {marginTop: 10}]}>
                 Ключевые навыки
               </Text>
@@ -217,7 +282,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
                 Укажите главные качества или навыки владения программами,
                 которыми долже обладать кандидат
               </Text>
-
+              {/* COMPANY DESCRIPTION */}
               <Text style={[styles.blockTitle, {marginTop: 10}]}>
                 Кратоке описание компании
               </Text>
@@ -293,6 +358,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
             <View style={styles.mainInfoContainer}>
               <Text style={styles.main}>Фотографии</Text>
               <Button
+                onPress={handleLoadImages}
                 style={{
                   width: width / 2,
                   backgroundColor: COLORS.lightBlue,
@@ -306,7 +372,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
                   justifyContent: 'space-between',
                   marginTop: 16,
                 }}>
-                {[...Array(4)].map((_, index) => {
+                {images?.map((item, index) => {
                   return (
                     <TouchableOpacity
                       key={index}
@@ -319,8 +385,15 @@ const CreateVacancyScreen = ({navigation}: any) => {
                         borderColor: COLORS.darkGrey,
                         borderWidth: 1,
                         borderStyle: 'dashed',
+                        overflow: 'hidden',
                       }}>
-                      <Image />
+                      {item && item.uri ? (
+                        <Image
+                          source={{uri: item.uri}}
+                          style={styles.images}
+                          resizeMode="cover"
+                        />
+                      ) : null}
                     </TouchableOpacity>
                   );
                 })}
@@ -381,6 +454,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
               </View>
             </>
           )}
+          {/* SUBMIT HANDLER */}
           <Button
             onPress={handleSave}
             style={{width: width / 2, alignSelf: 'center', marginTop: 16}}>
@@ -421,6 +495,20 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
   },
+  agreement: {
+    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkAgreement: {
+    width: 16,
+    height: 16,
+    borderWidth: 1,
+    borderColor: COLORS.borderColor,
+    borderRadius: 4,
+    marginRight: 10,
+    overflow: 'hidden',
+  },
   desc: {
     color: COLORS.black,
     fontSize: SIZES.default,
@@ -434,6 +522,11 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     fontSize: SIZES.default,
     fontFamily: FONTS.medium,
+  },
+  images: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 10,
   },
   condition: {
     color: COLORS.darkGrey,
