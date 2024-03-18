@@ -6,14 +6,14 @@ interface AppContextProps {
 
   createName: string;
   setCreateName: React.Dispatch<React.SetStateAction<string>>;
-  vacancyCity: string;
-  setVacancyCity: React.Dispatch<React.SetStateAction<string>>;
-  vacancyAddress: string;
-  setVacancyAddress: React.Dispatch<React.SetStateAction<string>>;
-  vacancySalaryFrom: string;
-  setVacancySalaryFrom: React.Dispatch<React.SetStateAction<string>>;
-  vacancySalaryTo: string;
-  setVacancySalaryTo: React.Dispatch<React.SetStateAction<string>>;
+  createCity: string;
+  setCreateCity: React.Dispatch<React.SetStateAction<string>>;
+  createAddress: string;
+  setCreateAddress: React.Dispatch<React.SetStateAction<string>>;
+  createSalaryFrom: string;
+  setCreateSalaryFrom: React.Dispatch<React.SetStateAction<string>>;
+  createSalaryTo: string;
+  setCreateSalaryTo: React.Dispatch<React.SetStateAction<string>>;
   //create props
   isTask: boolean;
   isVacancy: boolean;
@@ -46,14 +46,14 @@ export const AppContext = createContext<AppContextProps>({
 
   createName: '',
   setCreateName: () => {},
-  vacancyCity: '',
-  setVacancyCity: () => {},
-  vacancyAddress: '',
-  setVacancyAddress: () => {},
-  vacancySalaryFrom: '',
-  setVacancySalaryFrom: () => {},
-  vacancySalaryTo: '',
-  setVacancySalaryTo: () => {},
+  createCity: '',
+  setCreateCity: () => {},
+  createAddress: '',
+  setCreateAddress: () => {},
+  createSalaryFrom: '',
+  setCreateSalaryFrom: () => {},
+  createSalaryTo: '',
+  setCreateSalaryTo: () => {},
   //task
   isTask: false,
   isVacancy: false,
@@ -81,10 +81,10 @@ const AppContextProvider = ({children}: IAppContextProvider) => {
   const [category, setCategory] = useState('');
 
   const [createName, setCreateName] = useState('');
-  const [vacancyCity, setVacancyCity] = useState('');
-  const [vacancyAddress, setVacancyAddress] = useState('');
-  const [vacancySalaryFrom, setVacancySalaryFrom] = useState('');
-  const [vacancySalaryTo, setVacancySalaryTo] = useState('');
+  const [createCity, setCreateCity] = useState('');
+  const [createAddress, setCreateAddress] = useState('');
+  const [createSalaryFrom, setCreateSalaryFrom] = useState('');
+  const [createSalaryTo, setCreateSalaryTo] = useState('');
   //
   const [isTask, setIsTask] = useState<boolean>(false);
   const [isVacancy, setIsVacancy] = useState<boolean>(false);
@@ -103,14 +103,14 @@ const AppContextProvider = ({children}: IAppContextProvider) => {
 
         createName,
         setCreateName,
-        vacancyCity,
-        setVacancyCity,
-        vacancyAddress,
-        setVacancyAddress,
-        vacancySalaryFrom,
-        setVacancySalaryFrom,
-        vacancySalaryTo,
-        setVacancySalaryTo,
+        createCity,
+        setCreateCity,
+        createAddress,
+        setCreateAddress,
+        createSalaryFrom,
+        setCreateSalaryFrom,
+        createSalaryTo,
+        setCreateSalaryTo,
         //
         isTask,
         setIsTask,

@@ -24,6 +24,9 @@ const Card = ({cardItem}: ICard) => {
     salaryTo,
     images,
     city,
+    address,
+    userName,
+    isContract,
   } = cardItem;
 
   //formate date
@@ -45,7 +48,7 @@ const Card = ({cardItem}: ICard) => {
     <View style={styles.card}>
       {/* CardHeader */}
       <View style={styles.cardHeader}>
-        <Text style={styles.name}>{companyName}</Text>
+        <Text style={styles.name}>{companyName || userName}</Text>
         <View style={styles.data}>
           <CalendarIcon color={COLORS.darkGrey} />
           <Text style={styles.dataText}>{formateDate()}</Text>
@@ -71,12 +74,14 @@ const Card = ({cardItem}: ICard) => {
         )}
         <View style={styles.cardName}>
           <Text style={styles.vacancyName}>{name}</Text>
-          {salary !== undefined ? (
-            <Text style={styles.salary}>{salary} сум</Text>
-          ) : (
+          {salary && <Text style={styles.salary}>{salary} сум</Text>}
+
+          {!isContract ? (
             <Text style={styles.salary}>
               {`${salaryFrom} - ${salaryTo}`} сум
             </Text>
+          ) : (
+            <Text style={styles.salary}>Договорная</Text>
           )}
         </View>
       </View>
@@ -84,7 +89,7 @@ const Card = ({cardItem}: ICard) => {
       <View style={styles.desc}>
         <Text style={styles.descText}>{description}</Text>
       </View>
-      <Text style={styles.descText}>{location || city}</Text>
+      <Text style={styles.descText}>{location || address}</Text>
     </View>
   );
 };

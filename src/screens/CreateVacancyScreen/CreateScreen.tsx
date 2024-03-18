@@ -42,14 +42,14 @@ const CreateVacancyScreen = ({navigation}: any) => {
     setCreateName,
     category,
     setCategory,
-    vacancyCity,
-    setVacancyCity,
-    vacancyAddress,
-    setVacancyAddress,
-    vacancySalaryFrom,
-    setVacancySalaryFrom,
-    vacancySalaryTo,
-    setVacancySalaryTo,
+    createCity,
+    setCreateCity,
+    createAddress,
+    setCreateAddress,
+    createSalaryFrom,
+    setCreateSalaryFrom,
+    createSalaryTo,
+    setCreateSalaryTo,
     isVacancy,
     isTask,
     isService,
@@ -108,13 +108,13 @@ const CreateVacancyScreen = ({navigation}: any) => {
 
   //Publish Vacancy
   const handleVacancy = async () => {
-    const newCreated: Vacancy = {
+    const vacancyData: Vacancy = {
       name: createName,
       category: category,
-      address: vacancyAddress,
-      city: vacancyCity,
-      salaryFrom: vacancySalaryFrom,
-      salaryTo: vacancySalaryTo,
+      address: createAddress,
+      city: createCity,
+      salaryFrom: createSalaryFrom,
+      salaryTo: createSalaryTo,
       description: vacancyDescription,
       employmentType,
       workTime: workMode,
@@ -122,20 +122,19 @@ const CreateVacancyScreen = ({navigation}: any) => {
       img: user?.image,
       companyName: user?.name,
     };
-    const checked = checkValidation(newCreated);
+    const checked = checkValidation(vacancyData);
 
     if (!checked) {
       return;
     }
     if (!user) {
-      console.log(user);
       Toast.show({
         type: 'info',
         text1: 'Войдите или пройдите регистарцию',
       });
       return;
     }
-    await dispatch(createVacancy(newCreated));
+    await dispatch(createVacancy(vacancyData));
     navigation.goBack();
     setCategory('');
   };
@@ -145,7 +144,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
   const handleContract = () => {
     setContract(prev => !prev);
   };
-  //images for create Task get images from library
+  //images for create SERVICE get images from library
   const handleLoadImages = async () => {
     const localImages = await getImages();
     if (localImages) {
@@ -163,14 +162,14 @@ const CreateVacancyScreen = ({navigation}: any) => {
     let serviceData: Service = {
       name: createName,
       category,
-      salaryFrom: vacancySalaryFrom,
-      salaryTo: vacancySalaryTo,
+      salaryFrom: createSalaryFrom,
+      salaryTo: createSalaryTo,
       description: vacancyDescription,
       userId: user?._id,
       isContract: contract,
       images: undefined,
-      address: vacancyAddress,
-      companyName: user?.name,
+      address: createAddress,
+      userName: user?.name,
     };
     //validate on create
     const checked = checkValidation(serviceData);
@@ -233,7 +232,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
               <GroupInput
                 label="Вакансия в городе"
                 placeholder="Введите название"
-                setState={setVacancyCity}
+                setState={setCreateCity}
               />
             ) : (
               <>
@@ -242,12 +241,12 @@ const CreateVacancyScreen = ({navigation}: any) => {
                   Предлагаемая сумма
                 </Text>
                 <Input
-                  setState={setVacancySalaryFrom}
+                  setState={setCreateSalaryFrom}
                   placeholder="от"
                   style={{marginTop: 10}}
                 />
                 <Input
-                  setState={setVacancySalaryTo}
+                  setState={setCreateSalaryTo}
                   placeholder="до"
                   style={{marginTop: 5}}
                 />
@@ -277,7 +276,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
               placeholder="Укажите адресс"
               mapBtn
               handleWorkLocation={handleWorkLocation}
-              setState={setVacancyAddress}
+              setState={setCreateAddress}
             />
           </View>
           {/* DESCRIPTION */}
@@ -295,12 +294,12 @@ const CreateVacancyScreen = ({navigation}: any) => {
             <View style={styles.mainInfoContainer}>
               <Text style={styles.blockTitle}>Предлагаемая зарплата</Text>
               <Input
-                setState={setVacancySalaryFrom}
+                setState={setCreateSalaryFrom}
                 placeholder="от"
                 style={{marginTop: 10}}
               />
               <Input
-                setState={setVacancySalaryTo}
+                setState={setCreateSalaryTo}
                 placeholder="до"
                 style={{marginTop: 5}}
               />
@@ -453,12 +452,12 @@ const CreateVacancyScreen = ({navigation}: any) => {
                   <GroupInput
                     label="Дата начала"
                     placeholder="от"
-                    setState={setVacancyCity}
+                    setState={setCreateCity}
                   />
                   <GroupInput
                     label="Дата окончания"
                     placeholder="до"
-                    setState={setVacancyCity}
+                    setState={setCreateCity}
                   />
                 </View>
               </View>

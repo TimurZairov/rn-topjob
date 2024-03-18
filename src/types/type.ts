@@ -35,6 +35,8 @@ export type Vacancy = {
   city: string;
   employmentType: string;
   userId: string | undefined;
+  //TODO
+  // location: string | undefined;
 };
 
 export type Service = {
@@ -53,4 +55,5 @@ export type Service = {
   views?: number;
   isContract?: boolean;
   userId: string | undefined;
+  userName: string | undefined;
 };
