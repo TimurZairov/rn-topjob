@@ -24,7 +24,7 @@ export type Vacancy = {
   createdAt?: string;
   description: string;
   img?: string;
-  location: string;
+  address: string;
   name: string;
   salaryFrom: string;
   salaryTo: string;
@@ -45,7 +45,7 @@ export type Service = {
   createdAt?: string;
   description: string;
   images?: string;
-  location?: string;
+  address?: string;
   name: string;
   salaryFrom: string;
   salaryTo: string;

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useContext, useState} from 'react';
 import Toast from 'react-native-toast-message';
@@ -22,7 +23,7 @@ import Button from '../../components/Button/Button';
 import CheckIcon from '../../assets/icons/CheckIcon';
 import {AppContext} from '../../context/context';
 import {condition, mode, paymentMethod} from '../../data/workCategory';
-import {vacancyCheckValidation} from '../../helpers/vacancy';
+import {checkValidation} from '../../helpers/vacancy';
 import {createVacancy} from '../../redux/actions/vacanciesAction';
 
 import {getImages} from '../../helpers/servicies';
@@ -34,12 +35,13 @@ import {uploadImages} from '../../helpers/createItem';
 const CreateVacancyScreen = ({navigation}: any) => {
   //store
   const {user} = useAppSelector(state => state.user);
+
   //vacancy info saved in context store to save in DB
   const {
     createName,
+    setCreateName,
     category,
     setCategory,
-    setCreateName,
     vacancyCity,
     setVacancyCity,
     vacancyAddress,
@@ -64,6 +66,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
 
   const [contract, setContract] = useState(false);
   const [images, setImages] = useState<Asset[] | null>([...Array(4)]);
+  const [loading, setLoading] = useState(false);
 
   const [employmentType, setEmploymentType] = useState('');
   const [employmentTypeIndex, setEmploymentTypeIndex] = useState<number | null>(
@@ -108,7 +111,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
     const newCreated: Vacancy = {
       name: createName,
       category: category,
-      location: vacancyAddress,
+      address: vacancyAddress,
       city: vacancyCity,
       salaryFrom: vacancySalaryFrom,
       salaryTo: vacancySalaryTo,
@@ -119,7 +122,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
       img: user?.image,
       companyName: user?.name,
     };
-    const checked = vacancyCheckValidation(newCreated);
+    const checked = checkValidation(newCreated);
 
     if (!checked) {
       return;
@@ -150,13 +153,14 @@ const CreateVacancyScreen = ({navigation}: any) => {
     }
   };
 
-  //save Service
+  //SAVE Service to DB
 
   const handleService = async () => {
-    //upload images for service
-    const imagesForUpload = await uploadImages(images);
-
-    const serviceData: Service = {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    let serviceData: Service = {
       name: createName,
       category,
       salaryFrom: vacancySalaryFrom,
@@ -164,10 +168,26 @@ const CreateVacancyScreen = ({navigation}: any) => {
       description: vacancyDescription,
       userId: user?._id,
       isContract: contract,
-      images: imagesForUpload,
+      images: undefined,
+      address: vacancyAddress,
+      companyName: user?.name,
     };
+    //validate on create
+    const checked = checkValidation(serviceData);
 
+    if (!checked) {
+      return;
+    }
+
+    //upload images for service
+    const imagesForUpload = await uploadImages(images);
+    //create new service
+    if (imagesForUpload !== null || imagesForUpload.length > 0) {
+      serviceData.images = imagesForUpload;
+    }
     await dispatch(createService(serviceData));
+    navigation.goBack();
+    setLoading(false);
     setCategory('');
   };
 
@@ -483,8 +503,19 @@ const CreateVacancyScreen = ({navigation}: any) => {
               isVacancy ? handleVacancy : isService ? handleService : () => {}
             }
             style={{width: width / 2, alignSelf: 'center', marginTop: 16}}>
-            Создать {isVacancy && 'вакансию'} {isTask && 'задачу'}{' '}
-            {isService && 'услугу'}
+            {loading ? (
+              <>
+                <ActivityIndicator size={16} color={COLORS.white} />
+              </>
+            ) : isVacancy ? (
+              'Создать вакансию'
+            ) : isService ? (
+              'Создать услугу'
+            ) : (
+              'Создать задачу'
+            )}
+            {/* Создать {isVacancy && 'вакансию'} {isTask && 'задачу'}{' '}
+            {isService && 'услугу'} */}
           </Button>
         </View>
       </ScrollView>

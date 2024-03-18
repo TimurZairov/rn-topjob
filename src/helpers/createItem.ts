@@ -11,8 +11,11 @@ export const uploadImages = async (images: Asset[] | null) => {
   });
 
   try {
-    const imagesUrl: any = await Promise.all(
+    const imagesUrl: any = await Promise.all<string[]>(
       uri?.map(item => {
+        if (item === null || item === undefined) {
+          return;
+        }
         return getUrl(item.name, item.uri);
       }),
     );

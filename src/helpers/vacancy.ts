@@ -1,6 +1,7 @@
 import Toast from 'react-native-toast-message';
 
-export const vacancyCheckValidation = (data: any) => {
+export const checkValidation = (data: any) => {
+  console.log(data);
   //check all values of data
   const keys = Object.keys(data);
   const checked = keys.map(item => {

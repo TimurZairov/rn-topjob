@@ -22,6 +22,8 @@ const Card = ({cardItem}: ICard) => {
     name,
     salaryFrom,
     salaryTo,
+    images,
+    city,
   } = cardItem;
 
   //formate date
@@ -54,10 +56,10 @@ const Card = ({cardItem}: ICard) => {
       </View>
       {/* CARD MAIN */}
       <View style={styles.cardMain}>
-        {img ? (
+        {img || (images && images.length > 0) ? (
           <Image
             source={{
-              uri: img,
+              uri: img || (images?.[0] && images[0]), // check for images or img | otherwise default
             }}
             style={styles.image}
             resizeMode="cover"
@@ -82,7 +84,7 @@ const Card = ({cardItem}: ICard) => {
       <View style={styles.desc}>
         <Text style={styles.descText}>{description}</Text>
       </View>
-      <Text style={styles.descText}>{location}</Text>
+      <Text style={styles.descText}>{location || city}</Text>
     </View>
   );
 };
