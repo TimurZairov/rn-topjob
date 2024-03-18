@@ -4,8 +4,8 @@ import React from 'react';
 interface AppContextProps {
   //
 
-  vacancyName: string;
-  setVacancyName: React.Dispatch<React.SetStateAction<string>>;
+  createName: string;
+  setCreateName: React.Dispatch<React.SetStateAction<string>>;
   vacancyCity: string;
   setVacancyCity: React.Dispatch<React.SetStateAction<string>>;
   vacancyAddress: string;
@@ -44,8 +44,8 @@ interface IAppContextProvider {
 export const AppContext = createContext<AppContextProps>({
   //vacancy
 
-  vacancyName: '',
-  setVacancyName: () => {},
+  createName: '',
+  setCreateName: () => {},
   vacancyCity: '',
   setVacancyCity: () => {},
   vacancyAddress: '',
@@ -80,7 +80,7 @@ const AppContextProvider = ({children}: IAppContextProvider) => {
   //
   const [category, setCategory] = useState('');
 
-  const [vacancyName, setVacancyName] = useState('');
+  const [createName, setCreateName] = useState('');
   const [vacancyCity, setVacancyCity] = useState('');
   const [vacancyAddress, setVacancyAddress] = useState('');
   const [vacancySalaryFrom, setVacancySalaryFrom] = useState('');
@@ -101,8 +101,8 @@ const AppContextProvider = ({children}: IAppContextProvider) => {
       value={{
         //Vacancy
 
-        vacancyName,
-        setVacancyName,
+        createName,
+        setCreateName,
         vacancyCity,
         setVacancyCity,
         vacancyAddress,

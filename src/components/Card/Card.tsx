@@ -3,14 +3,14 @@ import React from 'react';
 import {COLORS, FONTS, SIZES} from '../../theme/theme';
 import CalendarIcon from '../../assets/icons/CalendarIcon';
 import ViewIcon from '../../assets/icons/ViewIcon';
-import {Vacancy} from '../../types/type';
+import {Service, Vacancy} from '../../types/type';
 import Photo from '../../assets/icons/Photo';
 
 interface ICard {
-  vacancy: Vacancy;
+  cardItem: Vacancy & Service;
 }
 
-const Card = ({vacancy}: ICard) => {
+const Card = ({cardItem}: ICard) => {
   const {
     salary,
     companyName,
@@ -22,7 +22,7 @@ const Card = ({vacancy}: ICard) => {
     name,
     salaryFrom,
     salaryTo,
-  } = vacancy;
+  } = cardItem;
 
   //formate date
   const formateDate = () => {
@@ -69,7 +69,7 @@ const Card = ({vacancy}: ICard) => {
         )}
         <View style={styles.cardName}>
           <Text style={styles.vacancyName}>{name}</Text>
-          {salary ? (
+          {salary !== undefined ? (
             <Text style={styles.salary}>{salary} сум</Text>
           ) : (
             <Text style={styles.salary}>

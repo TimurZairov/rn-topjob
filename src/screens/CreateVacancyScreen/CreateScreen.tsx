@@ -24,19 +24,22 @@ import {AppContext} from '../../context/context';
 import {condition, mode, paymentMethod} from '../../data/workCategory';
 import {vacancyCheckValidation} from '../../helpers/vacancy';
 import {createVacancy} from '../../redux/actions/vacanciesAction';
-import LikeIcon from '../../assets/icons/LikeIcon';
+
 import {getImages} from '../../helpers/servicies';
 import {Asset} from 'react-native-image-picker';
+import {createService} from '../../redux/actions/servicesAction';
+import {Service, Vacancy} from '../../types/type';
+import {uploadImages} from '../../helpers/createItem';
 
 const CreateVacancyScreen = ({navigation}: any) => {
   //store
   const {user} = useAppSelector(state => state.user);
   //vacancy info saved in context store to save in DB
   const {
-    vacancyName,
+    createName,
     category,
     setCategory,
-    setVacancyName,
+    setCreateName,
     vacancyCity,
     setVacancyCity,
     vacancyAddress,
@@ -54,6 +57,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
 
   //Text input not component
   const [vacancyDescription, setVacancyDescription] = useState('');
+  //TODO VACANCY ADD FIELD VACANCY SKILLS
   const [vacancySkills, setVacancySkills] = useState('');
   const [remote, setRemote] = useState(false);
   const [payment, setPayment] = useState('');
@@ -100,9 +104,9 @@ const CreateVacancyScreen = ({navigation}: any) => {
   };
 
   //Publish Vacancy
-  const handleSave = async () => {
-    const newCreated = {
-      name: vacancyName,
+  const handleVacancy = async () => {
+    const newCreated: Vacancy = {
+      name: createName,
       category: category,
       location: vacancyAddress,
       city: vacancyCity,
@@ -138,7 +142,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
   const handleContract = () => {
     setContract(prev => !prev);
   };
-
+  //images for create Task get images from library
   const handleLoadImages = async () => {
     const localImages = await getImages();
     if (localImages) {
@@ -146,7 +150,26 @@ const CreateVacancyScreen = ({navigation}: any) => {
     }
   };
 
-  console.log(images);
+  //save Service
+
+  const handleService = async () => {
+    //upload images for service
+    const imagesForUpload = await uploadImages(images);
+
+    const serviceData: Service = {
+      name: createName,
+      category,
+      salaryFrom: vacancySalaryFrom,
+      salaryTo: vacancySalaryTo,
+      description: vacancyDescription,
+      userId: user?._id,
+      isContract: contract,
+      images: imagesForUpload,
+    };
+
+    await dispatch(createService(serviceData));
+    setCategory('');
+  };
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -170,7 +193,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
                   : 'Название задачи'
               }
               placeholder="Введите название"
-              setState={setVacancyName}
+              setState={setCreateName}
             />
             <GroupInput
               label="Категория"
@@ -456,7 +479,9 @@ const CreateVacancyScreen = ({navigation}: any) => {
           )}
           {/* SUBMIT HANDLER */}
           <Button
-            onPress={handleSave}
+            onPress={
+              isVacancy ? handleVacancy : isService ? handleService : () => {}
+            }
             style={{width: width / 2, alignSelf: 'center', marginTop: 16}}>
             Создать {isVacancy && 'вакансию'} {isTask && 'задачу'}{' '}
             {isService && 'услугу'}

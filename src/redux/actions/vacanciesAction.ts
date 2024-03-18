@@ -25,7 +25,6 @@ export const getVacancies = createAsyncThunk<Vacancy[]>(
 export const createVacancy = createAsyncThunk(
   'vacancy/create',
   async (vacancyData: Vacancy, {rejectWithValue, dispatch}) => {
-    console.log(vacancyData);
     try {
       const result = await axios.post(`${BASE_URL}/vacancies`, {vacancyData});
       if (result.status === 200) {

@@ -18,18 +18,39 @@ export type User = {
 
 export type Vacancy = {
   __v?: number;
-  _id: string;
+  _id?: string;
   category: string;
-  companyName: string;
-  createdAt: string;
-  description: number;
-  img: string;
+  companyName: string | undefined;
+  createdAt?: string;
+  description: string;
+  img?: string;
   location: string;
   name: string;
-  salaryFrom: number;
-  salaryTo: number;
-  updatedAt: string;
-  workTime: string;
-  salary: string;
-  views: number;
+  salaryFrom: string;
+  salaryTo: string;
+  updatedAt?: string;
+  workTime?: string;
+  salary?: string;
+  views?: number;
+  city: string;
+  employmentType: string;
+  userId: string | undefined;
+};
+
+export type Service = {
+  __v?: number;
+  _id?: string;
+  category: string;
+  companyName?: string;
+  createdAt?: string;
+  description: string;
+  images?: string;
+  location?: string;
+  name: string;
+  salaryFrom: string;
+  salaryTo: string;
+  updatedAt?: string;
+  views?: number;
+  isContract?: boolean;
+  userId: string | undefined;
 };

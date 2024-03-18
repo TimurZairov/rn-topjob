@@ -2,7 +2,6 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
 
 export const getImages = async () => {
-  console.log('ok');
   try {
     const result = await launchImageLibrary({
       mediaType: 'photo',

@@ -4,16 +4,31 @@ import {
   RefreshControl,
   SafeAreaView,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useAppDispatch, useAppSelector} from '../../redux/type';
+//
 import {COLORS, SIZES} from '../../theme/theme';
 import CreateButton from '../../components/CreateButton/CreateButton';
 import Card from '../../components/Card/Card';
 import Header from '../../components/Header/Header';
+import {getServices} from '../../redux/actions/servicesAction';
 
 const ServicesScreen = () => {
+  const dispatch = useAppDispatch();
+  const {services, loading} = useAppSelector(state => state.services);
+
+  const handleGetServices = async () => {
+    await dispatch(getServices());
+  };
+
+  useEffect(() => {
+    (async () => {
+      dispatch(getServices());
+    })();
+  }, [dispatch]);
+
   return (
     <View style={{flex: 1}}>
       <SafeAreaView style={styles.container}>
@@ -24,21 +39,21 @@ const ServicesScreen = () => {
         {/* CARD */}
 
         <FlatList
-          data={[]}
+          data={services || []}
           renderItem={({item}) => {
-            return <Card vacancy={item} />;
+            return <Card cardItem={item} />;
           }}
           keyExtractor={item => item._id}
           contentContainerStyle={styles.flatList}
-          // refreshControl={
-          //   <RefreshControl
-          //     tintColor={COLORS.mainOrange}
-          //     // onRefresh={handleRefresh}
-          //     // refreshing={loading}
-          //     size={Platform.OS === 'ios' ? SIZES.default : undefined}
-          //     progressViewOffset={Platform.OS === 'ios' ? 10 : undefined}
-          //   />
-          // }
+          refreshControl={
+            <RefreshControl
+              tintColor={COLORS.mainOrange}
+              onRefresh={handleGetServices}
+              refreshing={loading}
+              size={Platform.OS === 'ios' ? SIZES.default : undefined}
+              progressViewOffset={Platform.OS === 'ios' ? 10 : undefined}
+            />
+          }
         />
       </SafeAreaView>
       <View style={{position: 'absolute', bottom: 30, right: 30}}>
