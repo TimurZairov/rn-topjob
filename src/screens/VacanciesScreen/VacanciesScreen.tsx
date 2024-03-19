@@ -1,4 +1,11 @@
-import {FlatList, Platform, SafeAreaView, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import React, {useEffect} from 'react';
 //
 import Header from '../../components/Header/Header';
@@ -33,23 +40,29 @@ const VacanciesScreen = () => {
         </View>
         {/* CARD */}
 
-        <FlatList
-          data={vacancies || []}
-          renderItem={({item}) => {
-            return <Card cardItem={item} />;
-          }}
-          keyExtractor={item => item._id}
-          contentContainerStyle={styles.flatList}
-          refreshControl={
-            <RefreshControl
-              tintColor={COLORS.mainOrange}
-              onRefresh={handleRefresh}
-              refreshing={loading}
-              size={Platform.OS === 'ios' ? SIZES.default : undefined}
-              progressViewOffset={Platform.OS === 'ios' ? 10 : undefined}
-            />
-          }
-        />
+        {vacancies && vacancies.length > 0 ? (
+          <FlatList
+            data={vacancies || []}
+            renderItem={({item}) => {
+              return <Card cardItem={item} />;
+            }}
+            keyExtractor={item => item._id!}
+            contentContainerStyle={styles.flatList}
+            refreshControl={
+              <RefreshControl
+                tintColor={COLORS.mainOrange}
+                onRefresh={handleRefresh}
+                refreshing={loading}
+                size={Platform.OS === 'ios' ? SIZES.default : undefined}
+                progressViewOffset={Platform.OS === 'ios' ? 10 : undefined}
+              />
+            }
+          />
+        ) : (
+          <View style={styles.indicator}>
+            <ActivityIndicator color={COLORS.mainOrange} />
+          </View>
+        )}
       </SafeAreaView>
       <View style={{position: 'absolute', bottom: 30, right: 30}}>
         <CreateButton />
@@ -63,6 +76,7 @@ export default VacanciesScreen;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.white,
+    flex: 1,
   },
   header: {
     borderBottomWidth: 1,
@@ -76,4 +90,5 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   flatList: {paddingHorizontal: 10},
+  indicator: {flex: 1, justifyContent: 'center', alignItems: 'center'},
 });

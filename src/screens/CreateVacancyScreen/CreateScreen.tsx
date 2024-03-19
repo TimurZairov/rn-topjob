@@ -31,6 +31,7 @@ import {Asset} from 'react-native-image-picker';
 import {createService} from '../../redux/actions/servicesAction';
 import {Service, Vacancy} from '../../types/type';
 import {uploadImages} from '../../helpers/createItem';
+import {createTask} from '../../redux/actions/taskAction';
 
 const CreateVacancyScreen = ({navigation}: any) => {
   //store
@@ -185,6 +186,40 @@ const CreateVacancyScreen = ({navigation}: any) => {
       serviceData.images = imagesForUpload;
     }
     await dispatch(createService(serviceData));
+    navigation.goBack();
+    setLoading(false);
+    setCategory('');
+  };
+
+  //CREATE SERVICE
+
+  const handleCreateTask = async () => {
+    if (loading) {
+      return;
+    }
+
+    setLoading(true);
+    const newTask = {
+      name: createName,
+      category,
+      description: vacancyDescription,
+      address: createAddress,
+      userId: user?._id,
+      salaryFrom: createSalaryFrom,
+      salaryTo: createSalaryTo,
+      payment: payment,
+      remote: remote,
+      contract,
+      userName: user?.name,
+      // images: [],
+    };
+
+    const checked = checkValidation(newTask);
+    if (!checked) {
+      setLoading(false);
+      return;
+    }
+    await dispatch(createTask(newTask));
     navigation.goBack();
     setLoading(false);
     setCategory('');
@@ -499,7 +534,11 @@ const CreateVacancyScreen = ({navigation}: any) => {
           {/* SUBMIT HANDLER */}
           <Button
             onPress={
-              isVacancy ? handleVacancy : isService ? handleService : () => {}
+              isVacancy
+                ? handleVacancy
+                : isService
+                ? handleService
+                : handleCreateTask
             }
             style={{width: width / 2, alignSelf: 'center', marginTop: 16}}>
             {loading ? (

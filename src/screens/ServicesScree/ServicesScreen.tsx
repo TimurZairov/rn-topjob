@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   Platform,
   RefreshControl,
@@ -38,23 +39,29 @@ const ServicesScreen = () => {
         </View>
         {/* CARD */}
 
-        <FlatList
-          data={services || []}
-          renderItem={({item}) => {
-            return <Card cardItem={item} />;
-          }}
-          keyExtractor={item => item._id}
-          contentContainerStyle={styles.flatList}
-          refreshControl={
-            <RefreshControl
-              tintColor={COLORS.mainOrange}
-              onRefresh={handleGetServices}
-              refreshing={loading}
-              size={Platform.OS === 'ios' ? SIZES.default : undefined}
-              progressViewOffset={Platform.OS === 'ios' ? 10 : undefined}
-            />
-          }
-        />
+        {services && services.length > 0 ? (
+          <FlatList
+            data={services || []}
+            renderItem={({item}) => {
+              return <Card cardItem={item} />;
+            }}
+            keyExtractor={item => item._id!}
+            contentContainerStyle={styles.flatList}
+            refreshControl={
+              <RefreshControl
+                tintColor={COLORS.mainOrange}
+                onRefresh={handleGetServices}
+                refreshing={loading}
+                size={Platform.OS === 'ios' ? SIZES.default : undefined}
+                progressViewOffset={Platform.OS === 'ios' ? 10 : undefined}
+              />
+            }
+          />
+        ) : (
+          <View style={styles.indicator}>
+            <ActivityIndicator color={COLORS.mainOrange} />
+          </View>
+        )}
       </SafeAreaView>
       <View style={{position: 'absolute', bottom: 30, right: 30}}>
         <CreateButton />
@@ -68,6 +75,7 @@ export default ServicesScreen;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.white,
+    flex: 1,
   },
   header: {
     borderBottomWidth: 1,
@@ -81,4 +89,5 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   flatList: {paddingHorizontal: 10},
+  indicator: {flex: 1, justifyContent: 'center', alignItems: 'center'},
 });

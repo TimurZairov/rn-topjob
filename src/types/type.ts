@@ -20,11 +20,11 @@ export type Vacancy = {
   __v?: number;
   _id?: string;
   category: string;
-  companyName: string | undefined;
+  companyName?: string | undefined;
   createdAt?: string;
   description: string;
   img?: string;
-  address: string;
+  address?: string | undefined;
   name: string;
   salaryFrom: string;
   salaryTo: string;
@@ -32,8 +32,8 @@ export type Vacancy = {
   workTime?: string;
   salary?: string;
   views?: number;
-  city: string;
-  employmentType: string;
+  city?: string;
+  employmentType?: string;
   userId: string | undefined;
   //TODO
   // location: string | undefined;
@@ -47,7 +47,7 @@ export type Service = {
   createdAt?: string;
   description: string;
   images?: string;
-  address?: string;
+  address?: string | undefined;
   name: string;
   salaryFrom: string;
   salaryTo: string;
@@ -55,5 +55,21 @@ export type Service = {
   views?: number;
   isContract?: boolean;
   userId: string | undefined;
+  userName?: string | undefined;
+};
+
+export type Task = {
+  _id?: string;
+  name: string;
+  category: string;
+  description: string;
+  address: string;
+  userId: string | undefined;
+  salaryFrom: string;
+  salaryTo: string;
+  payment: string;
+  remote: boolean;
+  images?: string[];
+  comments?: string[];
   userName: string | undefined;
 };
