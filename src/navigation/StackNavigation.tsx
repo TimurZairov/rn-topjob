@@ -9,6 +9,7 @@ import MapScreen from '../screens/MapScreen/MapModalScreen';
 import CategoryModalScreen from '../screens/CategoryModalScreen/CategoryModalScreen';
 import SplashScreen from '../screens/SplashScreen/SplashScreen';
 import ProfileFieldScreen from '../screens/Auth/ProfileFieldScreen';
+import DetailScreen from '../screens/DetailScreen/DetailScreen';
 
 const Stack = createStackNavigator<StackNavigationParams>();
 
@@ -39,6 +40,7 @@ const StackNavigation = () => {
           animationEnabled: true,
         }}
       />
+      <Stack.Screen name="Detail" component={DetailScreen} />
     </Stack.Navigator>
   );
 };

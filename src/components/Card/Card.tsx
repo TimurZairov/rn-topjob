@@ -1,13 +1,16 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {COLORS, FONTS, SIZES} from '../../theme/theme';
 import CalendarIcon from '../../assets/icons/CalendarIcon';
 import ViewIcon from '../../assets/icons/ViewIcon';
 import {Service, Vacancy} from '../../types/type';
 import Photo from '../../assets/icons/Photo';
+import CheckedIcon from '../../assets/icons/CheckedIcon';
+import {useNavigation} from '@react-navigation/native';
 
 interface ICard {
   cardItem: Vacancy & Service;
+  isTask?: boolean;
 }
 
 const Card = ({cardItem}: ICard) => {
@@ -27,7 +30,10 @@ const Card = ({cardItem}: ICard) => {
     address,
     userName,
     isContract,
+    isTask,
   } = cardItem;
+
+  const navigation = useNavigation();
 
   //formate date
   const formateDate = () => {
@@ -44,11 +50,19 @@ const Card = ({cardItem}: ICard) => {
     }
   };
 
+  const handleDetailScreen = () => {
+    navigation.navigate('Detail');
+  };
+
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={handleDetailScreen}>
       {/* CardHeader */}
       <View style={styles.cardHeader}>
-        <Text style={styles.name}>{companyName || userName}</Text>
+        <View style={styles.nameWrapper}>
+          <Text style={styles.name}>{companyName || userName}</Text>
+          <CheckedIcon />
+        </View>
+
         <View style={styles.data}>
           <CalendarIcon color={COLORS.darkGrey} />
           <Text style={styles.dataText}>{formateDate()}</Text>
@@ -67,11 +81,11 @@ const Card = ({cardItem}: ICard) => {
             style={styles.image}
             resizeMode="cover"
           />
-        ) : (
-          <View style={styles.defaultImg}>
+        ) : <View style={styles.defaultImg}>
             <Photo />
-          </View>
-        )}
+          </View> ? (
+          isTask
+        ) : null}
         <View style={styles.cardName}>
           <Text style={styles.vacancyName}>{name}</Text>
           {salary && <Text style={styles.salary}>{salary} сум</Text>}
@@ -90,7 +104,7 @@ const Card = ({cardItem}: ICard) => {
         <Text style={styles.descText}>{description}</Text>
       </View>
       <Text style={styles.descText}>{location || address}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -110,9 +124,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingBottom: 10,
   },
+  nameWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   name: {
     color: COLORS.textGrey,
     fontSize: SIZES.default,
+    marginRight: 4,
   },
   data: {
     flexDirection: 'row',
