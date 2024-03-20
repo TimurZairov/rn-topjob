@@ -45,7 +45,7 @@ const TasksScreen = () => {
           <FlatList
             data={tasks || []}
             renderItem={({item}) => {
-              return <Card cardItem={item} />;
+              return <Card cardItem={item} isTask />;
             }}
             contentContainerStyle={styles.flatList}
             refreshControl={

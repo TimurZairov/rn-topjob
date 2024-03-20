@@ -6,8 +6,9 @@ import {
   View,
   Image,
   ActivityIndicator,
+  Task,
 } from 'react-native';
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Title from '../../components/Title/Title';
 import {COLORS, FONTS, SIZES, width} from '../../theme/theme';
 import HeaderLogo from '../../components/HeaderLogo/HeaderLogo';
@@ -19,8 +20,10 @@ import UserReview from '../../components/UserReview/UserReview';
 import CardSmall from '../../components/CardSmall/CardSmall';
 import LinearGradient from 'react-native-linear-gradient';
 import {useRoute} from '@react-navigation/native';
-import {useAppDispatch, useAppSelector} from '../../redux/type';
-import {getVacancy} from '../../redux/actions/vacanciesAction';
+import {Service, Vacancy} from '../../types/type';
+import axios from 'axios';
+import {BASE_URL} from '../../config/config';
+import Toast from 'react-native-toast-message';
 
 interface IDetailScreen {
   screen: string;
@@ -28,21 +31,34 @@ interface IDetailScreen {
 
 const DetailScreen = ({}: IDetailScreen) => {
   const router = useRoute();
-  const dispatch = useAppDispatch();
 
-  const {vacancy, loading} = useAppSelector(state => state.vacancies);
+  const [item, setItem] = useState<(Vacancy & Service & Task) | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const {id, key} = router.params;
 
-  //get vacancy by Id
+  //get item by Id
   const handleFetchVacancy = useCallback(async () => {
-    await dispatch(getVacancy(id));
-  }, [dispatch, id]);
+    setLoading(true);
+    try {
+      const result = await axios.get(`${BASE_URL}/${key}/${id}`);
+      if (!result) {
+        return;
+      }
+      setItem(result.data);
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Ошибка',
+        text2: 'Ошибка сервера',
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [id, key]);
 
   useEffect(() => {
-    if (key === 'vacancy') {
-      handleFetchVacancy();
-    }
+    handleFetchVacancy();
   }, [handleFetchVacancy, key]);
 
   if (loading) {
@@ -58,52 +74,66 @@ const DetailScreen = ({}: IDetailScreen) => {
       <SafeAreaView style={styles.container}>
         <HeaderLogo isVisible />
         <ScrollView style={styles.scroll}>
-          <Title textStyle={styles.textTitle}>{vacancy?.name}</Title>
+          <Title textStyle={styles.textTitle}>{item?.name}</Title>
           <View style={styles.infoContainer}>
             {/* INFO */}
             <View style={styles.info}>
-              <Text style={styles.infoText}>{vacancy?.views}</Text>
+              <Text style={styles.infoText}>{item?.views} просмотра</Text>
               <Text style={styles.infoText}> | </Text>
-              <Text style={styles.infoText}>{vacancy?.createdAt}</Text>
+              <Text style={styles.infoText}>{item?.createdAt}</Text>
             </View>
 
             <View style={[styles.info, {marginTop: 10}]}>
-              <Text style={styles.infoText}>{vacancy?.category}</Text>
+              <Text style={styles.infoText}>{item?.category}</Text>
               <Text style={styles.infoText}> | </Text>
-              <Text style={styles.infoText}>{vacancy?.city}</Text>
+              <Text style={styles.infoText}>{item?.userId?.city}</Text>
             </View>
 
             <Text
               style={[
                 styles.salary,
                 {marginTop: 10},
-              ]}>{`${vacancy?.salaryFrom} - ${vacancy?.salaryTo} сум`}</Text>
+              ]}>{`${item?.salaryFrom} - ${item?.salaryTo} сум`}</Text>
           </View>
           {/* DESCRIPTION */}
           <View style={styles.descContainer}>
             <Title textStyle={styles.descTitle}>Описание</Title>
-            <Text style={styles.desc}>{vacancy?.description}</Text>
+            <Text style={styles.desc}>{item?.description}</Text>
           </View>
           {/* IMAGES IF EXIST */}
           {key === 'service' && (
-            <View style={styles.sliderContainer}>
-              <View />
-            </View>
+            <ScrollView
+              horizontal
+              style={styles.sliderContainer}
+              contentContainerStyle={{flexDirection: 'row', gap: 10}}>
+              {item?.images &&
+                item?.images.length > 0 &&
+                item.images.map((image, index) => {
+                  return (
+                    <Image
+                      style={styles.images}
+                      key={index}
+                      source={{uri: image}}
+                      resizeMode="cover"
+                    />
+                  );
+                })}
+            </ScrollView>
           )}
           {/* BUTTONS */}
           <View style={styles.btnContainer}>
             <Button
               style={{backgroundColor: COLORS.green, width: width * 0.45}}>
-              {vacancy?.userId?.phoneNumber}
+              {item?.userId?.phoneNumber}
             </Button>
             <Button style={{width: width * 0.45}}>Написать</Button>
           </View>
           {/* USer */}
           <ContainerBlock style={styles.block}>
-            {vacancy?.userId.image?.length > 0 ? (
+            {item?.userId.image && item?.userId.image?.length > 0 ? (
               <Image
                 source={{
-                  uri: vacancy?.userId.image,
+                  uri: item?.userId.image,
                 }}
                 style={styles.userImage}
               />
@@ -111,15 +141,15 @@ const DetailScreen = ({}: IDetailScreen) => {
             <View>
               <View style={styles.userInfo}>
                 <Title style={{marginRight: 6}} textStyle={styles.descTitle}>
-                  {vacancy?.userId?.name}
+                  {item?.userId?.name}
                 </Title>
                 <CheckedIcon />
               </View>
-              <Text style={styles.infoText}>{vacancy?.userId?.city}</Text>
+              <Text style={styles.infoText}>{item?.userId?.city}</Text>
               <View style={{width: 120, marginTop: 10}}>
                 <UserReview
-                  likes={vacancy?.userId.likes}
-                  dislikes={vacancy?.userId.dislikes}
+                  likes={item?.userId.likes}
+                  dislikes={item?.userId.dislikes}
                 />
               </View>
             </View>
@@ -232,9 +262,11 @@ const styles = StyleSheet.create({
     fontSize: SIZES.md,
   },
   sliderContainer: {
-    height: 300,
-    backgroundColor: COLORS.darkGrey,
     marginBottom: 10,
+  },
+  images: {
+    height: 300,
+    width: 300,
     borderRadius: 10,
   },
   btnContainer: {

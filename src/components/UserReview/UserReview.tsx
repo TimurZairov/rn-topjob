@@ -5,8 +5,8 @@ import LikeIcon from '../../assets/icons/LikeIcon';
 import DislikeIcon from '../../assets/icons/DislikeIcon';
 
 interface IUser {
-  likes: number;
-  dislikes: number;
+  likes: number | undefined;
+  dislikes: number | undefined;
 }
 
 const UserReview = ({likes, dislikes}: IUser) => {

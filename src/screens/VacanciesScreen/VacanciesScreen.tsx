@@ -44,7 +44,7 @@ const VacanciesScreen = () => {
           <FlatList
             data={vacancies || []}
             renderItem={({item}) => {
-              return <Card cardItem={item} id={item._id} />;
+              return <Card cardItem={item} id={item._id} isVacancy />;
             }}
             keyExtractor={item => item._id!}
             contentContainerStyle={styles.flatList}

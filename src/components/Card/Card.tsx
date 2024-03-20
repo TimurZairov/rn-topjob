@@ -1,20 +1,23 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
+//
 import {COLORS, FONTS, SIZES} from '../../theme/theme';
 import CalendarIcon from '../../assets/icons/CalendarIcon';
 import ViewIcon from '../../assets/icons/ViewIcon';
-import {Service, Vacancy} from '../../types/type';
+import {Service, Task, Vacancy} from '../../types/type';
 import Photo from '../../assets/icons/Photo';
 import CheckedIcon from '../../assets/icons/CheckedIcon';
 import {useNavigation} from '@react-navigation/native';
 
 interface ICard {
-  cardItem: Vacancy & Service;
+  cardItem: Vacancy & Service & Task;
   isTask?: boolean;
   id?: string;
+  isVacancy?: boolean;
+  isService?: boolean;
 }
 
-const Card = ({cardItem}: ICard) => {
+const Card = ({cardItem, isTask, isVacancy, isService}: ICard) => {
   const {
     salary,
     companyName,
@@ -31,7 +34,6 @@ const Card = ({cardItem}: ICard) => {
     address,
     userName,
     isContract,
-    isTask,
     _id,
   } = cardItem;
 
@@ -53,7 +55,13 @@ const Card = ({cardItem}: ICard) => {
   };
 
   const handleDetailScreen = () => {
-    navigation.navigate('Detail', {id: _id, key: 'vacancy'});
+    if (isVacancy) {
+      navigation.navigate('Detail', {id: _id, key: 'vacancies'});
+    } else if (isTask) {
+      navigation.navigate('Detail', {id: _id, key: 'task'});
+    } else if (isService) {
+      navigation.navigate('Detail', {id: _id, key: 'service'});
+    }
   };
 
   return (

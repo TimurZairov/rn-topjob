@@ -43,7 +43,7 @@ const ServicesScreen = () => {
           <FlatList
             data={services || []}
             renderItem={({item}) => {
-              return <Card cardItem={item} />;
+              return <Card cardItem={item} isService />;
             }}
             keyExtractor={item => item._id!}
             contentContainerStyle={styles.flatList}
