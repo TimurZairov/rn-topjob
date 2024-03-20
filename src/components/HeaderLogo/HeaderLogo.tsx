@@ -4,15 +4,20 @@ import React from 'react';
 //
 import {COLORS, height} from '../../theme/theme';
 import BackArrow from '../../assets/icons/BackArrow';
+import BurgerIcon from '../../assets/icons/BurgerIcon';
 
 interface IHeaderLogo {
   isVisible?: boolean;
+  isProfile?: boolean;
 }
 
-const HeaderLogo = ({isVisible}: IHeaderLogo) => {
+const HeaderLogo = ({isVisible, isProfile}: IHeaderLogo) => {
   return (
     <View style={styles.header}>
-      <View style={styles.wrapper}>{isVisible ? <BackArrow /> : null}</View>
+      <View style={styles.wrapper}>
+        {isVisible ? <BackArrow /> : null}
+        {isProfile ? <BurgerIcon /> : null}
+      </View>
       <Image source={require('../../assets/images/logo.png')} />
       <View style={styles.wrapper} />
     </View>

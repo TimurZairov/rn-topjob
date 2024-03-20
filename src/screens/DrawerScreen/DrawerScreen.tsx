@@ -15,7 +15,6 @@ import RightArrowIcon from '../../assets/icons/RightArrowIcon';
 import {useAppSelector} from '../../redux/type';
 
 const pages = [
-  {pageTitle: 'Мои данные', name: 'MyData'},
   {pageTitle: 'Мои вакансии', name: 'MyVacancy'},
   {pageTitle: 'Мои услуги', name: 'MyServices'},
   {pageTitle: 'Мои задачи', name: 'MyTasks'},

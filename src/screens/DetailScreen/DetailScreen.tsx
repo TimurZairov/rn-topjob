@@ -5,8 +5,9 @@ import {
   Text,
   View,
   Image,
+  ActivityIndicator,
 } from 'react-native';
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import Title from '../../components/Title/Title';
 import {COLORS, FONTS, SIZES, width} from '../../theme/theme';
 import HeaderLogo from '../../components/HeaderLogo/HeaderLogo';
@@ -17,77 +18,109 @@ import CheckedIcon from '../../assets/icons/CheckedIcon';
 import UserReview from '../../components/UserReview/UserReview';
 import CardSmall from '../../components/CardSmall/CardSmall';
 import LinearGradient from 'react-native-linear-gradient';
+import {useRoute} from '@react-navigation/native';
+import {useAppDispatch, useAppSelector} from '../../redux/type';
+import {getVacancy} from '../../redux/actions/vacanciesAction';
 
 interface IDetailScreen {
   screen: string;
 }
 
 const DetailScreen = ({}: IDetailScreen) => {
+  const router = useRoute();
+  const dispatch = useAppDispatch();
+
+  const {vacancy, loading} = useAppSelector(state => state.vacancies);
+
+  const {id, key} = router.params;
+
+  //get vacancy by Id
+  const handleFetchVacancy = useCallback(async () => {
+    await dispatch(getVacancy(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (key === 'vacancy') {
+      handleFetchVacancy();
+    }
+  }, [handleFetchVacancy, key]);
+
+  if (loading) {
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator color={COLORS.mainOrange} size={20} />
+      </View>
+    );
+  }
+
   return (
     <View style={{flex: 1}}>
       <SafeAreaView style={styles.container}>
-        <HeaderLogo />
+        <HeaderLogo isVisible />
         <ScrollView style={styles.scroll}>
-          <Title textStyle={styles.textTitle}>Курьер - Водитель </Title>
+          <Title textStyle={styles.textTitle}>{vacancy?.name}</Title>
           <View style={styles.infoContainer}>
             {/* INFO */}
             <View style={styles.info}>
-              <Text style={styles.infoText}>74 просмотра</Text>
+              <Text style={styles.infoText}>{vacancy?.views}</Text>
               <Text style={styles.infoText}> | </Text>
-              <Text style={styles.infoText}>создано: 23.10.20</Text>
+              <Text style={styles.infoText}>{vacancy?.createdAt}</Text>
             </View>
 
             <View style={[styles.info, {marginTop: 10}]}>
-              <Text style={styles.infoText}>Дизайн</Text>
+              <Text style={styles.infoText}>{vacancy?.category}</Text>
               <Text style={styles.infoText}> | </Text>
-              <Text style={styles.infoText}>Ташкент</Text>
+              <Text style={styles.infoText}>{vacancy?.city}</Text>
             </View>
 
-            <Text style={[styles.salary, {marginTop: 10}]}>от 3-6 млн сум</Text>
+            <Text
+              style={[
+                styles.salary,
+                {marginTop: 10},
+              ]}>{`${vacancy?.salaryFrom} - ${vacancy?.salaryTo} сум`}</Text>
           </View>
           {/* DESCRIPTION */}
           <View style={styles.descContainer}>
             <Title textStyle={styles.descTitle}>Описание</Title>
-            <Text style={styles.desc}>
-              Здравствуйте. Расскажу коротка о процессе разработки сайта. На
-              разработку корпоративного сайта уйдет 10 дней. С вас требуется: 1.
-              Информация о вашей деятельности 2. Ваши продукции или услуги 3.
-              Ваши контакты 4. Фотография ваших товаров Примеры сайтов которые я
-              разработал: Yaraagro.uz Doctor-admin.netlify.app
-            </Text>
+            <Text style={styles.desc}>{vacancy?.description}</Text>
           </View>
           {/* IMAGES IF EXIST */}
-          <View style={styles.sliderContainer}>
-            <View />
-          </View>
+          {key === 'service' && (
+            <View style={styles.sliderContainer}>
+              <View />
+            </View>
+          )}
           {/* BUTTONS */}
           <View style={styles.btnContainer}>
             <Button
               style={{backgroundColor: COLORS.green, width: width * 0.45}}>
-              Позвонить
+              {vacancy?.userId?.phoneNumber}
             </Button>
             <Button style={{width: width * 0.45}}>Написать</Button>
           </View>
           {/* USer */}
           <ContainerBlock style={styles.block}>
-            <Image
-              source={{
-                uri: 'https://api.logobank.uz/media/logos_preview/just-01.jpg',
-              }}
-              style={styles.userImage}
-            />
+            {vacancy?.userId.image?.length > 0 ? (
+              <Image
+                source={{
+                  uri: vacancy?.userId.image,
+                }}
+                style={styles.userImage}
+              />
+            ) : null}
             <View>
               <View style={styles.userInfo}>
                 <Title style={{marginRight: 6}} textStyle={styles.descTitle}>
-                  Amaya Soft
+                  {vacancy?.userId?.name}
                 </Title>
                 <CheckedIcon />
               </View>
-              <Text style={styles.infoText}>
-                Ташкент, Шайхонтохурский район
-              </Text>
+              <Text style={styles.infoText}>{vacancy?.userId?.city}</Text>
               <View style={{width: 120, marginTop: 10}}>
-                <UserReview likes={20} dislikes={20} />
+                <UserReview
+                  likes={vacancy?.userId.likes}
+                  dislikes={vacancy?.userId.dislikes}
+                />
               </View>
             </View>
           </ContainerBlock>
@@ -145,6 +178,11 @@ const DetailScreen = ({}: IDetailScreen) => {
 export default DetailScreen;
 
 const styles = StyleSheet.create({
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     backgroundColor: COLORS.white,
     flex: 1,

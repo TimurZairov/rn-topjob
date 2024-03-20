@@ -45,3 +45,23 @@ export const createVacancy = createAsyncThunk(
     }
   },
 );
+
+export const getVacancy = createAsyncThunk(
+  'vacancy/getById',
+  async (id: string, {rejectWithValue}) => {
+    try {
+      if (!id) {
+        return;
+      }
+      const vacancy = await axios.get(`${BASE_URL}/vacancies/${id}`);
+      return vacancy.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response && axiosError.response.status === 500) {
+          rejectWithValue('Что-то пошло не так...');
+        }
+      }
+    }
+  },
+);

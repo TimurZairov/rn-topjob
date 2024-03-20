@@ -18,6 +18,7 @@ const DrawerNavigation = () => {
           width: 300,
           paddingHorizontal: 10,
         },
+        swipeEnabled: false,
       }}
       drawerContent={props => <DrawerScreen {...props} />}>
       <Drawer.Screen name={'Stack'} component={StackNavigation} />

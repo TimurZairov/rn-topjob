@@ -11,6 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 interface ICard {
   cardItem: Vacancy & Service;
   isTask?: boolean;
+  id?: string;
 }
 
 const Card = ({cardItem}: ICard) => {
@@ -31,6 +32,7 @@ const Card = ({cardItem}: ICard) => {
     userName,
     isContract,
     isTask,
+    _id,
   } = cardItem;
 
   const navigation = useNavigation();
@@ -51,7 +53,7 @@ const Card = ({cardItem}: ICard) => {
   };
 
   const handleDetailScreen = () => {
-    navigation.navigate('Detail');
+    navigation.navigate('Detail', {id: _id, key: 'vacancy'});
   };
 
   return (

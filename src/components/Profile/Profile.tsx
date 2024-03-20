@@ -35,7 +35,7 @@ const Profile = ({user}: IProfile) => {
 
   return (
     <>
-      <HeaderLogo />
+      <HeaderLogo isProfile />
       <ScrollView style={{flex: 1}}>
         <View style={styles.profileContainer}>
           <Title style={styles.titleContainer} textStyle={styles.title}>
