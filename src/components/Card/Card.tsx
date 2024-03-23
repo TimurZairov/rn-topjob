@@ -12,7 +12,7 @@ import {DetailNavigationProp} from '../../navigation/types/types';
 import {formateDate} from '../../helpers/foramteDate';
 
 interface ICard {
-  cardItem: Vacancy & Service & Task;
+  cardItem: (Vacancy & Service & Task) | any;
   isTask?: boolean;
   id?: string;
   isVacancy?: boolean;

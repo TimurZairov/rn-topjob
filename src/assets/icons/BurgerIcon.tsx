@@ -1,10 +1,17 @@
-import {TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import React from 'react';
 import {Path, Svg} from 'react-native-svg';
+import {DrawerActionHelpers, useNavigation} from '@react-navigation/native';
 
 const BurgerIcon = () => {
+  const navigation = useNavigation<DrawerActionHelpers<never>>();
+
+  const openDrawer = () => {
+    navigation.openDrawer();
+  };
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={openDrawer}>
       <Svg width="22" height="17" viewBox="0 0 22 17" fill="none">
         <Path
           d="M20.6343 7.27017H1.36551C0.79541 7.27017 0.333252 7.83571 0.333252 8.53333C0.333252 9.23095 0.79541 9.79649 1.36551 9.79649H20.6343C21.2044 9.79649 21.6666 9.23095 21.6666 8.53333C21.6666 7.83571 21.2044 7.27017 20.6343 7.27017Z"

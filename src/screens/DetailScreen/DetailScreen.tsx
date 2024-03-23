@@ -91,6 +91,7 @@ const DetailScreen = () => {
         dispatch(getServices());
       } else {
         dispatch(getTasks());
+        console.log('ok');
       }
     }
   }, [dispatch, id, key, user]);
@@ -120,7 +121,7 @@ const DetailScreen = () => {
           <View style={styles.infoContainer}>
             {/* INFO */}
             <View style={styles.info}>
-              <Text style={styles.infoText}>{item?.views} просмотра</Text>
+              <Text style={styles.infoText}>{item?.views} просмотров</Text>
               <Text style={styles.infoText}> | </Text>
               <Text style={styles.infoText}>
                 {formateDate(item?.createdAt)}
@@ -198,38 +199,59 @@ const DetailScreen = () => {
               </View>
             </View>
           </ContainerBlock>
+
+          {key === 'task' && (
+            <ContainerBlock
+              style={{
+                paddingVertical: 10,
+                marginTop: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: 20,
+              }}>
+              <View style={styles.map} />
+            </ContainerBlock>
+          )}
+
           {/* all publish */}
-          <ContainerBlock
-            style={{
-              paddingVertical: 10,
-              marginTop: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Title textStyle={styles.descTitle}>Все объявления автора</Title>
-          </ContainerBlock>
-          {/* Map */}
-          <ContainerBlock
-            style={{
-              paddingVertical: 10,
-              marginTop: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginBottom: 20,
-            }}>
-            <View style={styles.map} />
-          </ContainerBlock>
-          {/* JOBS */}
-          <Title style={{marginBottom: 5}} textStyle={styles.textTitle}>
-            Активные задачи:
-          </Title>
-          {[...Array(6)].map((_, index) => {
-            return (
-              <View key={index}>
-                <CardSmall />
-              </View>
-            );
-          })}
+          {key !== 'task' ? (
+            <>
+              <ContainerBlock
+                style={{
+                  paddingVertical: 10,
+                  marginTop: 10,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Title textStyle={styles.descTitle}>
+                  Все объявления автора
+                </Title>
+              </ContainerBlock>
+              {/* Map */}
+              <ContainerBlock
+                style={{
+                  paddingVertical: 10,
+                  marginTop: 10,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginBottom: 20,
+                }}>
+                <View style={styles.map} />
+              </ContainerBlock>
+              {/* JOBS */}
+              <Title style={{marginBottom: 5}} textStyle={styles.textTitle}>
+                Активные задачи:
+              </Title>
+              {[...Array(6)].map((_, index) => {
+                return (
+                  <View key={index}>
+                    <CardSmall />
+                  </View>
+                );
+              })}
+            </>
+          ) : null}
+
           <LinearGradient
             colors={[COLORS.darkBlue, COLORS.lightBlue]}
             style={styles.gradient}>

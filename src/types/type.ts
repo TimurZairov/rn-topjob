@@ -72,4 +72,5 @@ export type Task = {
   images?: string[];
   comments?: string[];
   userName?: string | undefined;
+  views?: number;
 };
