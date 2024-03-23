@@ -28,6 +28,8 @@ import {formateDate} from '../../helpers/foramteDate';
 import {useAppDispatch, useAppSelector} from '../../redux/type';
 
 import {getVacancies} from '../../redux/actions/vacanciesAction';
+import {getServices} from '../../redux/actions/servicesAction';
+import {getTasks} from '../../redux/actions/taskAction';
 
 interface IRoteParam {
   id: string;
@@ -73,7 +75,7 @@ const DetailScreen = () => {
 
     try {
       const result = await axios.post(`${BASE_URL}/${key}/views`, {
-        vacancyId: id,
+        updateId: id,
         userId: user?._id,
       });
       if (!result) {
@@ -83,7 +85,13 @@ const DetailScreen = () => {
     } catch (error) {
       console.log('detailsScreen | update views', console.log(error));
     } finally {
-      dispatch(getVacancies());
+      if (key === 'vacancies') {
+        dispatch(getVacancies());
+      } else if (key === 'service') {
+        dispatch(getServices());
+      } else {
+        dispatch(getTasks());
+      }
     }
   }, [dispatch, id, key, user]);
 
