@@ -8,6 +8,8 @@ import {Service, Task, Vacancy} from '../../types/type';
 import Photo from '../../assets/icons/Photo';
 import CheckedIcon from '../../assets/icons/CheckedIcon';
 import {useNavigation} from '@react-navigation/native';
+import {DetailNavigationProp} from '../../navigation/types/types';
+import {formateDate} from '../../helpers/foramteDate';
 
 interface ICard {
   cardItem: Vacancy & Service & Task;
@@ -30,29 +32,13 @@ const Card = ({cardItem, isTask, isVacancy, isService}: ICard) => {
     salaryFrom,
     salaryTo,
     images,
-    city,
     address,
     userName,
     isContract,
     _id,
   } = cardItem;
 
-  const navigation = useNavigation();
-
-  //formate date
-  const formateDate = () => {
-    if (createdAt) {
-      const created = new Date(createdAt);
-
-      const day = created.getUTCDate(); // get day
-      const month = created.getUTCMonth(); // get month
-      const year = created.getUTCFullYear(); //year
-
-      return `${day < 10 ? '0' + day : day}.${
-        month < 10 ? '0' + (month + 1) : month
-      }.${year}`;
-    }
-  };
+  const navigation = useNavigation<DetailNavigationProp>();
 
   const handleDetailScreen = () => {
     if (isVacancy) {
@@ -63,6 +49,7 @@ const Card = ({cardItem, isTask, isVacancy, isService}: ICard) => {
       navigation.navigate('Detail', {id: _id, key: 'service'});
     }
   };
+  //update views
 
   return (
     <TouchableOpacity style={styles.card} onPress={handleDetailScreen}>
@@ -75,7 +62,7 @@ const Card = ({cardItem, isTask, isVacancy, isService}: ICard) => {
 
         <View style={styles.data}>
           <CalendarIcon color={COLORS.darkGrey} />
-          <Text style={styles.dataText}>{formateDate()}</Text>
+          <Text style={styles.dataText}>{formateDate(createdAt)}</Text>
           <Text style={{marginHorizontal: 6, color: COLORS.darkGrey}}>|</Text>
           <ViewIcon color={COLORS.darkGrey} />
           <Text style={styles.dataText}>{views}</Text>

@@ -12,7 +12,6 @@ const DrawerNavigation = () => {
     <Drawer.Navigator
       screenOptions={{
         headerShown: false,
-        // swipeEnabled: false,
         drawerStyle: {
           backgroundColor: COLORS.white,
           width: 300,

@@ -7,11 +7,12 @@ import CreateVacancy from '../../assets/icons/CreateVacancy';
 import GroupIcon from '../../assets/icons/GroupIcon';
 import CreateTask from '../../assets/icons/CreateTask';
 import {useNavigation} from '@react-navigation/native';
-import {StackNavigationParamsProps} from '../../navigation/types/types';
+
 import {AppContext} from '../../context/context';
+import {CreateScreenNavigationProp} from '../../navigation/types/types';
 
 const CreateButton = () => {
-  const navigation = useNavigation<StackNavigationParamsProps>();
+  const navigation = useNavigation<CreateScreenNavigationProp>();
   const [showCreateBtn, setShowCreateBtn] = useState(false);
   const {setIsVacancy, setIsService, setIsTask} = useContext(AppContext);
 

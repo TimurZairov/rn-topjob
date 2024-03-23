@@ -1,9 +1,9 @@
 // import {DrawerNavigationProp} from '@react-navigation/drawer';
-import {NavigatorScreenParams} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
+// import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {StackNavigationProp} from '@react-navigation/stack'; // navigate | replace | push | etc...
 
 export type DrawerNavigationParams = {
-  Stack: StackNavigationParams;
+  Stack: undefined;
 };
 
 export type StackNavigationParams = {
@@ -14,8 +14,8 @@ export type StackNavigationParams = {
   Create: undefined;
   Map: undefined;
   Category: undefined;
-  Detail: undefined;
-  Tab: NavigatorScreenParams<TabNavigationParams>;
+  Detail: {id: string | unknown; key: string};
+  Tab: undefined;
 };
 
 export type TabNavigationParams = {
@@ -25,6 +25,16 @@ export type TabNavigationParams = {
   Task: undefined;
   Profile: undefined;
 };
+//detail screen
+export type DetailNavigationProp = StackNavigationProp<
+  StackNavigationParams,
+  'Detail'
+>;
 
-export type StackNavigationParamsProps =
-  StackNavigationProp<StackNavigationParams>;
+//create screen
+export type CreateScreenNavigationProp = StackNavigationProp<
+  StackNavigationParams,
+  'Category'
+>;
+
+//

@@ -1,6 +1,6 @@
 export type User = {
   __v: number;
-  _id: string;
+  _id?: string;
   city: string;
   createdAt: string;
   dislikes: number;
@@ -34,7 +34,7 @@ export type Vacancy = {
   views?: number;
   city?: string;
   employmentType?: string;
-  userId: User;
+  userId: User | unknown;
   //TODO
   location?: string;
 };
@@ -54,7 +54,7 @@ export type Service = {
   updatedAt?: string;
   views?: number;
   isContract?: boolean;
-  userId: User;
+  userId: User | undefined;
   userName?: string;
 };
 
@@ -64,7 +64,7 @@ export type Task = {
   category: string;
   description: string;
   address?: string | undefined;
-  userId: User;
+  userId: User | unknown;
   salaryFrom: string;
   salaryTo: string;
   payment?: string;

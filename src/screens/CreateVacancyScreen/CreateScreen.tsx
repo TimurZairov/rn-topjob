@@ -12,6 +12,7 @@ import {
 import React, {useContext, useState} from 'react';
 import Toast from 'react-native-toast-message';
 import {useAppDispatch, useAppSelector} from '../../redux/type';
+import {useNavigation} from '@react-navigation/native';
 //
 import HeaderLogo from '../../components/HeaderLogo/HeaderLogo';
 import {COLORS, FONTS, SIZES, width} from '../../theme/theme';
@@ -25,15 +26,16 @@ import {AppContext} from '../../context/context';
 import {condition, mode, paymentMethod} from '../../data/workCategory';
 import {checkValidation} from '../../helpers/vacancy';
 import {createVacancy} from '../../redux/actions/vacanciesAction';
-
 import {getImages} from '../../helpers/servicies';
 import {Asset} from 'react-native-image-picker';
 import {createService} from '../../redux/actions/servicesAction';
 import {Service, Vacancy} from '../../types/type';
 import {uploadImages} from '../../helpers/createItem';
 import {createTask} from '../../redux/actions/taskAction';
+import {CreateScreenNavigationProp} from '../../navigation/types/types';
 
-const CreateVacancyScreen = ({navigation}: any) => {
+const CreateVacancyScreen = () => {
+  const navigation = useNavigation<CreateScreenNavigationProp>();
   //store
   const {user} = useAppSelector(state => state.user);
 
@@ -166,7 +168,7 @@ const CreateVacancyScreen = ({navigation}: any) => {
       salaryFrom: createSalaryFrom,
       salaryTo: createSalaryTo,
       description: vacancyDescription,
-      userId: user?._id,
+      userId: user && user?._id,
       isContract: contract,
       images: undefined,
       address: createAddress,
@@ -211,7 +213,6 @@ const CreateVacancyScreen = ({navigation}: any) => {
       remote: remote,
       contract,
       userName: user?.name,
-      // images: [],
     };
 
     const checked = checkValidation(newTask);

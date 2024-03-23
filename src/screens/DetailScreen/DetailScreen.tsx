@@ -9,33 +9,40 @@ import {
   Task,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
+import LinearGradient from 'react-native-linear-gradient';
+import {useRoute} from '@react-navigation/native';
+import axios from 'axios';
+import Toast from 'react-native-toast-message';
+//
 import Title from '../../components/Title/Title';
 import {COLORS, FONTS, SIZES, width} from '../../theme/theme';
 import HeaderLogo from '../../components/HeaderLogo/HeaderLogo';
 import Button from '../../components/Button/Button';
 import ContainerBlock from '../../components/ContainerBlock/ContainerBlock';
-
 import CheckedIcon from '../../assets/icons/CheckedIcon';
 import UserReview from '../../components/UserReview/UserReview';
 import CardSmall from '../../components/CardSmall/CardSmall';
-import LinearGradient from 'react-native-linear-gradient';
-import {useRoute} from '@react-navigation/native';
 import {Service, Vacancy} from '../../types/type';
-import axios from 'axios';
 import {BASE_URL} from '../../config/config';
-import Toast from 'react-native-toast-message';
+import {formateDate} from '../../helpers/foramteDate';
+import {useAppDispatch, useAppSelector} from '../../redux/type';
 
-interface IDetailScreen {
-  screen: string;
+import {getVacancies} from '../../redux/actions/vacanciesAction';
+
+interface IRoteParam {
+  id: string;
+  key: string;
 }
 
-const DetailScreen = ({}: IDetailScreen) => {
+const DetailScreen = () => {
   const router = useRoute();
+  const {user} = useAppSelector(state => state.user);
 
   const [item, setItem] = useState<(Vacancy & Service & Task) | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const {id, key} = router.params;
+  const {id, key} = router.params as IRoteParam;
+  const dispatch = useAppDispatch();
 
   //get item by Id
   const handleFetchVacancy = useCallback(async () => {
@@ -57,9 +64,36 @@ const DetailScreen = ({}: IDetailScreen) => {
     }
   }, [id, key]);
 
+  //get and update views
+
+  const updateViews = useCallback(async () => {
+    if (!user || !user._id || !id || !key) {
+      return;
+    }
+
+    try {
+      const result = await axios.post(`${BASE_URL}/${key}/views`, {
+        vacancyId: id,
+        userId: user?._id,
+      });
+      if (!result) {
+        return;
+      }
+      setItem(result.data);
+    } catch (error) {
+      console.log('detailsScreen | update views', console.log(error));
+    } finally {
+      dispatch(getVacancies());
+    }
+  }, [dispatch, id, key, user]);
+
   useEffect(() => {
     handleFetchVacancy();
   }, [handleFetchVacancy, key]);
+
+  useEffect(() => {
+    updateViews();
+  }, [updateViews]);
 
   if (loading) {
     return (
@@ -80,7 +114,9 @@ const DetailScreen = ({}: IDetailScreen) => {
             <View style={styles.info}>
               <Text style={styles.infoText}>{item?.views} просмотра</Text>
               <Text style={styles.infoText}> | </Text>
-              <Text style={styles.infoText}>{item?.createdAt}</Text>
+              <Text style={styles.infoText}>
+                {formateDate(item?.createdAt)}
+              </Text>
             </View>
 
             <View style={[styles.info, {marginTop: 10}]}>
@@ -130,7 +166,7 @@ const DetailScreen = ({}: IDetailScreen) => {
           </View>
           {/* USer */}
           <ContainerBlock style={styles.block}>
-            {item?.userId.image && item?.userId.image?.length > 0 ? (
+            {item?.userId && item?.userId.image?.length > 0 ? (
               <Image
                 source={{
                   uri: item?.userId.image,
@@ -148,8 +184,8 @@ const DetailScreen = ({}: IDetailScreen) => {
               <Text style={styles.infoText}>{item?.userId?.city}</Text>
               <View style={{width: 120, marginTop: 10}}>
                 <UserReview
-                  likes={item?.userId.likes}
-                  dislikes={item?.userId.dislikes}
+                  likes={item?.userId && item?.userId.likes}
+                  dislikes={item?.userId && item?.userId.dislikes}
                 />
               </View>
             </View>

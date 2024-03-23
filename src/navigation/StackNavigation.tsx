@@ -22,6 +22,7 @@ const StackNavigation = () => {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="Fill" component={ProfileFieldScreen} />
+      <Stack.Screen name="Detail" component={DetailScreen} />
       <Stack.Screen name="Tab" component={TabNavigation} />
       <Stack.Screen name="Create" component={CreateVacancyScreen} />
       <Stack.Screen
@@ -40,7 +41,6 @@ const StackNavigation = () => {
           animationEnabled: true,
         }}
       />
-      <Stack.Screen name="Detail" component={DetailScreen} />
     </Stack.Navigator>
   );
 };

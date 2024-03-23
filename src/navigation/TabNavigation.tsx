@@ -14,7 +14,6 @@ import ServiceTab from '../assets/icons/ServiceTab';
 import VacancyTab from '../assets/icons/VacancyTab';
 import {Platform} from 'react-native';
 import {TabNavigationParams} from './types/types';
-import ProfileFieldScreen from '../screens/Auth/ProfileFieldScreen';
 
 const Tab = createBottomTabNavigator<TabNavigationParams>();
 
