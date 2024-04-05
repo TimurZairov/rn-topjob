@@ -11,9 +11,9 @@ export const uploadImages = async (images: Asset[] | null) => {
   });
 
   try {
-    const imagesUrl: any = await Promise.all<string[]>(
+    const imagesUrl = await Promise.all<Promise<string[]>>(
       uri?.map(item => {
-        if (item === null || item === undefined) {
+        if (item === undefined || item === null) {
           return;
         }
         return getUrl(item.name, item.uri);
@@ -29,9 +29,9 @@ export const uploadImages = async (images: Asset[] | null) => {
   }
 };
 
-const getUrl = async (name: string, uri: string): Promise<string> => {
+const getUrl = async (name: string, uri: string) => {
   const reference = storage().ref(`/service/${name}`); //ref name
-  await reference.putFile(uri!); //path to image
+  await reference.putFile(uri); //path to image
   const url = await reference.getDownloadURL(); //get url from storage
   return url;
 };

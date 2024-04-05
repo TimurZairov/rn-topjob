@@ -4,7 +4,7 @@ import React from 'react';
 import {COLORS, FONTS, width} from '../../theme/theme';
 import Button from '../Button/Button';
 
-const Create: () => Element = () => {
+const Create = () => {
   return (
     <View style={styles.adv}>
       <View style={styles.servicesBg}>

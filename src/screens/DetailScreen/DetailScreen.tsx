@@ -30,6 +30,7 @@ import {useAppDispatch, useAppSelector} from '../../redux/type';
 import {getVacancies} from '../../redux/actions/vacanciesAction';
 import {getServices} from '../../redux/actions/servicesAction';
 import {getTasks} from '../../redux/actions/taskAction';
+import MapView from 'react-native-maps';
 
 interface IRoteParam {
   id: string;
@@ -209,7 +210,10 @@ const DetailScreen = () => {
                 alignItems: 'center',
                 marginBottom: 20,
               }}>
-              <View style={styles.map} />
+              <View style={styles.map}>
+                {/* todo */}
+                <MapView />
+              </View>
             </ContainerBlock>
           )}
 
