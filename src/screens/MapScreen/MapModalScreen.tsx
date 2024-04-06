@@ -1,11 +1,11 @@
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import React from 'react';
-import MapView, {PROVIDER_GOOGLE, PoiClickEvent} from 'react-native-maps';
+import MapView, {MapPressEvent, PROVIDER_GOOGLE} from 'react-native-maps';
 import BackArrow from '../../assets/icons/BackArrow';
 import {COLORS} from '../../theme/theme';
 
 const MapScreen = () => {
-  const handleMapLocation = (event: PoiClickEvent) => {
+  const handleMapLocation = (event: MapPressEvent) => {
     console.log(event.nativeEvent);
   };
 
