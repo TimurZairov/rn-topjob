@@ -36,7 +36,12 @@ export type Vacancy = {
   employmentType?: string;
   userId: User | unknown;
   //TODO
-  location?: string;
+  mapLocation?: IMapLocation | null;
+};
+
+export type IMapLocation = {
+  longitude: number | null;
+  latitude: number | null;
 };
 
 export type Service = {

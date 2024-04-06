@@ -56,6 +56,7 @@ const CreateVacancyScreen = () => {
     isVacancy,
     isTask,
     isService,
+    mapLocation,
   } = useContext(AppContext);
 
   const dispatch = useAppDispatch();
@@ -124,6 +125,7 @@ const CreateVacancyScreen = () => {
       userId: user?._id,
       img: user?.image,
       companyName: user?.name,
+      mapLocation,
     };
     const checked = checkValidation(vacancyData);
 

@@ -10,7 +10,7 @@ export const getVacancies = createAsyncThunk<Vacancy[]>(
   async (_, {rejectWithValue}) => {
     try {
       const vacancies = await axios.get(`${BASE_URL}/vacancies`);
-      console.log(vacancies);
+
       return vacancies.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

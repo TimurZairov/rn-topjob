@@ -13,6 +13,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useRoute} from '@react-navigation/native';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 //
 import Title from '../../components/Title/Title';
 import {COLORS, FONTS, SIZES, width} from '../../theme/theme';
@@ -30,7 +31,6 @@ import {useAppDispatch, useAppSelector} from '../../redux/type';
 import {getVacancies} from '../../redux/actions/vacanciesAction';
 import {getServices} from '../../redux/actions/servicesAction';
 import {getTasks} from '../../redux/actions/taskAction';
-import MapView from 'react-native-maps';
 
 interface IRoteParam {
   id: string;
@@ -92,7 +92,6 @@ const DetailScreen = () => {
         dispatch(getServices());
       } else {
         dispatch(getTasks());
-        console.log('ok');
       }
     }
   }, [dispatch, id, key, user]);
@@ -212,7 +211,16 @@ const DetailScreen = () => {
               }}>
               <View style={styles.map}>
                 {/* todo */}
-                <MapView />
+                <MapView
+                  provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+                  style={styles.mapView}
+                  region={{
+                    latitude: 37.78825,
+                    longitude: -122.4324,
+                    latitudeDelta: 0.015,
+                    longitudeDelta: 0.0121,
+                  }}
+                />
               </View>
             </ContainerBlock>
           )}
@@ -240,7 +248,23 @@ const DetailScreen = () => {
                   alignItems: 'center',
                   marginBottom: 20,
                 }}>
-                <View style={styles.map} />
+                <MapView
+                  provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+                  style={styles.mapView}
+                  region={{
+                    latitude: item?.mapLocation?.latitude || 37.78825,
+                    longitude: item?.mapLocation?.longitude || -122.4324,
+                    latitudeDelta: 0.015,
+                    longitudeDelta: 0.0121,
+                  }}
+                  liteMode={true}
+                  mapPadding={{left: 40, top: 0, right: 0, bottom: 0}}>
+                  {item?.mapLocation !== null ? (
+                    <Marker
+                      coordinate={{latitude: 37.78825, longitude: -122.4324}}
+                    />
+                  ) : null}
+                </MapView>
               </ContainerBlock>
               {/* JOBS */}
               <Title style={{marginBottom: 5}} textStyle={styles.textTitle}>
@@ -364,7 +388,11 @@ const styles = StyleSheet.create({
     height: 120,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.grey,
+  },
+  mapView: {
+    height: 120,
+    width: '100%',
+    borderRadius: 4,
   },
   gradient: {
     paddingHorizontal: 40,

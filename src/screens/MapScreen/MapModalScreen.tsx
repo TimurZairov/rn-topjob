@@ -1,12 +1,19 @@
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import React from 'react';
-import MapView, {MapPressEvent, PROVIDER_GOOGLE} from 'react-native-maps';
+import React, {useContext} from 'react';
+import MapView, {
+  MapPressEvent,
+  Marker,
+  PROVIDER_GOOGLE,
+} from 'react-native-maps';
 import BackArrow from '../../assets/icons/BackArrow';
 import {COLORS} from '../../theme/theme';
+import {AppContext} from '../../context/context';
 
 const MapScreen = () => {
+  const {setMapLocation, mapLocation} = useContext(AppContext);
+
   const handleMapLocation = (event: MapPressEvent) => {
-    console.log(event.nativeEvent);
+    setMapLocation(event.nativeEvent.coordinate);
   };
 
   return (
@@ -32,8 +39,18 @@ const MapScreen = () => {
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}
-        onPress={handleMapLocation}
-      />
+        onPress={handleMapLocation}>
+        {mapLocation !== null &&
+        mapLocation?.latitude &&
+        mapLocation?.longitude ? (
+          <Marker
+            coordinate={{
+              latitude: mapLocation?.latitude,
+              longitude: mapLocation?.longitude,
+            }}
+          />
+        ) : null}
+      </MapView>
     </View>
   );
 };
@@ -42,7 +59,6 @@ export default MapScreen;
 
 const styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',

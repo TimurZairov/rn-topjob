@@ -1,5 +1,6 @@
 import {ReactNode, createContext, useState} from 'react';
 import React from 'react';
+import {IMapLocation} from '../types/type';
 
 interface AppContextProps {
   //
@@ -14,6 +15,8 @@ interface AppContextProps {
   setCreateSalaryFrom: React.Dispatch<React.SetStateAction<string>>;
   createSalaryTo: string;
   setCreateSalaryTo: React.Dispatch<React.SetStateAction<string>>;
+  mapLocation: IMapLocation | null;
+  setMapLocation: React.Dispatch<React.SetStateAction<IMapLocation | null>>;
   //create props
   isTask: boolean;
   isVacancy: boolean;
@@ -54,6 +57,8 @@ export const AppContext = createContext<AppContextProps>({
   setCreateSalaryFrom: () => {},
   createSalaryTo: '',
   setCreateSalaryTo: () => {},
+  mapLocation: {latitude: null, longitude: null},
+  setMapLocation: () => {},
   //task
   isTask: false,
   isVacancy: false,
@@ -85,6 +90,9 @@ const AppContextProvider = ({children}: IAppContextProvider) => {
   const [createAddress, setCreateAddress] = useState('');
   const [createSalaryFrom, setCreateSalaryFrom] = useState('');
   const [createSalaryTo, setCreateSalaryTo] = useState('');
+  const [mapLocation, setMapLocation] = useState<IMapLocation | null>(null);
+
+  console.log(mapLocation);
   //
   const [isTask, setIsTask] = useState<boolean>(false);
   const [isVacancy, setIsVacancy] = useState<boolean>(false);
@@ -111,6 +119,8 @@ const AppContextProvider = ({children}: IAppContextProvider) => {
         setCreateSalaryFrom,
         createSalaryTo,
         setCreateSalaryTo,
+        mapLocation,
+        setMapLocation,
         //
         isTask,
         setIsTask,
