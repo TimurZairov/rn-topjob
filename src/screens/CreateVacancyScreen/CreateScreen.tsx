@@ -175,6 +175,7 @@ const CreateVacancyScreen = () => {
       images: undefined,
       address: createAddress,
       userName: user?.name,
+      mapLocation,
     };
     //validate on create
     const checked = checkValidation(serviceData);
@@ -215,6 +216,7 @@ const CreateVacancyScreen = () => {
       remote: remote,
       contract,
       userName: user?.name,
+      mapLocation,
     };
 
     const checked = checkValidation(newTask);

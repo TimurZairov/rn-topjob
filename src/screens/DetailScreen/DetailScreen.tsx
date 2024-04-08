@@ -212,15 +212,22 @@ const DetailScreen = () => {
               <View style={styles.map}>
                 {/* todo */}
                 <MapView
-                  provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+                  provider={PROVIDER_GOOGLE}
                   style={styles.mapView}
                   region={{
-                    latitude: 37.78825,
-                    longitude: -122.4324,
+                    latitude: item?.mapLocation?.latitude || 37.78825,
+                    longitude: item?.mapLocation?.longitude || -122.4324,
                     latitudeDelta: 0.015,
                     longitudeDelta: 0.0121,
                   }}
-                />
+                  liteMode={true}
+                  mapPadding={{left: 60, top: 50, right: 0, bottom: 0}}>
+                  {item?.mapLocation !== null ? (
+                    <Marker
+                      coordinate={{latitude: 37.78825, longitude: -122.4324}}
+                    />
+                  ) : null}
+                </MapView>
               </View>
             </ContainerBlock>
           )}
@@ -393,6 +400,8 @@ const styles = StyleSheet.create({
     height: 120,
     width: '100%',
     borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'baseline',
   },
   gradient: {
     paddingHorizontal: 40,

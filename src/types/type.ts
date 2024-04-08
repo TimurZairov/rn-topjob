@@ -61,6 +61,7 @@ export type Service = {
   isContract?: boolean;
   userId: User | undefined;
   userName?: string;
+  mapLocation?: IMapLocation | null;
 };
 
 export type Task = {
@@ -78,4 +79,5 @@ export type Task = {
   comments?: string[];
   userName?: string | undefined;
   views?: number;
+  mapLocation?: IMapLocation | null;
 };
